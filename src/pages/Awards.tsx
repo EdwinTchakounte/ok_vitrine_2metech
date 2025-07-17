@@ -14,19 +14,22 @@ const Awards: React.FC = () => {
       title: t('awards.poesam.title'),
       date: 'Juin 2024',
       description: t('awards.poesam.description'),
-      image: 'https://images.pexels.com/photos/2850287/pexels-photo-2850287.jpeg?auto=compress&cs=tinysrgb&w=800',
-      color: 'from-yellow-400 to-yellow-600'
+      image: 'logos/orange.png',
+      color: 'from-yellow-400 to-yellow-600',
+      lien: 'https://share.google/P6whI729iLfn2t9dh'
     },
-    {
-      id: 'orange',
-      icon: Award,
-      emoji: '🏆',
-      title: t('awards.orange.title'),
-      date: '2024',
-      description: t('awards.orange.description'),
-      image: 'https://images.pexels.com/photos/2850290/pexels-photo-2850290.jpeg?auto=compress&cs=tinysrgb&w=800',
-      color: 'from-orange-400 to-orange-600'
+       {
+      id: 'totalenergies',
+      icon: Star,
+      emoji: '🥈',
+      title: t('awards.totalenergies.title'),
+      date: 'Octobre 2024',
+      description: t('awards.totalenergies.description'),
+     image: 'images/total_startup.jpg',
+      lien:'https://totalenergies.cm/les-laureats-du-challenge-startupper-de-totalenergies-marketing-cameroun-2024-devoiles',
+      color: 'from-green-400 to-green-600'
     },
+   
     {
       id: 'yali',
       icon: Medal,
@@ -34,19 +37,22 @@ const Awards: React.FC = () => {
       title: t('awards.yali.title'),
       date: '2024',
       description: t('awards.yali.description'),
-      image: 'https://images.pexels.com/photos/2866796/pexels-photo-2866796.jpeg?auto=compress&cs=tinysrgb&w=800',
+       image: 'images/yali.png',
+      lien:'rgies-marketing-cameroun-2024-devoileshttps://mk-africa.com/yali-power-design-challenge-innovating-to-address-africans-energy-needs/',
       color: 'from-blue-400 to-blue-600'
     },
-    {
-      id: 'totalenergies',
-      icon: Star,
-      emoji: '🥈',
-      title: t('awards.totalenergies.title'),
-      date: 'Octobre 2024',
-      description: t('awards.totalenergies.description'),
-      image: 'https://images.pexels.com/photos/2850291/pexels-photo-2850291.jpeg?auto=compress&cs=tinysrgb&w=800',
-      color: 'from-green-400 to-green-600'
-    }
+     {
+      id: 'orange',
+      icon: Award,
+      emoji: '🏆',
+      title: t('awards.orange.title'),
+      date: '2024',
+      description: t('awards.orange.description'),
+      image: 'logos/orange.png',
+      lien:'https://share.google/P6whI729iLfn2t9dh',
+      color: 'from-orange-400 to-orange-600'
+    },
+ 
   ];
 
   return (
@@ -115,11 +121,11 @@ const Awards: React.FC = () => {
                       {award.description}
                     </p>
                     
-                    <button className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#1876bc] to-[#84c450] text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    <a className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#1876bc] to-[#84c450] text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105" href={award.lien}>
                       <award.icon className="w-5 h-5 mr-2" />
                       En savoir plus
                       <ExternalLink className="w-4 h-4 ml-2" />
-                    </button>
+                    </a>
                   </div>
                 </div>
               </motion.div>

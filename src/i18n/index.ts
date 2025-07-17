@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { Subtitles } from 'lucide-react';
 
 const resources = {
   fr: {
@@ -26,6 +27,11 @@ const resources = {
           install: '1h Installation',
           warranty: '6 Mois Garantie'
         }
+      },
+      enmkit:{
+        title:'EnMKit',
+        Subtitle:'La révolution énergétique intélligente développé au cameroun par l\'entreprise 2metech .',
+        description:'Enmkit s\'attaque aux défis majeurs de la gestion énergétique domestique et meme en entreprise dans le contexte africain utilisant des solutions technologiques de pointe .'
       },
       awards: {
         title: 'Nos Récompenses',

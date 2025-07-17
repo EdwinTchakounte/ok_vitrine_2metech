@@ -8,6 +8,17 @@ const AwardsGrid: React.FC = () => {
   const { t } = useTranslation();
 
   const awards: AwardType[] = [
+
+       {
+      id: 'yali',
+      icon: '🏅',
+      title: t('awards.yali.title'),
+      date: '2024',
+      description: t('awards.yali.description'),
+      fullDescription: t('awards.yali.description'),
+      image: 'images/yali.png',
+      lien:'rgies-marketing-cameroun-2024-devoileshttps://mk-africa.com/yali-power-design-challenge-innovating-to-address-africans-energy-needs/'
+    },
     {
       id: 'poesam',
       icon: '🥇',
@@ -15,7 +26,8 @@ const AwardsGrid: React.FC = () => {
       date: 'Juin 2024',
       description: t('awards.poesam.description'),
       fullDescription: t('awards.poesam.description'),
-      image: 'https://images.pexels.com/photos/2850287/pexels-photo-2850287.jpeg?auto=compress&cs=tinysrgb&w=800'
+      image: 'logos/orange.png',
+      lien:'https://share.google/P6whI729iLfn2t9dh'
     },
     {
       id: 'orange',
@@ -24,17 +36,10 @@ const AwardsGrid: React.FC = () => {
       date: '2024',
       description: t('awards.orange.description'),
       fullDescription: t('awards.orange.description'),
-      image: 'https://images.pexels.com/photos/2850290/pexels-photo-2850290.jpeg?auto=compress&cs=tinysrgb&w=800'
+      image: 'images/women_price.png',
+      lien:'https://share.google/P6whI729iLfn2t9dh'
     },
-    {
-      id: 'yali',
-      icon: '🏅',
-      title: t('awards.yali.title'),
-      date: '2024',
-      description: t('awards.yali.description'),
-      fullDescription: t('awards.yali.description'),
-      image: 'https://images.pexels.com/photos/2866796/pexels-photo-2866796.jpeg?auto=compress&cs=tinysrgb&w=800'
-    },
+ 
     {
       id: 'totalenergies',
       icon: '🥈',
@@ -42,7 +47,8 @@ const AwardsGrid: React.FC = () => {
       date: 'Octobre 2024',
       description: t('awards.totalenergies.description'),
       fullDescription: t('awards.totalenergies.description'),
-      image: 'https://images.pexels.com/photos/2850291/pexels-photo-2850291.jpeg?auto=compress&cs=tinysrgb&w=800'
+      image: 'images/total_startup.jpg',
+      lien:'https://totalenergies.cm/les-laureats-du-challenge-startupper-de-totalenergies-marketing-cameroun-2024-devoiles'
     }
   ];
 
@@ -85,7 +91,7 @@ const AwardsGrid: React.FC = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
               >
-                <div className="relative h-48 overflow-hidden">
+                <div className="w-full h-[300px] flex justify-center items-center">
                   <img
                     src={award.image}
                     alt={award.title}
@@ -110,10 +116,10 @@ const AwardsGrid: React.FC = () => {
                   <p className="text-gray-600 mb-4 line-clamp-3">
                     {award.description}
                   </p>
-                  <button className="inline-flex items-center text-[#1876bc] font-semibold hover:text-[#84c450] transition-colors">
+                  <a className="inline-flex items-center text-[#1876bc] font-semibold hover:text-[#84c450] transition-colors" href={award.lien}>
                     En savoir plus
                     <ArrowRight className="ml-2 w-4 h-4" />
-                  </button>
+                  </a>
                 </div>
               </motion.article>
             );

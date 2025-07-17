@@ -8,7 +8,7 @@ const PartnersSection: React.FC = () => {
     {
       id: 'f2e',
       name: 'F2E (Free Energy Engineering)',
-      logo: 'https://images.pexels.com/photos/2850287/pexels-photo-2850287.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
+      logo: 'logos/f2e.png',
       description: 'Partenaire technique spécialisé dans l\'ingénierie énergétique durable et les solutions innovantes.',
       category: 'energy',
       website: '#'
@@ -16,7 +16,7 @@ const PartnersSection: React.FC = () => {
     {
       id: 'leukele',
       name: 'Leukelé Africa',
-      logo: 'https://images.pexels.com/photos/2850290/pexels-photo-2850290.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
+      logo: 'logos/leuke.png',
       description: 'Partenaire stratégique pour le développement et la distribution en Afrique.',
       category: 'tech',
       website: '#'
@@ -24,7 +24,7 @@ const PartnersSection: React.FC = () => {
     {
       id: 'yali',
       name: 'YALI',
-      logo: 'https://images.pexels.com/photos/2866796/pexels-photo-2866796.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
+      logo: 'logos/yali.png',
       description: 'Young African Leaders Initiative - Réseau de jeunes leaders africains pour l\'innovation.',
       category: 'education',
       website: '#'
@@ -32,7 +32,7 @@ const PartnersSection: React.FC = () => {
     {
       id: 'orange',
       name: 'Orange',
-      logo: 'https://images.pexels.com/photos/2850291/pexels-photo-2850291.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
+      logo: 'logos/orange.png',
       description: 'Partenaire télécommunications et digital, soutien à l\'entrepreneuriat féminin.',
       category: 'corporate',
       website: '#'
@@ -40,7 +40,7 @@ const PartnersSection: React.FC = () => {
     {
       id: 'totalenergies',
       name: 'TotalEnergies',
-      logo: 'https://images.pexels.com/photos/2850292/pexels-photo-2850292.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
+      logo: 'logos/total.png',
       description: 'Leader mondial de l\'énergie, partenaire du programme Startupper of the Year.',
       category: 'energy',
       website: '#'

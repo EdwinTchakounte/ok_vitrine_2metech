@@ -13,7 +13,7 @@ const Home: React.FC = () => {
   const features = [
     {
       icon: Zap,
-      title: 'Technologie IA Avancée',
+      title: 'Gestion Avancée',
       description: 'Système intelligent de monitoring et optimisation énergétique'
     },
     {

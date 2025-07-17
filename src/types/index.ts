@@ -6,6 +6,8 @@ export interface Award {
   description: string;
   fullDescription: string;
   image?: string;
+  lien?:string;
+  color?:string;
 }
 
 export interface Testimonial {

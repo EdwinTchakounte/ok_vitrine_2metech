@@ -41,10 +41,10 @@ const About: React.FC = () => {
             className="text-center text-white"
           >
             <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-              {t('about.title')}
+              {t('enmkit.title')}
             </h1>
             <p className="text-xl lg:text-2xl max-w-3xl mx-auto">
-              Pionniers de l'innovation énergétique en Afrique, nous transformons l'accès à l'énergie durable grâce à EnMKit.
+              La révolution énergétique intélligente développé au cameroun par l'entreprise 2metech .
             </p>
           </motion.div>
         </div>
@@ -60,7 +60,7 @@ const About: React.FC = () => {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-                {t('about.mission')}
+                {t('about.description')}
               </h2>
               <p className="text-lg text-gray-600 mb-6">
                 {t('about.missionText')}
@@ -77,7 +77,7 @@ const About: React.FC = () => {
               className="relative"
             >
               <img
-                src="logos/image_logo_couleur.jpg"
+                src="https://images.pexels.com/photos/2850287/pexels-photo-2850287.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="Mission 2metech"
                 className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
               />

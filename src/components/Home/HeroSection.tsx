@@ -10,17 +10,17 @@ const HeroSection: React.FC = () => {
 
   const slides = [
     {
-      image: 'https://images.pexels.com/photos/2850287/pexels-photo-2850287.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+      image: 'images/image2.jpg',
       title: 'Innovation Énergétique Africaine',
       subtitle: 'EnMKit révolutionne l\'accès à l\'énergie'
     },
     {
-      image: 'https://images.pexels.com/photos/2850290/pexels-photo-2850290.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+      image: 'images/image.png',
       title: 'Solutions Durables',
       subtitle: 'Technology meets sustainability'
     },
     {
-      image: 'https://images.pexels.com/photos/2866796/pexels-photo-2866796.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+      image: 'slides/slide2.jpg',
       title: 'Impact Concret',
       subtitle: '+20 foyers équipés, -14% consommation'
     }
@@ -50,7 +50,7 @@ const HeroSection: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: currentSlide === index ? 1 : 0 }}
             transition={{ duration: 1 }}
-            className="absolute inset-0"
+            className="absolute inset-0 "
           >
             <img
               src={slide.image}

@@ -15,6 +15,7 @@ import Awards from './pages/Awards';
 import Partners from './pages/Partners';
 import Installers from './pages/Installers';
 import Contact from './pages/Contact';
+import Enmkit from './pages/Enmkit';
 
 function App() {
   const { ready } = useTranslation();
@@ -35,12 +36,14 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/enmkit" element={<Home />} />
+            <Route path="/enmkit" element={<Enmkit />} />
             <Route path="/awards" element={<Awards />} />
             <Route path="/gallery" element={<Home />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/installers" element={<Installers />} />
             <Route path="/contact" element={<Contact />} />
+
+            
           </Routes>
         </main>
         <Footer />
