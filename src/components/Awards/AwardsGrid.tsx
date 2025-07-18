@@ -17,7 +17,7 @@ const AwardsGrid: React.FC = () => {
       description: t('awards.yali.description'),
       fullDescription: t('awards.yali.description'),
       image: 'images/yali.png',
-      lien:'rgies-marketing-cameroun-2024-devoileshttps://mk-africa.com/yali-power-design-challenge-innovating-to-address-africans-energy-needs/'
+      lien:'https://mk-africa.com/yali-power-design-challenge-innovating-to-address-africans-energy-needs/'
     },
     {
       id: 'poesam',
