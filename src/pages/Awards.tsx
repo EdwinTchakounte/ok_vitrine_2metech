@@ -16,7 +16,7 @@ const Awards: React.FC = () => {
       description: t('awards.poesam.description'),
       image: 'logos/orange.png',
       color: 'from-yellow-400 to-yellow-600',
-      lien: 'https://share.google/P6whI729iLfn2t9dh'
+      lien: 'https://www.orange.com/fr/poesam/la-14e-edition-du-poesam-devoile-ses-laureats-2024'
     },
        {
       id: 'totalenergies',
@@ -38,7 +38,7 @@ const Awards: React.FC = () => {
       date: '2024',
       description: t('awards.yali.description'),
        image: 'images/yali.png',
-      lien:'rgies-marketing-cameroun-2024-devoileshttps://mk-africa.com/yali-power-design-challenge-innovating-to-address-africans-energy-needs/',
+      lien:'https://mk-africa.com/yali-power-design-challenge-innovating-to-address-africans-energy-needs/',
       color: 'from-blue-400 to-blue-600'
     },
      {

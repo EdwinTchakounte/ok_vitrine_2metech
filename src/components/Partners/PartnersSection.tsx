@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Building2, Zap, GraduationCap, Globe } from 'lucide-react';
 import { Partner } from '../../types';
+import { Link } from 'react-router-dom';
 
 const PartnersSection: React.FC = () => {
   const partners: Partner[] = [
@@ -147,13 +148,13 @@ const PartnersSection: React.FC = () => {
             Ensemble, nous construisons l'avenir énergétique de l'Afrique. 
             Découvrez comment devenir partenaire de 2metech et EnMKit.
           </p>
-          <a
-            href="/contact"
+            <Link
+            to="/contact"
             className="inline-flex items-center px-8 py-4 bg-white text-[#1876bc] font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
-          >
+            >
             Devenir Partenaire
             <ExternalLink className="ml-2 w-5 h-5" />
-          </a>
+            </Link>
         </motion.div>
       </div>
     </section>
