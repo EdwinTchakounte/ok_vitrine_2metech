@@ -2,6 +2,27 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Target, Users, Lightbulb, Award } from 'lucide-react';
+import { 
+  Smartphone, 
+  Wifi, 
+  BarChart3, 
+  Shield, 
+  Clock, 
+  DollarSign, 
+  AlertTriangle,
+  Download,
+  ArrowRight,
+  Zap,
+  Eye,
+  Settings,
+  Brain,
+  Cloud,
+  Battery,
+  Gauge,
+  CheckCircle,
+  Play
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const About: React.FC = () => {
   const { t } = useTranslation();
@@ -28,6 +49,105 @@ const About: React.FC = () => {
       description: 'Nous visons l\'excellence dans chaque projet, de la conception à la mise en œuvre.'
     }
   ];
+    const problems = [
+      {
+        icon: <AlertTriangle className="h-8 w-8" />,
+        title: "Fraude électrique",
+        description: "Détection et prévention des manipulations de compteurs avec alertes en temps réel",
+        impact: "Jusqu'à 25% de surcoût évité",
+        gradient: "from-red-500 to-red-600"
+      },
+      {
+        icon: <DollarSign className="h-8 w-8" />,
+        title: "Factures imprévisibles",
+        description: "Élimination des surprises sur vos factures mensuelles grâce à la prédiction IA",
+        impact: "Prévisions à 95% de précision",
+        gradient: "from-orange-500 to-orange-600"
+      },
+      {
+        icon: <Zap className="h-8 w-8" />,
+        title: "Gaspillage énergétique",
+        description: "Identification et réduction automatique des consommations inutiles",
+        impact: "40% d'économies moyennes",
+        gradient: "from-yellow-500 to-yellow-600"
+      }
+    ];
+  
+    const features = [
+      {
+        icon: <Eye className="h-8 w-8" />,
+        title: "Monitoring intelligent",
+        description: "Visualisation en temps réel de votre consommation avec analyses prédictives avancées",
+        details: ["Mesures précises à ±0.5%", "Historique détaillé", "Alertes personnalisées"],
+        gradient: "from-primary-500 to-primary-600"
+      },
+      {
+        icon: <Settings className="h-8 w-8" />,
+        title: "Contrôle automatisé",
+        description: "Gestion intelligente de vos appareils avec programmation et optimisation automatique",
+        details: ["Contrôle à distance", "Programmation avancée", "Optimisation IA"],
+        gradient: "from-secondary-500 to-secondary-600"
+      },
+      {
+        icon: <BarChart3 className="h-8 w-8" />,
+        title: "Analytics avancées",
+        description: "Rapports détaillés et recommandations personnalisées pour maximiser vos économies",
+        details: ["Rapports personnalisés", "Benchmarking", "Recommandations IA"],
+        gradient: "from-accent-500 to-accent-600"
+      },
+      {
+        icon: <Shield className="h-8 w-8" />,
+        title: "Sécurité maximale",
+        description: "Protection contre la fraude et les surtensions avec système d'alerte avancé",
+        details: ["Détection fraude", "Protection surtension", "Alertes instantanées"],
+        gradient: "from-purple-500 to-purple-600"
+      },
+      {
+        icon: <Brain className="h-8 w-8" />,
+        title: "Intelligence artificielle",
+        description: "Apprentissage automatique de vos habitudes pour une optimisation continue",
+        details: ["Apprentissage adaptatif", "Prédictions précises", "Optimisation continue"],
+        gradient: "from-indigo-500 to-indigo-600"
+      },
+      {
+        icon: <Cloud className="h-8 w-8" />,
+        title: "Connectivité totale",
+        description: "Synchronisation cloud et intégration avec tous vos appareils connectés",
+        details: ["Sync multi-appareils", "API ouverte", "Intégrations tierces"],
+        gradient: "from-cyan-500 to-cyan-600"
+      }
+    ];
+  
+    const techSpecs = [
+      {
+        category: "Connectivité",
+        specs: [
+          { label: "Wi-Fi", value: "802.11ac dual-band" },
+          { label: "Bluetooth", value: "5.2 Low Energy" },
+          { label: "4G/5G", value: "Backup automatique" },
+          { label: "Ethernet", value: "Gigabit (optionnel)" }
+        ]
+      },
+      {
+        category: "Mesures",
+        specs: [
+          { label: "Précision", value: "±0.5% classe 1" },
+          { label: "Plage tension", value: "90-280V AC" },
+          { label: "Plage courant", value: "0-100A" },
+          { label: "Fréquence", value: "50/60Hz auto" }
+        ]
+      },
+      {
+        category: "Sécurité",
+        specs: [
+          { label: "Protection", value: "IP65 étanche" },
+          { label: "Température", value: "-20°C à +70°C" },
+          { label: "Certification", value: "CE, FCC, IC" },
+          { label: "Garantie", value: "5 ans constructeur" }
+        ]
+      }
+    ];
+  
 
   return (
     <div className="pt-16 lg:pt-20">
@@ -60,14 +180,14 @@ const About: React.FC = () => {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-                {t('about.description')}
+                Un atout pour l'Afrique !
               </h2>
               <p className="text-lg text-gray-600 mb-6">
                 {t('about.missionText')}
               </p>
               <p className="text-lg text-gray-600">
-                Basée à Bafoussam, au Cameroun, 2metech développe des solutions technologiques innovantes 
-                qui allient intelligence artificielle, durabilité environnementale et impact social positif.
+                EnmKit intègre les dernières innovations en IoT, IA et analyse de données 
+              pour vous offrir une expérience énergétique inégalée.
               </p>
             </motion.div>
             <motion.div
@@ -77,8 +197,8 @@ const About: React.FC = () => {
               className="relative"
             >
               <img
-                src="https://images.pexels.com/photos/2850287/pexels-photo-2850287.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Mission 2metech"
+                src="images/installation.jpg"
+                alt="Installation EnmKit"
                 className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1876bc]/20 to-transparent rounded-xl" />
@@ -87,120 +207,172 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Founder Section */}
-      <section className="py-16 lg:py-24 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="order-2 lg:order-1"
-            >
-              <div className="relative">
-                <img
-                  src="https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=800"
-                  alt="Dr Tjahe Agnes Virginie"
-                  className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#84c450]/20 to-transparent rounded-xl" />
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="order-1 lg:order-2"
-            >
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                {t('about.founder')}
-              </h2>
-              <h3 className="text-xl text-[#1876bc] font-semibold mb-6">
-                {t('about.founderTitle')}
-              </h3>
-              <p className="text-lg text-gray-600 mb-6">
-                {t('about.founderDescription')}
-              </p>
-              <p className="text-lg text-gray-600">
-                Avec une vision claire de démocratisation de l'énergie durable, 
-                Dr Tjahe a créé 2metech pour développer des solutions qui répondent 
-                aux besoins spécifiques des communautés africaines.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
-      {/* Values Section */}
-      <section className="py-16 lg:py-24 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Nos Valeurs
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Les principes qui guident notre action et notre engagement envers l'Afrique
-            </p>
-          </motion.div>
+         
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center group"
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#1876bc] to-[#84c450] rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <value.icon className="w-8 h-8 text-white" />
+      {/* Problems Section */}
+            <section className="py-24 bg-gradient-to-br from-neutral-50 to-white">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-20">
+                  <div className="inline-flex items-center space-x-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <AlertTriangle className="h-4 w-4" />
+                    <span>Défis énergétiques</span>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-6">
+                    Les problèmes que résout{' '}
+                    <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                      EnmKit
+                    </span>
+                  </h2>
+                  <p className="text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
+                    EnmKit s'attaque aux défis majeurs de la gestion énergétique domestique 
+                    en Afrique avec des solutions technologiques de pointe.
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {value.title}
-                </h3>
-                <p className="text-gray-600">
-                  {value.description}
-                </p>
-              </motion.div>
+                
+                <div className="grid md:grid-cols-3 gap-8">
+                  {problems.map((problem, index) => (
+                    <div
+                      key={index}
+                      className="group relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-neutral-100 hover:-translate-y-2"
+                    >
+                      <div className={`bg-gradient-to-r ${problem.gradient} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300`}>
+                        {problem.icon}
+                      </div>
+                      <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                        {problem.title}
+                      </h3>
+                      <p className="text-neutral-600 leading-relaxed mb-4">
+                        {problem.description}
+                      </p>
+                      <div className="bg-gradient-to-r from-primary-50 to-secondary-50 p-3 rounded-xl">
+                        <div className="text-sm font-semibold text-primary-700">
+                          Impact : {problem.impact}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+      {/* Features Section */}
+            <section className="py-24 bg-white">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-20">
+                  <div className="inline-flex items-center space-x-2 bg-primary-50 text-primary-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <Settings className="h-4 w-4" />
+                    <span>Fonctionnalités avancées</span>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-6">
+                    Une technologie{' '}
+                    <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                      révolutionnaire
+                    </span>
+                  </h2>
+                  <p className="text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
+                    EnmKit intègre les dernières innovations en IoT, IA et analyse de données 
+                    pour vous offrir une expérience énergétique inégalée.
+                  </p>
+                </div>
+                
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {features.map((feature, index) => (
+                    <div
+                      key={index}
+                      className="group relative bg-gradient-to-br from-neutral-50 to-white p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 border border-neutral-100 hover:border-primary-200 hover:-translate-y-2"
+                    >
+                      <div className={`bg-gradient-to-r ${feature.gradient} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300`}>
+                        {feature.icon}
+                      </div>
+                      <h3 className="text-xl font-bold text-neutral-900 mb-4">
+                        {feature.title}
+                      </h3>
+                      <p className="text-neutral-600 leading-relaxed mb-6">
+                        {feature.description}
+                      </p>
+                      <ul className="space-y-2">
+                        {feature.details.map((detail, idx) => (
+                          <li key={idx} className="flex items-center text-sm text-neutral-600">
+                            <CheckCircle className="h-4 w-4 text-secondary-500 mr-2 flex-shrink-0" />
+                            {detail}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="py-24 bg-gradient-to-br from-primary-50 to-secondary-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-6">
+              Installation{' '}
+              <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                simplifiée
+              </span>
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
+              Nos techniciens certifiés installent EMKit en moins de 2 heures, 
+              sans interruption de votre alimentation électrique.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              { step: "01", title: "Diagnostic", description: "Analyse de votre installation électrique" },
+              { step: "02", title: "Installation", description: "Pose du dispositif EnmKit par nos experts" },
+              { step: "03", title: "Configuration", description: "Paramétrage et connexion à l'application" },
+              { step: "04", title: "Formation", description: "Prise en main et optimisation personnalisée" }
+            ].map((item, index) => (
+              <div key={index} className="text-center group">
+                <div className="bg-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                  <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                    {item.step}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-neutral-900 mb-3">{item.title}</h3>
+                <p className="text-neutral-600">{item.description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 lg:py-24 bg-gradient-to-r from-[#1876bc] to-[#84c450]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-12">
-              Notre Impact en Chiffres
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="text-4xl lg:text-6xl font-bold text-white mb-2">+20</div>
-                <div className="text-lg text-white/90">Foyers Équipés</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl lg:text-6xl font-bold text-white mb-2">-14%</div>
-                <div className="text-lg text-white/90">Réduction Consommation</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl lg:text-6xl font-bold text-white mb-2">4</div>
-                <div className="text-lg text-white/90">Récompenses Internationales</div>
-              </div>
-            </div>
-          </motion.div>
+
+            <section className="py-24 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-8">
+            Découvrez EMKit{' '}
+            <span className="bg-gradient-to-r from-accent-400 to-secondary-400 bg-clip-text text-transparent">
+              en action
+            </span>
+          </h2>
+          
+          <p className="text-xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Téléchargez notre brochure technique complète ou demandez une démonstration 
+            personnalisée avec nos experts.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="inline-flex items-center px-8 py-4 bg-white text-primary-900 font-semibold rounded-2xl hover:bg-neutral-100 transition-all duration-300 shadow-2xl hover:scale-105">
+              <Download className="mr-3 h-5 w-5" />
+              Télécharger la brochure
+            </button>
+            <Link
+              to="/contact"
+              className="inline-flex items-center px-8 py-4 bg-transparent text-white font-semibold rounded-2xl border-2 border-white/30 hover:bg-white/10 hover:border-white/50 transition-all duration-300"
+            >
+              Demander une démo
+              <ArrowRight className="ml-3 h-5 w-5" />
+            </Link>
+          </div>
         </div>
       </section>
+
+      
     </div>
   );
 };

@@ -99,7 +99,7 @@ const About: React.FC = () => {
             >
               <div className="relative">
                 <img
-                  src="https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  src="images/tjahe.jpeg"
                   alt="Dr Tjahe Agnes Virginie"
                   className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
                 />
