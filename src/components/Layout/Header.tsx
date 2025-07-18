@@ -23,7 +23,7 @@ const Header: React.FC = () => {
     { key: 'about', path: '/about' },
     { key: 'enmkit', path: '/enmkit' },
     { key: 'awards', path: '/awards' },
-    { key: 'gallery', path: '/gallery' },
+    // { key: 'gallery', path: '/gallery' },
     { key: 'partners', path: '/partners' },
     { key: 'installers', path: '/installers' },
     { key: 'contact', path: '/contact' }
