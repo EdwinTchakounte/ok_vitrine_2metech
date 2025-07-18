@@ -11,7 +11,7 @@ const PartnersSection: React.FC = () => {
       logo: 'logos/f2e.png',
       description: 'Partenaire technique spécialisé dans l\'ingénierie énergétique durable et les solutions innovantes.',
       category: 'energy',
-      website: '#'
+      website: 'https://freeenergyengineering.com/'
     },
     {
       id: 'leukele',
@@ -19,7 +19,7 @@ const PartnersSection: React.FC = () => {
       logo: 'logos/leuke.png',
       description: 'Partenaire stratégique pour le développement et la distribution en Afrique.',
       category: 'tech',
-      website: '#'
+      website: 'https://vc4a.com/ventures/leukele-africa/fundraising/?lang=fr'
     },
     {
       id: 'yali',
@@ -27,7 +27,7 @@ const PartnersSection: React.FC = () => {
       logo: 'logos/yali.png',
       description: 'Young African Leaders Initiative - Réseau de jeunes leaders africains pour l\'innovation.',
       category: 'education',
-      website: '#'
+      website: 'https://yalirlcsouthernafrica.org/'
     },
     {
       id: 'orange',
@@ -35,7 +35,7 @@ const PartnersSection: React.FC = () => {
       logo: 'logos/orange.png',
       description: 'Partenaire télécommunications et digital, soutien à l\'entrepreneuriat féminin.',
       category: 'corporate',
-      website: '#'
+      website: 'https://www.orange.cm/'
     },
     {
       id: 'totalenergies',
@@ -43,7 +43,7 @@ const PartnersSection: React.FC = () => {
       logo: 'logos/total.png',
       description: 'Leader mondial de l\'énergie, partenaire du programme Startupper of the Year.',
       category: 'energy',
-      website: '#'
+      website: 'https://www.totalenergies.fr/'
     }
   ];
 
