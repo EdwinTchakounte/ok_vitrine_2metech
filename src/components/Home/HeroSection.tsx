@@ -41,7 +41,7 @@ const HeroSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen flex items-center justify-center overflow-hidden py-10 px-10">
       {/* Background Slider */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
