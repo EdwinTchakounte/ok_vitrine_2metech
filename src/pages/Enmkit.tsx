@@ -136,7 +136,7 @@ const About = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-              EnmKit
+              EnMKit
             </h1>
             <motion.p
               initial={{ opacity: 0 }}
@@ -188,7 +188,7 @@ const About = () => {
               </h2>
               <div className="space-y-6">
                 <p className="text-lg lg:text-xl text-gray-600 leading-relaxed">
-                  EnmKit révolutionne la gestion énergétique en Afrique avec une technologie 
+                  EnMKit révolutionne la gestion énergétique en Afrique avec une technologie 
                   de pointe adaptée aux défis locaux.
                 </p>
                 <p className="text-lg lg:text-xl text-gray-600 leading-relaxed">
@@ -208,7 +208,7 @@ const About = () => {
               <div className="relative">
                 <img
                   src="images/installation.jpg"
-                  alt="Installation EnmKit"
+                  alt="Installation EnMKit"
                   className="w-full h-80 lg:h-96 object-cover rounded-3xl shadow-xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent rounded-3xl"></div>
@@ -231,7 +231,7 @@ const About = () => {
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               Les défis que résout
               <span className="block bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-                EnmKit
+                EnMKit
               </span>
             </h2>
             <p className="text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
