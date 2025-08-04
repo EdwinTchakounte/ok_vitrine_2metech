@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Users, Lightbulb, Award } from 'lucide-react';
+import { Target, Users, Lightbulb, Award, MessageCircle } from 'lucide-react';
 import { 
   Smartphone, 
   Wifi, 
@@ -433,14 +433,15 @@ const About = () => {
               Rejoignez les milliers d'utilisateurs qui ont déjà transformé leur rapport à l'énergie
             </p>
             
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:shadow-blue-500/25 transition-all duration-300 inline-flex items-center"
-            >
-              Commencer maintenant
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </motion.button>
+             <a
+                  href="https://wa.me/237696372245?text=Bonjour, je suis intéressé(e) par EnMKit."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors"
+                >
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Commencer maintenant
+                </a>
           </motion.div>
         </div>
       </section>
