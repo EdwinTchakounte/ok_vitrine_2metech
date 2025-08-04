@@ -41,7 +41,7 @@ const HeroSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen flex items-center justify-center overflow-hidden ">
       {/* Background Slider */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
@@ -50,7 +50,7 @@ const HeroSection: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: currentSlide === index ? 1 : 0 }}
             transition={{ duration: 1 }}
-            className="absolute inset-0"
+            className="absolute inset-0 "
           >
             <img
               src={slide.image}
@@ -76,7 +76,7 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 lg:pt-40">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -88,11 +88,11 @@ const HeroSection: React.FC = () => {
               <span className="block">{t('hero.title')}</span>
               <span className="block text-[#84c450]">{t('hero.subtitle')}</span>
             </h1>
-
+            
             <p className="text-lg sm:text-xl text-gray-200 mb-8 max-w-2xl">
               {t('hero.description')}
             </p>
-
+{/* 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <Link
                 to="/enmkit"
@@ -101,7 +101,7 @@ const HeroSection: React.FC = () => {
                 {t('hero.cta')}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
-
+              
               <Link
                 to="/awards"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white font-semibold rounded-lg backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300"
@@ -109,7 +109,7 @@ const HeroSection: React.FC = () => {
                 <Award className="mr-2 w-5 h-5" />
                 Nos Récompenses
               </Link>
-            </div>
+            </div> */}
 
             {/* Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
