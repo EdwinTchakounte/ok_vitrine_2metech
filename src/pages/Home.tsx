@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Shield, Users, TrendingUp } from 'lucide-react';
 import Enmkit from './Enmkit';
+import Contact from './Contact';
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
@@ -82,9 +83,9 @@ const Home: React.FC = () => {
       <Enmkit />
       <AwardsGrid />
       <PartnersSection />
-
+      <Contact />
       {/* CTA Section */}
-      <section className="py-16 lg:py-24 bg-gradient-to-r from-[#1876bc] to-[#84c450]">
+      {/* <section className="py-16 lg:py-24 bg-gradient-to-r from-[#1876bc] to-[#84c450]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -114,7 +115,7 @@ const Home: React.FC = () => {
             </div>
           </motion.div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

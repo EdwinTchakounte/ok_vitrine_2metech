@@ -65,7 +65,7 @@ const resources = {
         title: 'Contactez-nous',
         whatsapp: 'WhatsApp',
         address: 'Mairie de Bafoussam, Cameroun',
-        email: 'contact@2metech.cm'
+        email: 'contact@2metechsarl.org'
       },
       installers: {
         title: 'Devenez Installateur EnMKit',
