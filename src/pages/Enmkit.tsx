@@ -338,41 +338,7 @@ const About: React.FC = () => {
             ))}
           </div>
         </div>
-      </section>
-
-
-            <section className="py-24 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-8">
-            Découvrez EMKit{' '}
-            <span className="bg-gradient-to-r from-accent-400 to-secondary-400 bg-clip-text text-transparent">
-              en action
-            </span>
-          </h2>
-          
-          <p className="text-xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Téléchargez notre brochure technique complète ou demandez une démonstration 
-            personnalisée avec nos experts.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="inline-flex items-center px-8 py-4 bg-white text-primary-900 font-semibold rounded-2xl hover:bg-neutral-100 transition-all duration-300 shadow-2xl hover:scale-105">
-              <Download className="mr-3 h-5 w-5" />
-              Télécharger la brochure
-            </button>
-            <Link
-              to="/contact"
-              className="inline-flex items-center px-8 py-4 bg-transparent text-white font-semibold rounded-2xl border-2 border-white/30 hover:bg-white/10 hover:border-white/50 transition-all duration-300"
-            >
-              Demander une démo
-              <ArrowRight className="ml-3 h-5 w-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      
+      </section>    
     </div>
   );
 };

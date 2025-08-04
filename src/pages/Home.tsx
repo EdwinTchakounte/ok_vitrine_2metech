@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Shield, Users, TrendingUp } from 'lucide-react';
+import Enmkit from './Enmkit';
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
@@ -77,7 +78,8 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-
+      
+      <Enmkit />
       <AwardsGrid />
       <PartnersSection />
 
