@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-[#1876bc] to-[#84c450] rounded-lg flex items-center justify-center">
                 <img src="/logos/logo_couleur_blanche.png" alt="Description de l'image" />
               </div>
-              <span className="text-2xl font-bold">2metech</span>
+              <span className="text-2xl font-bold">2MeTech</span>
             </div>
             <p className="text-gray-300 mb-6 max-w-md">
               {t('footer.description')}
@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              © 2024 2metech. {t('footer.rights')}.
+              © 2024 2MeTech. {t('footer.rights')}.
             </div>
             <div className="flex space-x-6 text-sm">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">

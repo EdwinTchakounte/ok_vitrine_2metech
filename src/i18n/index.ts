@@ -38,7 +38,7 @@ const resources = {
         subtitle: 'Reconnaissance Internationale',
         poesam: {
           title: 'POESAM 2024',
-          description: 'En juin 2024, EnMKit a remporté le POESAM – Prix de l\'Organisation pour l\'Énergie Solaire en Afrique de l\'Ouest – soulignant son impact concret sur les foyers ruraux camerounais.'
+          description: 'En juin 2024, EnMKit a remporté le POESAM  – soulignant son impact concret sur les foyers ruraux camerounais.'
         },
         orange: {
           title: 'Prix Spécial Féminin Orange',

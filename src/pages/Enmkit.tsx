@@ -54,20 +54,20 @@ const About = () => {
     {
       icon: <Eye className="h-6 w-6" />,
       title: "Monitoring intelligent",
-      description: "Visualisation en temps réel de votre consommation avec analyses prédictives avancées",
-      details: ["Mesures précises à ±0.5%", "Historique détaillé", "Alertes personnalisées"]
+      description: "Visualisation en temps réel de votre consommation ",
+      details: ["Mesures précises à ±0.5%", "Historique détaillé"]
     },
     {
       icon: <Settings className="h-6 w-6" />,
-      title: "Contrôle automatisé",
-      description: "Gestion intelligente de vos appareils avec programmation et optimisation automatique",
-      details: ["Contrôle à distance", "Programmation avancée", "Optimisation IA"]
+      title: "Contrôle à distance",
+      description: "Commander vos relais à partir des SMS",
+      details: ["Contrôle à distance", "Programmation avancée"]
     },
     {
       icon: <BarChart3 className="h-6 w-6" />,
       title: "Analytics avancées",
-      description: "Rapports détaillés et recommandations personnalisées pour maximiser vos économies",
-      details: ["Rapports personnalisés", "Benchmarking", "Recommandations IA"]
+      description: "Rapports détaillés et historique sur votre consommation",
+      details: ["Rapports personnalisés"]
     },
     {
       icon: <Shield className="h-6 w-6" />,
@@ -77,14 +77,14 @@ const About = () => {
     },
     {
       icon: <Brain className="h-6 w-6" />,
-      title: "Intelligence artificielle",
-      description: "Apprentissage automatique de vos habitudes pour une optimisation continue",
+      title: "Analyse de donnée",
+      description: "Apprentissage automatique de vos habitudes pour une optimisation continue,prefacturation et consommation plus équilibré",
       details: ["Apprentissage adaptatif", "Prédictions précises", "Optimisation continue"]
     },
     {
       icon: <Cloud className="h-6 w-6" />,
       title: "Connectivité totale",
-      description: "Synchronisation cloud et intégration avec tous vos appareils connectés",
+      description: "Synchronisation  et intégration avec tous vos appareils connectés",
       details: ["Sync multi-appareils", "API ouverte", "Intégrations tierces"]
     }
   ];
@@ -152,7 +152,7 @@ const About = () => {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="text-base sm:text-lg text-gray-500"
             >
-              Développée au Cameroun par 2metech
+              Développée au Cameroun par 2MeTech
             </motion.p>
           </motion.div>
         </div>
@@ -192,7 +192,7 @@ const About = () => {
                   de pointe adaptée aux défis locaux.
                 </p>
                 <p className="text-lg lg:text-xl text-gray-600 leading-relaxed">
-                  Notre solution intègre IoT, IA et analyse de données pour une expérience 
+                  Notre solution intègre IoT et analyse de données pour une expérience 
                   énergétique inégalée, conçue par et pour l'Afrique.
                 </p>
               </div>

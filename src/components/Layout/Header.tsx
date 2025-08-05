@@ -50,7 +50,7 @@ const Header: React.FC = () => {
             <div className="w-10 h-10 bg-gradient-to-br from-[#1876bc] to-[#84c450] rounded-lg flex items-center justify-center">
               <img src="/logos/logo_couleur_blanche.png" alt="Description de l'image" />
             </div>
-            <span className="text-xl font-bold text-gray-900">2metech</span>
+            <span className="text-xl font-bold text-gray-900">2MeTech</span>
           </Link>
 
           {/* Desktop Navigation */}
