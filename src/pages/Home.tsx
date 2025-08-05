@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Shield, Users, TrendingUp } from 'lucide-react';
 import Enmkit from './Enmkit';
 import Contact from './Contact';
+import Testimonials from '../components/Testimonials';
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
@@ -81,6 +82,7 @@ const Home: React.FC = () => {
       </section>
       
       <Enmkit />
+      <Testimonials/>
       <AwardsGrid />
       <PartnersSection />
       <Contact />
