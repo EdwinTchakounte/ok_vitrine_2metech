@@ -19,7 +19,7 @@ const resources = {
       hero: {
         title: 'L\'Innovation Énergétique',
         subtitle: 'Africaine du Futur',
-        description: 'EnMKit révolutionne l\'accès à l\'énergie durable en Afrique avec une technologie IA avancée, des installations rapides et un impact environnemental prouvé.',
+        description: 'EnMKit révolutionne l\'accès à l\'énergie durable en Afrique , des installations rapides et un impact environnemental prouvé.',
         cta: 'Découvrir EnMKit',
         stats: {
           homes: '+20 Foyers Équipés',
@@ -105,7 +105,7 @@ const resources = {
       hero: {
         title: 'African Energy',
         subtitle: 'Innovation of the Future',
-        description: 'EnMKit revolutionizes access to sustainable energy in Africa with advanced AI technology, rapid installations and proven environmental impact.',
+        description: 'EnMKit revolutionizes access to sustainable energy in Africa , rapid installations and proven environmental impact.',
         cta: 'Discover EnMKit',
         stats: {
           homes: '+20 Homes Equipped',
