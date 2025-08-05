@@ -82,7 +82,7 @@ const resources = {
         subtitle: 'Des collaborations stratégiques qui renforcent notre mission'
       },
       footer: {
-        description: '2metech révolutionne l\'accès à l\'énergie durable en Afrique avec EnMKit.',
+        description: '2MeTech révolutionne l\'accès à l\'énergie durable en Afrique avec EnMKit.',
         links: 'Liens Rapides',
         legal: 'Mentions Légales',
         privacy: 'Politique de Confidentialité',
@@ -163,7 +163,7 @@ const resources = {
         subtitle: 'Strategic collaborations that strengthen our mission'
       },
       footer: {
-        description: '2metech revolutionizes access to sustainable energy in Africa with EnMKit.',
+        description: '2MeTech revolutionizes access to sustainable energy in Africa with EnMKit.',
         links: 'Quick Links',
         legal: 'Legal Notice',
         privacy: 'Privacy Policy',
