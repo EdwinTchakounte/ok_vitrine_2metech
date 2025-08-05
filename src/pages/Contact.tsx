@@ -2,29 +2,38 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, MessageCircle, Send, User, MessageSquare } from 'lucide-react';
+import { supabase } from '../supabaseClient';
 
 const Contact: React.FC = () => {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
+    phone: '',
     subject: '',
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
+    // Handle form submission here
     console.log('Form submitted:', formData);
+    // Reset form
+    setFormData({ name: '', subject: '', message: '', phone: '' });
+
+     const { error } = await supabase.from('enmkit_contact').insert([formData]);
+
+    if (error) {
+      alert("Erreur : " + error.message);
+    } 
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [e.target.name]: e.target.value
-    });
+    }));
   };
-
   const contactInfo = [
     {
       icon: MapPin,
@@ -154,19 +163,19 @@ const Contact: React.FC = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      Email
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone
                     </label>
                     <div className="relative">
                       <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
+                        type="emphoneail"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
                         onChange={handleChange}
                         required
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent"
-                        placeholder="votre@email.com"
+                        placeholder="673 333 333"
                       />
                       <Mail className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
                     </div>

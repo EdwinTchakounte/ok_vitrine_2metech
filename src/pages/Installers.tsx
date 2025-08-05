@@ -14,9 +14,12 @@ import {
   CheckCircle,
   Users,
   Award,
-  Zap
+  Zap,
+  AlertCircle,
+  Loader
 } from 'lucide-react';
 import { InstallerApplication } from '../types';
+import { supabase } from '../supabaseClient';
 
 const Installers: React.FC = () => {
   const [formData, setFormData] = useState<InstallerApplication>({
@@ -29,6 +32,7 @@ const Installers: React.FC = () => {
     zone: '',
     experience: '',
     motivation: '',
+    id : Date.now(),
   });
 
   const [files, setFiles] = useState<{
@@ -37,6 +41,78 @@ const Installers: React.FC = () => {
   }>({});
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<{
+    cni?: number;
+    cv?: number;
+  }>({});
+
+  // Fonction pour uploader un fichier vers Supabase Storage
+  const uploadFile = async (file: File, fileType: 'cni' | 'cv', applicantId: string): Promise<string | null> => {
+    try {
+      // Générer un nom unique pour le fichier
+      const fileExtension = file.name.split('.').pop();
+      const fileName = `${applicantId}_${fileType}_${Date.now()}.${fileExtension}`;
+      const filePath = `installers/${fileName}`;
+
+      // Simuler le progress d'upload
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress += 20;
+        setUploadProgress(prev => ({
+          ...prev,
+          [fileType]: Math.min(progress, 90) // Garder à 90% jusqu'à la fin
+        }));
+      }, 200);
+
+      // Upload vers Supabase Storage
+const { data, error } = await supabase.storage
+  .from('installer-documents')
+  .upload(filePath, file, {
+    cacheControl: '3600',
+    upsert: false
+  });
+
+      // Obtenir l'URL publique du fichier
+      const { data: { publicUrl } } = supabase.storage
+        .from('installer-documents')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+
+    } catch (error: any) {
+      console.error(`Erreur lors de l'upload du ${fileType}:`, error);
+      setUploadProgress(prev => ({
+        ...prev,
+        [fileType]: 0
+      }));
+      throw error;
+    }
+  };
+
+  // Fonction pour sauvegarder les données dans Supabase
+  const saveToDatabase = async (applicationData: any) => {
+    try {
+      applicationData.id= Date.now(); // Assurer un ID unique
+      // Sauvegarde dans Supabase
+      const { data, error } = await supabase
+        .from('enmkit_installateur')
+        .insert([applicationData])
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error(`Erreur de sauvegarde: ${error.message}`);
+      }
+
+      return data;
+
+    } catch (error: any) {
+      console.error('Erreur lors de la sauvegarde:', error);
+      throw error;
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -44,23 +120,147 @@ const Installers: React.FC = () => {
       ...prev,
       [name]: value
     }));
+    // Réinitialiser l'erreur si l'utilisateur modifie le formulaire
+    if (error) setError(null);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fileType: 'cni' | 'cv') => {
     const file = e.target.files?.[0];
     if (file) {
+      // Vérifier la taille du fichier (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError(`Le fichier ${fileType.toUpperCase()} ne doit pas dépasser 5MB`);
+        return;
+      }
+
+      // Vérifier le type de fichier
+      const allowedTypes = fileType === 'cni' 
+        ? ['image/jpeg', 'image/png', 'application/pdf']
+        : ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      
+      if (!allowedTypes.includes(file.type)) {
+        setError(`Type de fichier non supporté pour ${fileType.toUpperCase()}`);
+        return;
+      }
+
       setFiles(prev => ({
         ...prev,
         [fileType]: file
       }));
+      
+      // Réinitialiser l'erreur et le progress
+      if (error) setError(null);
+      setUploadProgress(prev => ({
+        ...prev,
+        [fileType]: 0
+      }));
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = (): boolean => {
+    if (!formData.name || !formData.email || !formData.phone || !formData.profession || !formData.zone || !formData.experience || !formData.motivation) {
+      setError('Veuillez remplir tous les champs obligatoires');
+      return false;
+    }
+
+    if (formData.type === 'company' && !formData.company) {
+      setError('Le nom de l\'entreprise est obligatoire');
+      return false;
+    }
+
+    if (!files.cni || !files.cv) {
+      setError('Veuillez télécharger tous les documents requis');
+      return false;
+    }
+
+    // Validation email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Adresse email invalide');
+      return false;
+    }
+
+    // Validation téléphone camerounais
+    const phoneRegex = /^(\+237|237)?[26][0-9]{8}$/;
+    if (!phoneRegex.test(formData.phone.replace(/\s/g, ''))) {
+      setError('Numéro de téléphone camerounais invalide');
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Application submitted:', { ...formData, files });
-    setIsSubmitted(true);
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    setUploadProgress({});
+
+    try {
+      // Générer un ID unique pour ce candidat
+      const applicantId = `installer_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+      // Upload des fichiers en parallèle
+      const [cniUrl, cvUrl] = await Promise.all([
+        uploadFile(files.cni!, 'cni', applicantId),
+        uploadFile(files.cv!, 'cv', applicantId)
+      ]);
+
+      if (!cniUrl || !cvUrl) {
+        throw new Error('Erreur lors du téléchargement des fichiers');
+      }
+
+      // Préparer les données pour la base de données
+      const applicationData = {
+        id: applicantId,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        profession: formData.profession,
+        type: formData.type,
+        company: formData.company || null,
+        zone: formData.zone,
+        experience: formData.experience,
+        motivation: formData.motivation,
+        cni_url: cniUrl,
+        cv_url: cvUrl,
+        status: 'pending',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      // Sauvegarder dans la base de données
+      await saveToDatabase(applicationData);
+
+      console.log('Candidature sauvegardée avec succès:', applicationData);
+      setIsSubmitted(true);
+
+      // Réinitialiser le formulaire
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        profession: '',
+        type: 'individual',
+        company: '',
+        zone: '',
+        experience: '',
+        motivation: '',
+      });
+      setFiles({});
+      setUploadProgress({});
+
+    } catch (error: any) {
+      console.error('Erreur lors de la soumission:', error);
+      setError(error.message || 'Une erreur est survenue lors de la soumission');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const benefits = [
@@ -193,6 +393,14 @@ const Installers: React.FC = () => {
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-8 lg:p-12">
+              {/* Affichage des erreurs */}
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center">
+                  <AlertCircle className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
+                  <span className="text-red-700 text-sm">{error}</span>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Personal Information */}
                 <div>
@@ -212,7 +420,8 @@ const Installers: React.FC = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent"
+                        disabled={isLoading}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                         placeholder="Votre nom complet"
                       />
                     </div>
@@ -228,7 +437,8 @@ const Installers: React.FC = () => {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent"
+                          disabled={isLoading}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                           placeholder="votre@email.com"
                         />
                         <Mail className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
@@ -246,7 +456,8 @@ const Installers: React.FC = () => {
                           value={formData.phone}
                           onChange={handleInputChange}
                           required
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent"
+                          disabled={isLoading}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                           placeholder="+237 6XX XXX XXX"
                         />
                         <Phone className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
@@ -264,7 +475,8 @@ const Installers: React.FC = () => {
                           value={formData.profession}
                           onChange={handleInputChange}
                           required
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent"
+                          disabled={isLoading}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                           placeholder="Électricien, Technicien, etc."
                         />
                         <Briefcase className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
@@ -289,7 +501,8 @@ const Installers: React.FC = () => {
                         name="type"
                         value={formData.type}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent"
+                        disabled={isLoading}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                       >
                         <option value="individual">Particulier</option>
                         <option value="company">Entreprise</option>
@@ -307,7 +520,8 @@ const Installers: React.FC = () => {
                           value={formData.company}
                           onChange={handleInputChange}
                           required={formData.type === 'company'}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent"
+                          disabled={isLoading}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                           placeholder="Nom de votre entreprise"
                         />
                       </div>
@@ -323,7 +537,8 @@ const Installers: React.FC = () => {
                           value={formData.zone}
                           onChange={handleInputChange}
                           required
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent appearance-none"
+                          disabled={isLoading}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent appearance-none disabled:bg-gray-100 disabled:cursor-not-allowed"
                         >
                           <option value="">Sélectionnez votre région</option>
                           {zones.map(zone => (
@@ -343,8 +558,9 @@ const Installers: React.FC = () => {
                         value={formData.experience}
                         onChange={handleInputChange}
                         required
+                        disabled={isLoading}
                         rows={4}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent resize-none"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
                         placeholder="Décrivez votre expérience dans le domaine électrique/énergétique..."
                       />
                     </div>
@@ -358,8 +574,9 @@ const Installers: React.FC = () => {
                         value={formData.motivation}
                         onChange={handleInputChange}
                         required
+                        disabled={isLoading}
                         rows={4}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent resize-none"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
                         placeholder="Pourquoi souhaitez-vous devenir installateur EnMKit ?"
                       />
                     </div>
@@ -378,7 +595,9 @@ const Installers: React.FC = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Carte Nationale d'Identité (CNI) *
                       </label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#1876bc] transition-colors">
+                      <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                        isLoading ? 'border-gray-200 bg-gray-50' : 'border-gray-300 hover:border-[#1876bc]'
+                      }`}>
                         <CreditCard className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                         <input
                           type="file"
@@ -386,13 +605,26 @@ const Installers: React.FC = () => {
                           onChange={(e) => handleFileChange(e, 'cni')}
                           className="hidden"
                           id="cni-upload"
+                          name='cni-upload'
                           required
+                          disabled={isLoading}
                         />
-                        <label htmlFor="cni-upload" className="cursor-pointer">
+                        <label htmlFor="cni-upload" className={`cursor-pointer ${isLoading ? 'cursor-not-allowed' : ''}`}>
                           <span className="text-sm text-gray-600">
                             {files.cni ? files.cni.name : 'Cliquez pour télécharger votre CNI'}
                           </span>
                         </label>
+                        {uploadProgress.cni !== undefined && uploadProgress.cni > 0 && (
+                          <div className="mt-2">
+                            <div className="bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-gradient-to-r from-[#1876bc] to-[#84c450] h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${uploadProgress.cni}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-gray-500 mt-1 block">{uploadProgress.cni}%</span>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -400,7 +632,9 @@ const Installers: React.FC = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Curriculum Vitae (CV) *
                       </label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#1876bc] transition-colors">
+                      <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                        isLoading ? 'border-gray-200 bg-gray-50' : 'border-gray-300 hover:border-[#1876bc]'
+                      }`}>
                         <FileText className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                         <input
                           type="file"
@@ -408,13 +642,26 @@ const Installers: React.FC = () => {
                           onChange={(e) => handleFileChange(e, 'cv')}
                           className="hidden"
                           id="cv-upload"
+                          name='cv-upload'
                           required
+                          disabled={isLoading}
                         />
-                        <label htmlFor="cv-upload" className="cursor-pointer">
+                        <label htmlFor="cv-upload" className={`cursor-pointer ${isLoading ? 'cursor-not-allowed' : ''}`}>
                           <span className="text-sm text-gray-600">
                             {files.cv ? files.cv.name : 'Cliquez pour télécharger votre CV'}
                           </span>
                         </label>
+                        {uploadProgress.cv !== undefined && uploadProgress.cv > 0 && (
+                          <div className="mt-2">
+                            <div className="bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-gradient-to-r from-[#1876bc] to-[#84c450] h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${uploadProgress.cv}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-gray-500 mt-1 block">{uploadProgress.cv}%</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -424,10 +671,20 @@ const Installers: React.FC = () => {
                 <div className="text-center">
                   <button
                     type="submit"
-                    className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#1876bc] to-[#84c450] text-white font-semibold rounded-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    disabled={isLoading}
+                    className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#1876bc] to-[#84c450] text-white font-semibold rounded-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-none"
                   >
-                    <Send className="w-5 h-5 mr-2" />
-                    Soumettre ma Candidature
+                    {isLoading ? (
+                      <>
+                        <Loader className="w-5 h-5 mr-2 animate-spin" />
+                        Envoi en cours...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5 mr-2" />
+                        Soumettre ma Candidature
+                      </>
+                    )}
                   </button>
                 </div>
               </form>

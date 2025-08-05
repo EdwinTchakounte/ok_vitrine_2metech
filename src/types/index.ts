@@ -55,4 +55,5 @@ export interface InstallerApplication {
   motivation: string;
   cni?: File;
   cv?: File;
+  id:number;
 }
