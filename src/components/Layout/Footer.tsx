@@ -31,8 +31,8 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#1876bc] to-[#84c450] rounded-lg flex items-center justify-center">
-                <img src="/logos/logo_couleur_blanche.png" alt="Description de l'image" />
+              <div className="w-20 h-20  rounded-lg flex items-center justify-center">
+                <img src="/logos/logo_couleur.png" alt="Description de l'image" />
               </div>
               <span className="text-2xl font-bold">2MeTech</span>
             </div>
