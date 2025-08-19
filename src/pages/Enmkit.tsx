@@ -252,7 +252,7 @@ const About = () => {
                 
                 <div className="relative w-full h-64 lg:h-80 bg-gradient-to-br from-blue-100 to-green-100 rounded-2xl shadow-xl overflow-hidden">
                   <img
-                    src="images/installationjpg"
+                    src="images/installation.jpg"
                     alt="Installation EnMKit"
                     className="w-full h-full object-cover"
                   />
@@ -331,95 +331,8 @@ const About = () => {
             transition={{ duration: 3, repeat: Infinity, delay: 2 }}
           />
         </div>
-        
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-green-50/20 to-blue-50/30"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Les défis que résout <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">EnMKit</span>
-            </h2>
-          </motion.div>
-
-          {/* Liste connectée avec petites cards */}
-          <div className="relative max-w-4xl mx-auto">
-            {/* Corde principale verticale */}
-            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-green-500 to-blue-500 rounded-full opacity-60" />
-            
-            {/* Connexions horizontales animées */}
-            {problems.map((_, index) => (
-              <motion.div
-                key={index}
-                className="absolute left-8 w-16 h-px bg-gradient-to-r from-blue-500 to-green-500"
-                style={{ top: `${16 + index * 28}%` }}
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                viewport={{ once: true }}
-              />
-            ))}
-
-            <div className="space-y-12">
-              {problems.map((problem, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex items-center pl-24 group"
-                >
-                  {/* Point de connexion */}
-                  <motion.div
-                    className="absolute left-6 w-4 h-4 bg-gradient-to-r from-blue-500 to-green-500 rounded-full border-2 border-white shadow-lg"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
-                  />
-                  
-                  {/* Petite card compacte */}
-                  <motion.div 
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group-hover:border-blue-200 flex items-center space-x-6 w-full max-w-2xl"
-                  >
-                    {/* Icône flottante */}
-                    <motion.div 
-                      className={`bg-gradient-to-br ${problem.color} w-16 h-16 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:shadow-xl transition-all duration-300 flex-shrink-0`}
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                    >
-                      {problem.icon}
-                    </motion.div>
-                    
-                    {/* Contenu */}
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-                          {problem.title}
-                        </h3>
-                        <div className={`text-2xl font-bold bg-gradient-to-r ${problem.color} bg-clip-text text-transparent`}>
-                          {problem.stats}
-                        </div>
-                      </div>
-                      <p className="text-gray-600 leading-relaxed text-sm mb-2">
-                        {problem.description}
-                      </p>
-                      <div className="text-xs text-gray-500 font-medium">
-                        {problem.impact}
-                      </div>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
       </section>
-
+        
       {/* Section Fonctionnalités - Liste connectée */}
       <section className="py-16 relative">
         <div className="max-w-6xl mx-auto px-4">
