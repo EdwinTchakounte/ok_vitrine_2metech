@@ -250,14 +250,14 @@ const About = () => {
               <div className="relative group">
                 <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-green-500 rounded-2xl blur-lg opacity-20 group-hover:opacity-30 transition-opacity duration-300" />
                 
-                <div className="relative w-full h-64 lg:h-80 bg-gradient-to-br from-blue-100 to-green-100 rounded-2xl shadow-xl overflow-hidden">
+                <div className="relative w-full h-64 lg:h-80 bg-gradient-to-br from-blue-100 to-green-100 rounded-2xl shadow-xl overflow-hidden flex items-center justify-center">
                   <img
                     src="images/installation.jpg"
                     alt="Installation EnMKit"
-                    className="w-full h-full object-cover"
+                    className="max-w-full max-h-full object-contain"
+                    style={{ width: "100%", height: "100%" }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-blue-600/30 via-transparent to-green-500/20"></div>
-                  
                   <Power className="absolute top-4 right-4 w-6 h-6 text-green-500 animate-pulse" />
                   <Battery className="absolute bottom-4 left-4 w-6 h-6 text-blue-500 animate-pulse" />
                 </div>
