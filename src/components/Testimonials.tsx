@@ -9,9 +9,9 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Marie Nkomo",
+      name: "Kuate Michelle ",
       role: "Propriétaire d'un salon de coiffure",
-      location: "Douala, Cameroun",
+      location: "Bafoussam, Cameroun",
       avatar: "bonhome.png",
       text: "Depuis que j'ai installé EnmKit, mes factures d'électricité ont diminué de 35%. Je peux maintenant surveiller ma consommation en temps réel et optimiser l'utilisation de mes appareils. C'est révolutionnaire !",
       rating: 5,
@@ -19,7 +19,7 @@ const Testimonials = () => {
     },
     {
       id: 2,
-      name: "Jean-Claude Mballa",
+      name: "WAFO Douglas",
       role: "Chef d'entreprise",
       location: "Yaoundé, Cameroun",
       avatar: "bonhome.png",
@@ -29,7 +29,7 @@ const Testimonials = () => {
     },
     {
       id: 3,
-      name: "Fatou Diallo",
+      name: "MADEFIE Brigitte",
       role: "Restauratrice",
       location: "Bafoussam, Cameroun",
       avatar: "bonhome.png",
@@ -39,9 +39,9 @@ const Testimonials = () => {
     },
     {
       id: 4,
-      name: "Paul Essomba",
+      name: "TAGNE Paul",
       role: "Directeur d'école",
-      location: "Bamenda, Cameroun",
+      location: "Bafoussam, Cameroun",
       avatar: "bonhome.png",
       text: "L'installation a été rapide et sans interruption. Les économies réalisées nous permettent d'investir davantage dans l'éducation de nos élèves. Merci EnmKit !",
       rating: 5,
@@ -49,9 +49,9 @@ const Testimonials = () => {
     },
     {
       id: 5,
-      name: "Aminata Touré",
+      name: "KENGNE Pelagie",
       role: "Gérante de boutique",
-      location: "Garoua, Cameroun",
+      location: "Bafoussam, Cameroun",
       avatar: "bonhome.png",
       text: "La technologie EnNMit s'adapte parfaitement à nos besoins locaux. L'interface est intuitive et le support technique toujours disponible. Une innovation 100% africaine !",
       rating: 5,
