@@ -20,30 +20,6 @@ import {
 } from 'lucide-react';
 
 const About = () => {
-  const problems = [
-    {
-      icon: <AlertTriangle className="h-8 w-8" />,
-      title: "Fraude électrique",
-      description: "Détection et prévention des manipulations",
-      stats: "25%",
-      color: "from-red-400 to-orange-500"
-    },
-    {
-      icon: <DollarSign className="h-8 w-8" />,
-      title: "Factures imprévisibles", 
-      description: "Prédictions IA de haute précision",
-      stats: "95%",
-      color: "from-blue-500 to-green-500"
-    },
-    {
-      icon: <Zap className="h-8 w-8" />,
-      title: "Gaspillage énergétique",
-      description: "Optimisation automatique intelligente",
-      stats: "40%",
-      color: "from-green-500 to-emerald-500"
-    }
-  ];
-
   const features = [
     { icon: <Eye className="h-6 w-6" />, title: "Monitoring intelligent", gradient: "from-blue-500 to-cyan-400" },
     { icon: <Settings className="h-6 w-6" />, title: "Contrôle à distance", gradient: "from-green-500 to-teal-400" },
@@ -103,118 +79,133 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Animations électriques en arrière-plan */}
-      <div className="fixed inset-0 pointer-events-none">
+      {/* Animations électriques subtiles en arrière-plan */}
+      <div className="fixed inset-0 pointer-events-none opacity-30">
         {/* Formes électriques animées */}
         <ElectricShape className="top-20 left-10 w-32 h-32" delay={0} />
         <ElectricShape className="top-40 right-20 w-24 h-24" delay={1} />
         <ElectricShape className="bottom-32 left-1/4 w-40 h-40" delay={2} />
-        <ElectricShape className="top-1/2 right-1/3 w-28 h-28" delay={1.5} />
         
         {/* Éclairs flottants */}
         <FloatingBolt className="top-1/4 right-1/4" delay={0} />
         <FloatingBolt className="bottom-1/3 left-1/5" delay={1} />
-        <FloatingBolt className="top-2/3 right-1/5" delay={2} />
-        <FloatingBolt className="top-1/6 left-1/3" delay={0.5} />
-        
-        {/* Lignes électriques animées */}
-        <motion.div
-          className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent"
-          animate={{ scaleX: [0, 1, 0] }}
-          transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-400/30 to-transparent"
-          animate={{ scaleX: [0, 1, 0] }}
-          transition={{ duration: 3, repeat: Infinity, delay: 2 }}
-        />
       </div>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center">
+      <section className="relative min-h-screen flex items-center justify-center pt-20">
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-blue-50/50 via-green-50/50 to-blue-50/50"
-          animate={{ opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 4, repeat: Infinity }}
+          className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-white to-green-50/30"
+          animate={{ opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 5, repeat: Infinity }}
         />
 
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.h1 
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-blue-500 via-green-500 to-blue-500 bg-clip-text text-transparent mb-6"
-              animate={{ 
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-              }}
-              transition={{ duration: 5, repeat: Infinity }}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Texte à gauche */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-left space-y-6"
             >
-              EnMKit
-            </motion.h1>
+              <motion.h1 
+                className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+              >
+                EnM<span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">Kit</span>
+              </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-xl sm:text-2xl text-gray-700 mb-4 font-light"
-            >
-              La révolution énergétique intelligente
-            </motion.p>
-            
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="text-lg text-gray-600 mb-8"
-            >
-              Développée au Cameroun par 2MeTech
-            </motion.p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+                className="text-2xl text-gray-700 font-light"
+              >
+                La révolution énergétique intelligente
+              </motion.p>
+              
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="text-base text-gray-500"
+              >
+                Développée au Cameroun par 2MeTech
+              </motion.p>
 
-            {/* Stats compacts */}
-            <motion.div 
-              className="flex justify-center gap-8 mb-12"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-            >
-              {[
-                { value: "25%", label: "Fraude évitée" },
-                { value: "95%", label: "Précision IA" },
-                { value: "40%", label: "Économies" }
-              ].map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-2xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          >
-            <div className="w-6 h-10 border-2 border-blue-400 rounded-full flex justify-center">
+              {/* Stats inline */}
               <motion.div 
-                animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-1 h-3 bg-gradient-to-b from-blue-400 to-green-400 rounded-full mt-2"
-              />
-            </div>
-          </motion.div>
+                className="flex gap-8 pt-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+              >
+                {[
+                  { value: "25%", label: "Fraude évitée" },
+                  { value: "95%", label: "Précision IA" },
+                  { value: "40%", label: "Économies" }
+                ].map((stat, index) => (
+                  <div key={index}>
+                    <div className="text-3xl font-bold text-gray-900">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
+                  </div>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            {/* Image à droite */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative"
+            >
+              <div className="relative group">
+                <motion.div
+                  className="absolute -inset-8 bg-gradient-to-r from-blue-500/20 to-green-500/20 rounded-3xl blur-2xl"
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    opacity: [0.3, 0.5, 0.3]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
+                
+                <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden p-8 aspect-square flex items-center justify-center">
+                  <img
+                    src="images/kit.jpg"
+                    alt="EnMKit Device"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
+        >
+          <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center">
+            <motion.div 
+              animate={{ y: [0, 14, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-1.5 h-3 bg-gradient-to-b from-blue-500 to-green-500 rounded-full mt-2"
+            />
+          </div>
+        </motion.div>
       </section>
 
       {/* Section Mission */}
-      <section className="py-16 relative">
+      <section className="py-24 relative bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -222,18 +213,18 @@ const About = () => {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
                 Un atout pour
-                <span className="block bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+                <span className="block text-blue-600 mt-2">
                   l'Afrique
                 </span>
               </h2>
-              <div className="space-y-4">
-                <p className="text-lg text-gray-600 leading-relaxed">
+              <div className="space-y-4 text-gray-600 text-lg leading-relaxed">
+                <p>
                   EnMKit révolutionne la gestion énergétique en Afrique avec une technologie 
                   de pointe adaptée aux défis locaux.
                 </p>
-                <p className="text-lg text-gray-600 leading-relaxed">
+                <p>
                   Notre solution intègre IoT et analyse de données pour une expérience 
                   énergétique inégalée, conçue par et pour l'Afrique.
                 </p>
@@ -248,18 +239,21 @@ const About = () => {
               className="relative"
             >
               <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-green-500 rounded-2xl blur-lg opacity-20 group-hover:opacity-30 transition-opacity duration-300" />
+                <motion.div
+                  className="absolute -inset-6 bg-gradient-to-r from-blue-500/20 to-green-500/20 rounded-3xl blur-xl"
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    opacity: [0.3, 0.5, 0.3]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
                 
-                <div className="relative w-full h-64 lg:h-80 bg-gradient-to-br from-blue-100 to-green-100 rounded-2xl shadow-xl overflow-hidden flex items-center justify-center">
+                <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden aspect-[4/3] flex items-center justify-center p-6">
                   <img
                     src="images/installation.jpg"
                     alt="Installation EnMKit"
-                    className="max-w-full max-h-full object-contain"
-                    style={{ width: "100%", height: "100%" }}
+                    className="w-full h-full object-contain rounded-2xl"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-600/30 via-transparent to-green-500/20"></div>
-                  <Power className="absolute top-4 right-4 w-6 h-6 text-green-500 animate-pulse" />
-                  <Battery className="absolute bottom-4 left-4 w-6 h-6 text-blue-500 animate-pulse" />
                 </div>
               </div>
             </motion.div>
@@ -267,231 +261,115 @@ const About = () => {
         </div>
       </section>
 
-      {/* Section Problèmes */}
-      <section className="py-12 relative">
-        {/* Animations électriques d'arrière-plan */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Formes électriques animées */}
-          {Array.from({ length: 6 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-20 h-20 border-2 border-blue-400/20 rounded-full"
-              style={{
-                left: `${10 + i * 15}%`,
-                top: `${20 + (i % 3) * 30}%`,
-              }}
-              animate={{
-                scale: [0, 1.5, 0],
-                opacity: [0, 0.3, 0],
-                rotate: [0, 180, 360]
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                delay: i * 0.7,
-                ease: "easeInOut"
-              }}
-            />
-          ))}
-          
-          {/* Éclairs flottants */}
-          {Array.from({ length: 4 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute"
-              style={{
-                left: `${20 + i * 20}%`,
-                top: `${30 + i * 15}%`,
-              }}
-              animate={{
-                y: [0, -20, 0],
-                opacity: [0.2, 0.8, 0.2],
-                rotate: [0, 10, -10, 0]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                delay: i * 0.5,
-                ease: "easeInOut"
-              }}
-            >
-              <Zap className="w-6 h-6 text-blue-400/40" />
-            </motion.div>
-          ))}
-          
-          {/* Lignes électriques animées */}
-          <motion.div
-            className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent"
-            animate={{ scaleX: [0, 1, 0] }}
-            transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-          />
-          <motion.div
-            className="absolute bottom-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-400/30 to-transparent"
-            animate={{ scaleX: [0, 1, 0] }}
-            transition={{ duration: 3, repeat: Infinity, delay: 2 }}
-          />
-        </div>
-      </section>
-        
-      {/* Section Fonctionnalités - Liste connectée */}
-      <section className="py-16 relative">
+      {/* Section Fonctionnalités - Grille moderne */}
+      <section className="py-24 relative bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Technologie <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">révolutionnaire</span>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              Technologie <span className="text-blue-600">révolutionnaire</span>
             </h2>
+            <p className="text-gray-500 text-lg">Des fonctionnalités pensées pour vous</p>
           </motion.div>
 
-          {/* Liste connectée avec cordes relationnelles */}
-          <div className="relative max-w-4xl mx-auto">
-            {/* Corde principale verticale */}
-            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-green-500 to-blue-500 rounded-full opacity-60" />
-            
-            {/* Connexions horizontales animées */}
-            {features.map((_, index) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
               <motion.div
                 key={index}
-                className="absolute left-8 w-16 h-px bg-gradient-to-r from-blue-500 to-green-500"
-                style={{ top: `${16 + index * 16.66}%` }}
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-              />
+                whileHover={{ y: -5 }}
+                className="group relative bg-white border border-gray-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
+              >
+                <div className={`bg-gradient-to-br ${feature.gradient} w-14 h-14 rounded-xl flex items-center justify-center mb-4 text-white group-hover:scale-110 transition-transform duration-300`}>
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">
+                  {feature.title}
+                </h3>
+              </motion.div>
             ))}
-
-            <div className="space-y-8">
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex items-center pl-24 group"
-                >
-                  {/* Point de connexion */}
-                  <motion.div
-                    className="absolute left-6 w-4 h-4 bg-gradient-to-r from-blue-500 to-green-500 rounded-full border-2 border-white shadow-lg"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
-                  />
-                  
-                  {/* Icône flottante */}
-                  <motion.div 
-                    className={`bg-gradient-to-br ${feature.gradient} w-12 h-12 rounded-xl flex items-center justify-center mr-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300`}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                  >
-                    {feature.icon}
-                  </motion.div>
-                  
-                  {/* Titre */}
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                </motion.div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Section Installation - Liste connectée */}
-      <section className="py-16 relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-blue-50/30" />
-        
+      {/* Section Installation - Moderne */}
+      <section className="py-24 relative bg-gray-50">
         <div className="relative max-w-6xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Installation <span className="bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">simplifiée</span>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              Installation <span className="text-green-600">simplifiée</span>
             </h2>
-            <p className="text-lg text-gray-600">Processus professionnel en moins de 2 heures</p>
+            <p className="text-lg text-gray-500">Processus professionnel en moins de 2 heures</p>
           </motion.div>
 
-          {/* Liste connectée horizontale */}
-          <div className="relative max-w-4xl mx-auto">
-            {/* Corde principale horizontale */}
-            <div className="hidden md:block absolute top-8 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-green-500 to-blue-500 rounded-full opacity-60" />
-            
-            {/* Connexions verticales */}
-            {installSteps.map((_, index) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {installSteps.map((step, index) => (
               <motion.div
                 key={index}
-                className="hidden md:block absolute top-8 h-16 w-px bg-gradient-to-b from-blue-500 to-green-500"
-                style={{ left: `${12.5 + index * 25}%` }}
-                initial={{ scaleY: 0 }}
-                whileInView={{ scaleY: 1 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
                 viewport={{ once: true }}
-              />
-            ))}
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-24 md:pt-0">
-              {installSteps.map((step, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-center group"
-                >
-                  {/* Point de connexion */}
-                  <motion.div
-                    className="hidden md:block absolute top-6 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-blue-500 to-green-500 rounded-full border-2 border-white shadow-lg"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
-                  />
-                  
+                className="relative"
+              >
+                <div className="bg-white rounded-2xl p-8 text-center hover:shadow-lg transition-shadow duration-300 border border-gray-200">
                   {/* Icône */}
                   <motion.div 
-                    className="bg-gradient-to-r from-blue-500 to-green-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 mx-auto text-white shadow-lg group-hover:shadow-xl transition-all duration-300"
+                    className="bg-gradient-to-r from-blue-500 to-green-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto text-white"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                   >
                     {step.icon}
                   </motion.div>
                   
                   {/* Numéro */}
-                  <div className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent mb-2">
+                  <div className="text-5xl font-bold text-gray-200 mb-2">
                     {step.step}
                   </div>
                   
                   {/* Titre */}
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-gray-900">
                     {step.title}
                   </h3>
-                </motion.div>
-              ))}
-            </div>
+                </div>
+
+                {/* Connecteur */}
+                {index < installSteps.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-blue-500 to-green-500 transform -translate-y-1/2" />
+                )}
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 relative">
+      <section className="py-24 relative bg-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
+            className="space-y-8"
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-              Prêt pour la <span className="bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">révolution ?</span>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">
+              Prêt pour la <span className="text-green-600">révolution ?</span>
             </h2>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Rejoignez les milliers d'utilisateurs qui ont transformé leur rapport à l'énergie
             </p>
             
@@ -501,11 +379,11 @@ const About = () => {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold rounded-full hover:from-green-500 hover:to-blue-600 transition-all duration-300 shadow-lg text-lg group"
+              className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold rounded-full hover:from-green-600 hover:to-blue-700 transition-all duration-300 shadow-xl hover:shadow-2xl text-lg group"
             >
-              <MessageCircle className="w-5 h-5 mr-3" />
+              <MessageCircle className="w-6 h-6 mr-3" />
               Commencer maintenant
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" />
             </motion.a>
           </motion.div>
         </div>
