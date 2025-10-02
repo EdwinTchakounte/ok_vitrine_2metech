@@ -147,7 +147,7 @@ const About = () => {
                 <div className="relative bg-white rounded-3xl p-10 shadow-xl border border-gray-100">
                   <div className="w-full h-full flex items-center justify-center">
                     <img
-                      src="images/kit.jpg"
+                      src="slides/slide2.jpg"
                       alt="EnMKit Device"
                       className="w-full h-full object-contain"
                       style={{ maxHeight: '500px' }}
