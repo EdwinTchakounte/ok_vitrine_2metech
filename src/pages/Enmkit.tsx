@@ -68,97 +68,109 @@ const About = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50/20 to-green-50/20">
       {/* Hero Section */}
-      <section className="relative py-24 px-4 overflow-hidden">
-        {/* Subtle background decoration */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 left-10 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
-        </div>
+    {/* ===== HERO CONTENT ===== */}
+<div className="space-y-10">
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Texte à gauche */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="space-y-8"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-green-50 rounded-full border border-blue-100">
-                <Sparkles className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-semibold text-gray-700">Technologie IoT + IA</span>
-              </div>
+  {/* Badge */}
+  <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full 
+                  bg-white/70 backdrop-blur-md border border-gray-200 shadow-sm">
+    <Sparkles className="w-4 h-4 text-blue-600" />
+    <span className="text-sm font-semibold text-gray-700">
+      Technologie IoT & IA
+    </span>
+  </div>
 
-              <div>
-                <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold text-gray-900 mb-4">
-                  EnMKit
-                </h1>
-                <div className="w-24 h-1.5 bg-gradient-to-r from-blue-600 to-green-600 rounded-full" />
-              </div>
+  {/* Titre */}
+  <div className="space-y-4">
+    <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold 
+                   tracking-tight text-gray-900">
+      EnMKit
+    </h1>
 
-              <p className="text-2xl md:text-3xl text-gray-700 font-light leading-relaxed">
-                La révolution énergétique intelligente pour l'Afrique
-              </p>
-              
-              <p className="text-lg text-gray-500 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-green-600" />
-                Développée au Cameroun par <span className="font-semibold text-gray-700">2MeTech</span>
-              </p>
+    <div className="flex items-center gap-4">
+      <span className="w-20 h-1 rounded-full bg-gradient-to-r from-blue-600 to-green-600" />
+      <span className="text-sm font-medium text-gray-500">
+        Smart Energy Platform
+      </span>
+    </div>
+  </div>
 
-              {/* Stats inline propres */}
-              <div className="flex flex-wrap gap-6 pt-4">
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-4 border border-gray-100 shadow-sm">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">25%</div>
-                  <div className="text-sm text-gray-600 mt-1">Fraude évitée</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-4 border border-gray-100 shadow-sm">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">95%</div>
-                  <div className="text-sm text-gray-600 mt-1">Précision IA</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-4 border border-gray-100 shadow-sm">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">40%</div>
-                  <div className="text-sm text-gray-600 mt-1">Économies</div>
-                </div>
-              </div>
+  {/* Slogan */}
+  <p className="text-xl md:text-2xl text-gray-600 font-light leading-relaxed max-w-xl">
+    La révolution énergétique intelligente conçue pour
+    <span className="font-medium text-gray-800"> l’Afrique</span>
+  </p>
 
-              <div className="pt-4">
-                <a
-                  href="https://wa.me/237696372245?text=Bonjour, je suis intéressé(e) par EnMKit."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Nous contacter
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
-            </motion.div>
+  {/* Origine */}
+  <p className="flex items-center gap-2 text-sm text-gray-500">
+    <Zap className="w-4 h-4 text-green-600" />
+    Développée au Cameroun par
+    <span className="font-semibold text-gray-700">2MeTech</span>
+  </p>
 
-            {/* Image à droite */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="relative"
-            >
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/10 to-green-500/10 rounded-3xl blur-2xl" />
-                <div className="relative bg-white rounded-3xl p-10 shadow-xl border border-gray-100">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <img
-                      src="slides/slide2.jpg"
-                      alt="EnMKit Device"
-                      className="w-full h-full object-contain"
-                      style={{ maxHeight: '500px' }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+  {/* Stats premium */}
+  <div className="flex flex-wrap gap-4 pt-4">
+    {[
+      { v: "25%", l: "Fraude évitée" },
+      { v: "95%", l: "Précision IA" },
+      { v: "40%", l: "Économies" },
+    ].map((s, i) => (
+      <div
+        key={i}
+        className="flex items-center gap-4 px-5 py-3 
+                   rounded-2xl bg-white border border-gray-200 
+                   shadow-sm"
+      >
+        <span className="text-2xl font-bold 
+                         bg-gradient-to-r from-blue-600 to-green-600 
+                         bg-clip-text text-transparent">
+          {s.v}
+        </span>
+        <span className="text-sm text-gray-600">
+          {s.l}
+        </span>
+      </div>
+    ))}
+  </div>
+
+  {/* CTA */}
+  <div className="pt-6">
+    <a
+      href="https://wa.me/237696372245?text=Bonjour, je suis intéressé(e) par EnMKit."
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-3 px-10 py-5 
+                 rounded-xl bg-gradient-to-r from-blue-600 to-green-600 
+                 text-white font-semibold 
+                 shadow-lg hover:shadow-xl transition"
+    >
+      <MessageCircle className="w-5 h-5" />
+      Nous contacter
+      <ArrowRight className="w-5 h-5" />
+    </a>
+  </div>
+</div>
+
+{/* ===== HERO IMAGE ===== */}
+<motion.div
+  initial={{ opacity: 0, x: 24 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+  className="relative"
+>
+  <div className="absolute -inset-6 bg-gradient-to-r 
+                  from-blue-500/20 to-green-500/20 
+                  rounded-3xl blur-3xl" />
+  <div className="relative bg-white rounded-3xl p-8 
+                  shadow-xl border border-gray-200">
+    <img
+      src="slides/slide2.jpg"
+      alt="EnMKit Device"
+      className="w-full object-contain"
+      style={{ maxHeight: "480px" }}
+    />
+  </div>
+</motion.div>
 
 {/* ================= Section Mission ================= */}
 <section className="relative py-28 px-4 bg-white">
