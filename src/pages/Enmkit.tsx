@@ -160,77 +160,92 @@ const About = () => {
         </div>
       </section>
 
-      {/* Section Mission */}
-      <section className="py-24 px-4 bg-white/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              viewport={{ once: true }}
-              className="space-y-8"
-            >
-              <div className="inline-block px-4 py-2 bg-gradient-to-r from-green-50 to-blue-50 rounded-full border border-green-100">
-                <span className="text-sm font-semibold text-gray-700">Notre Mission</span>
-              </div>
-              
-              <h2 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
-                Un atout pour
-                <span className="block mt-2 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-                  l'Afrique
-                </span>
-              </h2>
-              
-              <div className="space-y-5 text-gray-600 text-lg leading-relaxed">
-                <p>
-                  EnMKit révolutionne la gestion énergétique en Afrique avec une technologie 
-                  de pointe adaptée aux défis locaux. Notre mission est de rendre l'énergie 
-                  accessible, transparente et optimisée pour tous.
-                </p>
-                <p>
-                  Notre solution intègre IoT et analyse de données pour une expérience 
-                  énergétique inégalée, conçue par et pour l'Afrique, avec une compréhension 
-                  profonde des réalités du continent.
-                </p>
-              </div>
+{/* ================= Section Mission ================= */}
+<section className="relative py-28 px-4 bg-white">
+  {/* Décor doux */}
+  <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute -top-24 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
+    <div className="absolute -bottom-24 right-1/4 w-64 h-64 bg-green-500/10 rounded-full blur-3xl" />
+  </div>
 
-              <div className="grid grid-cols-2 gap-4 pt-4">
-                {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="text-sm font-medium text-gray-700">{benefit}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-3xl blur-2xl" />
-                <div className="relative bg-white rounded-3xl p-10 shadow-xl border border-gray-100">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <img
-                      src="images/installation.jpg"
-                      alt="Installation EnMKit"
-                      className="w-full h-full object-contain rounded-2xl"
-                      style={{ maxHeight: '450px' }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+  <div className="relative max-w-7xl mx-auto">
+    <div className="grid lg:grid-cols-2 gap-20 items-center">
+      
+      {/* Texte */}
+      <motion.div
+        initial={{ opacity: 0, x: -24 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        viewport={{ once: true }}
+        className="space-y-10"
+      >
+        {/* Badge */}
+        <div className="inline-flex items-center px-5 py-2 rounded-full bg-gradient-to-r from-green-50 to-blue-50 border border-gray-200">
+          <span className="text-sm font-semibold text-gray-700">
+            Notre mission
+          </span>
         </div>
-      </section>
+
+        {/* Titre */}
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+          Un atout pour{" "}
+          <span className="block mt-2 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+            l’Afrique
+          </span>
+        </h2>
+
+        {/* Description */}
+        <div className="space-y-6 text-gray-600 text-lg leading-relaxed max-w-xl">
+          <p>
+            EnMKit révolutionne la gestion énergétique en Afrique avec une technologie
+            intelligente, conçue pour répondre aux réalités locales.
+          </p>
+          <p>
+            Notre mission est de rendre l’énergie plus accessible, transparente
+            et optimisée grâce à l’IoT et à l’analyse de données.
+          </p>
+        </div>
+
+        {/* Bénéfices */}
+        <div className="flex flex-wrap gap-3 pt-4">
+          {benefits.map((benefit, index) => (
+            <div
+              key={index}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200 text-sm font-medium text-gray-700"
+            >
+              <span className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-600 to-green-600" />
+              {benefit}
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Image */}
+      <motion.div
+        initial={{ opacity: 0, x: 24 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        viewport={{ once: true }}
+        className="relative"
+      >
+        <div className="absolute -inset-6 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-3xl blur-3xl" />
+        <div className="relative bg-white rounded-3xl p-6 shadow-lg border border-gray-200">
+          <img
+            src="images/installation.jpg"
+            alt="Installation EnMKit"
+            className="w-full object-contain rounded-2xl"
+            style={{ maxHeight: "460px" }}
+          />
+        </div>
+      </motion.div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
 
       {/* Section Fonctionnalités */}
       <section className="py-24 px-4">
@@ -280,64 +295,102 @@ const About = () => {
         </div>
       </section>
 
-      {/* Section Installation */}
-      <section className="py-24 px-4 bg-white/50">
-        <div className="max-w-7xl mx-auto">
+{/* ================= Section Installation ================= */}
+<section className="relative py-28 px-4 bg-white">
+  {/* Décor doux */}
+  <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute -top-32 right-1/4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
+    <div className="absolute -bottom-32 left-1/4 w-72 h-72 bg-green-500/10 rounded-full blur-3xl" />
+  </div>
+
+  <div className="relative max-w-7xl mx-auto">
+    {/* Header */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      viewport={{ once: true }}
+      className="text-center mb-20"
+    >
+      <div className="inline-flex items-center px-5 py-2 bg-gradient-to-r from-green-50 to-blue-50 rounded-full border border-green-100 mb-6">
+        <span className="text-sm font-semibold text-gray-700">
+          Installation
+        </span>
+      </div>
+
+      <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+        Processus{" "}
+        <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+          simplifié
+        </span>
+      </h2>
+
+      <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+        En moins de 2 heures, profitez d'une installation complète et professionnelle
+      </p>
+    </motion.div>
+
+    {/* Timeline */}
+    <div className="relative">
+      {/* Ligne de connexion desktop */}
+      <div className="hidden lg:block absolute top-28 left-0 right-0 h-px bg-gradient-to-r from-blue-200 via-green-200 to-blue-200" />
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 relative">
+        {installSteps.map((step, index) => (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            key={index}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: index * 0.15 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="relative group"
           >
-            <div className="inline-block px-4 py-2 bg-gradient-to-r from-green-50 to-blue-50 rounded-full border border-green-100 mb-6">
-              <span className="text-sm font-semibold text-gray-700">Installation</span>
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Processus <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">simplifié</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              En moins de 2 heures, profitez d'une installation complète et professionnelle
-            </p>
-          </motion.div>
+            <div className="relative bg-white rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+              
+              {/* Accent latéral */}
+              <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-600 to-green-600" />
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {installSteps.map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
-                viewport={{ once: true }}
-                className="relative"
+              {/* Badge step (mobile + desktop safe) */}
+              <div
+                className="
+                  absolute 
+                  top-4 left-4 
+                  lg:-top-4 lg:left-6
+                  px-4 py-1 
+                  rounded-full 
+                  bg-gradient-to-r from-blue-600 to-green-600 
+                  text-white text-xs lg:text-sm font-bold 
+                  shadow-md
+                "
               >
-                <div className="bg-white rounded-2xl p-8 text-center shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-green-600 rounded-xl flex items-center justify-center mb-6 mx-auto text-white shadow-lg">
-                    {step.icon}
-                  </div>
-                  
-                  <div className="text-6xl font-black text-gray-100 mb-3">
-                    {step.step}
-                  </div>
-                  
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {step.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
+                {step.step}
+              </div>
 
-                {/* Connecteur */}
-                {index < installSteps.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-blue-500 to-green-500 transform -translate-y-1/2" />
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+              {/* Icône */}
+              <div className="mt-10 mb-6 w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center text-white shadow-lg">
+                {step.icon}
+              </div>
+
+              {/* Texte */}
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                {step.title}
+              </h3>
+
+              <p className="text-gray-600 text-sm leading-relaxed">
+                {step.description}
+              </p>
+
+              {/* Shape décorative */}
+              <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-green-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
       {/* CTA Final */}
       <section className="py-24 px-4">

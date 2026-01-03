@@ -5,7 +5,7 @@ import PartnersSection from '../components/Partners/PartnersSection';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap, Shield, Users, TrendingUp, Sparkles, Battery, Lightbulb, Globe } from 'lucide-react';
+import { ArrowRight, Zap, Shield, Users, TrendingUp, Sparkles } from 'lucide-react';
 import Enmkit from './Enmkit';
 import Contact from './Contact';
 import Testimonials from '../components/Testimonials';
@@ -18,253 +18,156 @@ const Home: React.FC = () => {
       icon: Zap,
       title: 'Gestion Avancée',
       description: 'Système intelligent de monitoring et optimisation énergétique',
-      color: 'from-yellow-400 to-orange-500',
-      bgPattern: 'bg-yellow-50'
+      gradient: 'from-yellow-400 via-orange-400 to-orange-500',
+      accentColor: 'border-orange-200',
+      glowColor: 'shadow-orange-500/10'
     },
     {
       icon: Shield,
       title: 'Installation Sécurisée',
       description: 'Installation professionnelle en 1h avec garantie 6 mois',
-      color: 'from-blue-500 to-cyan-400',
-      bgPattern: 'bg-blue-50'
+      gradient: 'from-blue-400 via-blue-500 to-cyan-500',
+      accentColor: 'border-blue-200',
+      glowColor: 'shadow-blue-500/10'
     },
     {
       icon: Users,
       title: 'Impact Social',
       description: '+20 foyers équipés, transformation des communautés rurales',
-      color: 'from-purple-500 to-pink-500',
-      bgPattern: 'bg-purple-50'
+      gradient: 'from-purple-400 via-purple-500 to-pink-500',
+      accentColor: 'border-purple-200',
+      glowColor: 'shadow-purple-500/10'
     },
     {
       icon: TrendingUp,
       title: 'Efficacité Prouvée',
       description: '-14% de consommation énergétique mesurée et vérifiée',
-      color: 'from-green-500 to-emerald-400',
-      bgPattern: 'bg-green-50'
+      gradient: 'from-green-400 via-green-500 to-emerald-500',
+      accentColor: 'border-green-200',
+      glowColor: 'shadow-green-500/10'
     }
   ];
 
-  const floatingElements = Array.from({ length: 12 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 6 + 4,
-    left: Math.random() * 100,
-    delay: Math.random() * 5,
-    duration: Math.random() * 10 + 15,
-  }));
-
   return (
-    <div className="pt-16 lg:pt-20 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 pointer-events-none">
-        {floatingElements.map((element) => (
-          <motion.div
-            key={element.id}
-            className="absolute rounded-full bg-gradient-to-r from-blue-400/10 to-green-400/10 blur-sm"
-            style={{
-              width: element.size,
-              height: element.size,
-              left: `${element.left}%`,
-              top: '100%',
-            }}
-            animate={{
-              y: [0, -window.innerHeight - 100],
-              rotate: [0, 360],
-              scale: [0.5, 1.2, 0.5],
-            }}
-            transition={{
-              duration: element.duration,
-              delay: element.delay,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        ))}
-      </div>
-
+    <div className="pt-16 lg:pt-20 relative overflow-hidden bg-white">
       <HeroSection />
       
-      {/* Enhanced Features Section */}
-      <section className="py-20 lg:py-32 relative">
-        {/* Section Background with Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30"></div>
+      {/* Features Section */}
+      <section className="py-24 lg:py-32 relative bg-gradient-to-b from-white via-slate-50/30 to-white">
+        {/* Subtle grid background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0000000a_1px,transparent_1px),linear-gradient(to_bottom,#0000000a_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
         
-        {/* Geometric Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-32 h-32 border border-blue-500 rounded-full"></div>
-          <div className="absolute bottom-40 right-20 w-24 h-24 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg rotate-45"></div>
-          <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-center mb-16"
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
           >
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-green-500 rounded-full mb-6"
-            >
-              <Sparkles className="w-8 h-8 text-white" />
-            </motion.div>
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-500 to-green-500 rounded-xl mb-6 shadow-lg shadow-blue-500/20">
+              <Sparkles className="w-7 h-7 text-white" />
+            </div>
             
-            <h2 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-green-700 bg-clip-text text-transparent mb-6">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Pourquoi EnMKit ?
             </h2>
-            <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Une solution complète qui transforme l'accès à l'énergie en Afrique
             </p>
-            
-            {/* Electric pulse line */}
-            <motion.div
-              className="w-24 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto mt-8"
-              animate={{
-                scaleX: [1, 1.5, 1],
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 50, rotateX: -10 }}
-                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ 
-                  duration: 0.8, 
-                  delay: index * 0.15,
-                  ease: "easeOut"
+                  duration: 0.5, 
+                  delay: index * 0.1
                 }}
-                whileHover={{ 
-                  y: -10,
-                  scale: 1.02,
-                  transition: { duration: 0.3, ease: "easeOut" }
-                }}
+                viewport={{ once: true }}
                 className="group relative"
               >
-                {/* Card Background with Gradient Border */}
-                <div className={`absolute inset-0 bg-gradient-to-r ${feature.color} rounded-3xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500`}></div>
+                {/* Gradient border effect */}
+                <div className={`absolute -inset-[1px] bg-gradient-to-b ${feature.gradient} rounded-2xl opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500`}></div>
                 
-                <div className={`relative ${feature.bgPattern} backdrop-blur-sm border border-white/20 rounded-3xl p-8 text-center h-full shadow-lg hover:shadow-2xl transition-all duration-500`}>
-                  {/* Animated Icon Container */}
-                  <motion.div
-                    whileHover={{ rotate: 360, scale: 1.1 }}
-                    transition={{ duration: 0.6, ease: "easeInOut" }}
-                    className={`w-20 h-20 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mx-auto mb-6 relative overflow-hidden`}
-                  >
-                    {/* Icon glow effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-white/20 rounded-2xl"
-                      animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.3, 0.6, 0.3],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                    <feature.icon className="w-10 h-10 text-white relative z-10" />
-                    
-                    {/* Electric sparks */}
-                    <motion.div
-                      className="absolute top-1 right-1 w-2 h-2 bg-white rounded-full"
-                      animate={{
-                        scale: [0, 1, 0],
-                        opacity: [0, 1, 0],
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        delay: index * 0.3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  </motion.div>
-
-                  <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-700 transition-colors duration-300">
-                    {feature.title}
-                  </h3>
+                {/* Card */}
+                <div className={`relative bg-white backdrop-blur-xl border ${feature.accentColor} rounded-2xl p-8 h-full hover:${feature.glowColor} hover:shadow-2xl transition-all duration-500`}>
+                  {/* Top accent line */}
+                  <div className={`absolute top-0 left-8 right-8 h-[2px] bg-gradient-to-r ${feature.gradient} opacity-30`}></div>
                   
-                  <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
-                    {feature.description}
-                  </p>
+                  {/* Corner decorations */}
+                  <div className="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-gray-200 rounded-tr-lg"></div>
+                  <div className="absolute bottom-3 left-3 w-8 h-8 border-b-2 border-l-2 border-gray-200 rounded-bl-lg"></div>
+                  
+                  {/* Icon Container */}
+                  <div className="relative mb-6">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} rounded-xl blur-md opacity-20`}></div>
+                    <div className={`relative w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center shadow-lg`}>
+                      <feature.icon className="w-8 h-8 text-white" />
+                    </div>
+                  </div>
 
-                  {/* Bottom decoration */}
-                  <motion.div
-                    className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r ${feature.color} rounded-full`}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: 48 }}
-                    transition={{ duration: 0.8, delay: index * 0.1 + 0.5 }}
-                  />
+                  {/* Content */}
+                  <div className="space-y-3">
+                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:${feature.gradient} transition-all duration-300">
+                      {feature.title}
+                    </h3>
+                    
+                    <p className="text-gray-600 leading-relaxed text-sm">
+                      {feature.description}
+                    </p>
+                  </div>
+
+                  {/* Bottom decoration line */}
+                  <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+                  
+                  {/* Hover indicator */}
+                  <div className={`absolute bottom-4 right-4 w-2 h-2 bg-gradient-to-br ${feature.gradient} rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Additional Stats Section */}
+          {/* CTA Section */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-20 text-center"
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="mt-24"
           >
-            <div className="bg-gradient-to-r from-blue-600 to-green-500 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-4 left-4">
-                  <Battery className="w-8 h-8" />
-                </div>
-                <div className="absolute bottom-4 right-4">
-                  <Lightbulb className="w-6 h-6" />
-                </div>
-                <div className="absolute top-1/2 left-1/4 transform -translate-y-1/2">
-                  <Globe className="w-10 h-10" />
-                </div>
-              </div>
-
-              <div className="relative z-10">
-                <motion.h3
-                  initial={{ scale: 0.9 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.8 }}
-                  className="text-2xl lg:text-3xl font-bold mb-4"
-                >
-                  L'Innovation au Service de l'Afrique
-                </motion.h3>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 1 }}
-                  className="text-lg lg:text-xl opacity-90 max-w-2xl mx-auto"
-                >
-                  Rejoignez la révolution énergétique qui transforme déjà des milliers de vies
-                </motion.p>
+            <div className="relative group">
+              {/* Animated border gradient */}
+              <div className="absolute -inset-[2px] bg-gradient-to-r from-blue-500 via-green-500 to-blue-500 rounded-3xl blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+              
+              <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-12 md:p-16 border border-slate-700/50 overflow-hidden">
+                {/* Grid pattern overlay */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:2rem_2rem] opacity-50"></div>
                 
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 1.2 }}
-                  className="mt-8"
-                >
+                {/* Content */}
+                <div className="relative z-10 max-w-3xl mx-auto text-center">
+                  <h3 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+                    L'Innovation au Service de l'Afrique
+                  </h3>
+                  <p className="text-lg lg:text-xl text-slate-300 mb-8">
+                    Rejoignez la révolution énergétique qui transforme déjà des milliers de vies
+                  </p>
+                  
                   <Link
                     to="/contact"
-                    className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-full hover:bg-gray-50 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-green-500 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 group"
                   >
                     Découvrir EnMKit
-                    <ArrowRight className="ml-2 w-5 h-5" />
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </Link>
-                </motion.div>
+                </div>
+
+                {/* Decorative elements */}
+                <div className="absolute top-8 left-8 w-20 h-20 border border-slate-700/30 rounded-full"></div>
+                <div className="absolute bottom-8 right-8 w-16 h-16 border border-slate-700/30 rounded-lg rotate-45"></div>
               </div>
             </div>
           </motion.div>
