@@ -157,38 +157,76 @@ const uploadFile = async (
     if (error) setError(null);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fileType: 'cni' | 'cv' | 'document') => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Vérifier la taille du fichier (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setError(`Le fichier ${fileType.toUpperCase()} ne doit pas dépasser 5MB`);
-        return;
-      }
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fileType: 'cni' | 'cv' | 'document') => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     // Vérifier la taille du fichier (max 5MB)
+  //     if (file.size > 5 * 1024 * 1024) {
+  //       setError(`Le fichier ${fileType.toUpperCase()} ne doit pas dépasser 5MB`);
+  //       return;
+  //     }
 
-      // Vérifier le type de fichier
-      const allowedTypes = fileType === 'cni' 
-        ? ['image/jpeg', 'image/png', 'application/pdf']
-        : ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  //     // Vérifier le type de fichier
+  //     const allowedTypes = fileType === 'cni' 
+  //       ? ['image/jpeg', 'image/png', 'application/pdf']
+  //       : ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
       
-      if (!allowedTypes.includes(file.type)) {
-        setError(`Type de fichier non supporté pour ${fileType.toUpperCase()}`);
-        return;
-      }
+  //     if (!allowedTypes.includes(file.type)) {
+  //       setError(`Type de fichier non supporté pour ${fileType.toUpperCase()}`);
+  //       return;
+  //     }
 
-      setFiles(prev => ({
-        ...prev,
-        [fileType]: file
-      }));
+  //     setFiles(prev => ({
+  //       ...prev,
+  //       [fileType]: file
+  //     }));
       
-      // Réinitialiser l'erreur et le progress
-      if (error) setError(null);
-      setUploadProgress(prev => ({
-        ...prev,
-        [fileType]: 0
-      }));
-    }
-  };
+  //     // Réinitialiser l'erreur et le progress
+  //     if (error) setError(null);
+  //     setUploadProgress(prev => ({
+  //       ...prev,
+  //       [fileType]: 0
+  //     }));
+  //   }
+  // };
+
+
+  const handleFileChange = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  fileType: 'cni' | 'cv' | 'document'
+) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  console.log('Upload:', file.name, file.type);
+
+  if (file.size > 5 * 1024 * 1024) {
+    setError('Le fichier ne doit pas dépasser 5MB');
+    return;
+  }
+
+  const allowedTypes = [
+    'application/pdf',
+    'image/jpeg',
+    'image/png',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  ];
+
+  if (!allowedTypes.includes(file.type)) {
+    setError('Type de fichier non supporté');
+    return;
+  }
+
+  setFiles(prev => ({
+    ...prev,
+    [fileType]: file
+  }));
+
+  setError(null);
+};
+
+
 
   const validateForm = (): boolean => {
     if (!formData.name || !formData.email || !formData.phone || !formData.profession || !formData.zone ) {
