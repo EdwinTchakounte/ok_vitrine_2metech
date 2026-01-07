@@ -50,7 +50,7 @@ const Header: React.FC = () => {
             <div className="w-20 h-10   flex items-center justify-center">
               <img src="/logos/logo_couleur.png" alt="Description de l'image" />
             </div>
-            <span className="text-xl font-bold text-gray-900">2MeTech</span>
+            {/* <span className="text-xl font-bold text-gray-900">2MeTech</span> */}
           </Link>
 
           {/* Desktop Navigation */}
@@ -72,14 +72,14 @@ const Header: React.FC = () => {
 
           {/* Language & Mobile Menu */}
           <div className="flex items-center space-x-4">
-            <button
+            {/* <button
               onClick={toggleLanguage}
               className={`p-2 rounded-lg transition-colors hover:bg-gray-100 ${
                 isScrolled ? 'text-gray-700' : 'text-gray-900'
               }`}
             >
               <Globe className="w-5 h-5" />
-            </button>
+            </button> */}
 
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
