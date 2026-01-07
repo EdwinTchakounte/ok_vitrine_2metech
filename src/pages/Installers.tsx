@@ -250,13 +250,20 @@ const uploadFile = async (
       // }
 
 
-      const cniUrl = await uploadFile(files.cni, 'cni', applicantId);
-const cvUrl = await uploadFile(files.cv, 'cv', applicantId);
-const documentUrl = await uploadFile(files.document, 'document', applicantId);
+const cniUrl = await uploadFile(files.cni, 'cni', applicantId);
+
+const cvUrl = files.cv
+  ? await uploadFile(files.cv, 'cv', applicantId)
+  : null;
+
+const documentUrl = files.document
+  ? await uploadFile(files.document, 'document', applicantId)
+  : null;
 
 if (!cniUrl) {
   throw new Error('Erreur lors de l’upload de la CNI');
 }
+
 
       // Préparer les données pour la base de données
       const applicationData = {
