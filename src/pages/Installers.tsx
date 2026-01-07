@@ -38,6 +38,7 @@ const Installers: React.FC = () => {
   const [files, setFiles] = useState<{
     cni?: File;
     cv?: File;
+    document?: File;
   }>({});
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -46,10 +47,11 @@ const Installers: React.FC = () => {
   const [uploadProgress, setUploadProgress] = useState<{
     cni?: number;
     cv?: number;
+    document?: number;
   }>({});
 
   // Fonction pour uploader un fichier vers Supabase Storage
-  const uploadFile = async (file: File, fileType: 'cni' | 'cv', applicantId: string): Promise<string | null> => {
+  const uploadFile = async (file: File, fileType: 'cni' | 'cv' | 'document', applicantId: string): Promise<string | null> => {
     try {
       // Générer un nom unique pour le fichier
       const fileExtension = file.name.split('.').pop();
@@ -124,7 +126,7 @@ const { data, error } = await supabase.storage
     if (error) setError(null);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fileType: 'cni' | 'cv') => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fileType: 'cni' | 'cv' | 'document') => {
     const file = e.target.files?.[0];
     if (file) {
       // Vérifier la taille du fichier (max 5MB)
@@ -206,9 +208,10 @@ const { data, error } = await supabase.storage
       const applicantId = `installer_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
       // Upload des fichiers en parallèle
-      const [cniUrl, cvUrl] = await Promise.all([
+      const [cniUrl, cvUrl, documentUrl] = await Promise.all([
         uploadFile(files.cni!, 'cni', applicantId),
-        uploadFile(files.cv!, 'cv', applicantId)
+        uploadFile(files.cv!, 'cv', applicantId),
+        uploadFile(files.document!, 'document', applicantId)
       ]);
 
       if (!cniUrl || !cvUrl) {
@@ -229,6 +232,7 @@ const { data, error } = await supabase.storage
         motivation: formData.motivation,
         cni_url: cniUrl,
         cv_url: cvUrl,
+        document_url: documentUrl || null,
         status: 'pending',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
@@ -666,6 +670,48 @@ const { data, error } = await supabase.storage
                     </div>
                   </div>
                 </div>
+
+
+
+
+                <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Certicat (document optionnel mais requis au cas où vous etes une entreprise) 
+                      </label>
+                      <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                        isLoading ? 'border-gray-200 bg-gray-50' : 'border-gray-300 hover:border-[#1876bc]'
+                      }`}>
+                        <CreditCard className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                        <input
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          onChange={(e) => handleFileChange(e, 'document')}
+                          className="hidden"
+                          id="document-upload"
+                          name='document-upload'
+                          required
+                          disabled={isLoading}
+                        />
+                        <label htmlFor="document-upload" className={`cursor-pointer ${isLoading ? 'cursor-not-allowed' : ''}`}>
+                          <span className="text-sm text-gray-600">
+                            {files.document ? files.document.name : 'Cliquez pour télécharger votre document'}
+                          </span>
+                        </label>
+                        {uploadProgress.document !== undefined && uploadProgress.document > 0 && (
+                          <div className="mt-2">
+                            <div className="bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-gradient-to-r from-[#1876bc] to-[#84c450] h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${uploadProgress.document}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-gray-500 mt-1 block">{uploadProgress.document}%</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+
 
                 {/* Submit Button */}
                 <div className="text-center">
