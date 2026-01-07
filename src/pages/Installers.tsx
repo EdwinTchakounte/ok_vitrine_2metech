@@ -51,47 +51,78 @@ const Installers: React.FC = () => {
   }>({});
 
   // Fonction pour uploader un fichier vers Supabase Storage
-  const uploadFile = async (file: File, fileType: 'cni' | 'cv' | 'document', applicantId: string): Promise<string | null> => {
-    try {
-      // Générer un nom unique pour le fichier
-      const fileExtension = file.name.split('.').pop();
-      const fileName = `${applicantId}_${fileType}_${Date.now()}.${fileExtension}`;
-      const filePath = `installers/${fileName}`;
+//   const uploadFile = async (file: File, fileType: 'cni' | 'cv' | 'document', applicantId: string): Promise<string | null> => {
+//     try {
+//       // Générer un nom unique pour le fichier
+//       const fileExtension = file.name.split('.').pop();
+//       const fileName = `${applicantId}_${fileType}_${Date.now()}.${fileExtension}`;
+//       const filePath = `installers/${fileName}`;
 
-      // Simuler le progress d'upload
-      let progress = 0;
-      const progressInterval = setInterval(() => {
-        progress += 20;
-        setUploadProgress(prev => ({
-          ...prev,
-          [fileType]: Math.min(progress, 90) // Garder à 90% jusqu'à la fin
-        }));
-      }, 200);
+//       // Simuler le progress d'upload
+//       let progress = 0;
+//       const progressInterval = setInterval(() => {
+//         progress += 20;
+//         setUploadProgress(prev => ({
+//           ...prev,
+//           [fileType]: Math.min(progress, 90) // Garder à 90% jusqu'à la fin
+//         }));
+//       }, 200);
 
-      // Upload vers Supabase Storage
-const { data, error } = await supabase.storage
-  .from('installer-documents')
-  .upload(filePath, file, {
-    cacheControl: '3600',
-    upsert: false
-  });
+//       // Upload vers Supabase Storage
+// const { data, error } = await supabase.storage
+//   .from('installer-documents')
+//   .upload(filePath, file, {
+//     cacheControl: '3600',
+//     upsert: false
+//   });
 
-      // Obtenir l'URL publique du fichier
-      const { data: { publicUrl } } = supabase.storage
-        .from('installer-documents')
-        .getPublicUrl(filePath);
+//       // Obtenir l'URL publique du fichier
+//       const { data: { publicUrl } } = supabase.storage
+//         .from('installer-documents')
+//         .getPublicUrl(filePath);
 
-      return publicUrl;
+//       return publicUrl;
 
-    } catch (error: any) {
-      console.error(`Erreur lors de l'upload du ${fileType}:`, error);
-      setUploadProgress(prev => ({
-        ...prev,
-        [fileType]: 0
-      }));
-      throw error;
-    }
-  };
+//     } catch (error: any) {
+//       console.error(`Erreur lors de l'upload du ${fileType}:`, error);
+//       setUploadProgress(prev => ({
+//         ...prev,
+//         [fileType]: 0
+//       }));
+//       throw error;
+//     }
+//   };
+
+
+
+const uploadFile = async (
+  file: File | undefined,
+  fileType: 'cni' | 'cv' | 'document',
+  applicantId: string
+): Promise<string | null> => {
+
+  if (!file) return null; // 🔥 sécurité ABSOLUE
+
+  const fileExtension = file.name.split('.').pop();
+  const fileName = `${applicantId}_${fileType}_${Date.now()}.${fileExtension}`;
+  const filePath = `installers/${fileName}`;
+
+  const { error } = await supabase.storage
+    .from('installer-documents')
+    .upload(filePath, file, {
+      cacheControl: '3600',
+      upsert: false
+    });
+
+  if (error) throw error;
+
+  const { data } = supabase.storage
+    .from('installer-documents')
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
+};
+
 
   // Fonction pour sauvegarder les données dans Supabase
   const saveToDatabase = async (applicationData: any) => {
@@ -160,7 +191,7 @@ const { data, error } = await supabase.storage
   };
 
   const validateForm = (): boolean => {
-    if (!formData.name || !formData.email || !formData.phone || !formData.profession || !formData.zone || !formData.experience || !formData.motivation) {
+    if (!formData.name || !formData.email || !formData.phone || !formData.profession || !formData.zone ) {
       setError('Veuillez remplir tous les champs obligatoires');
       return false;
     }
@@ -170,7 +201,7 @@ const { data, error } = await supabase.storage
       return false;
     }
 
-    if (!files.cni || !files.cv) {
+    if (!files.cni ) {
       setError('Veuillez télécharger tous les documents requis');
       return false;
     }
@@ -208,15 +239,24 @@ const { data, error } = await supabase.storage
       const applicantId = `installer_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
       // Upload des fichiers en parallèle
-      const [cniUrl, cvUrl, documentUrl] = await Promise.all([
-        uploadFile(files.cni!, 'cni', applicantId),
-        uploadFile(files.cv!, 'cv', applicantId),
-        uploadFile(files.document!, 'document', applicantId)
-      ]);
+      // const [cniUrl, cvUrl, documentUrl] = await Promise.all([
+      //   uploadFile(files.cni!, 'cni', applicantId),
+      //   uploadFile(files.cv!, 'cv', applicantId),
+      //   uploadFile(files.document!, 'document', applicantId)
+      // ]);
 
-      if (!cniUrl || !cvUrl) {
-        throw new Error('Erreur lors du téléchargement des fichiers');
-      }
+      // if (!cniUrl || !cvUrl) {
+      //   throw new Error('Erreur lors du téléchargement des fichiers');
+      // }
+
+
+      const cniUrl = await uploadFile(files.cni, 'cni', applicantId);
+const cvUrl = await uploadFile(files.cv, 'cv', applicantId);
+const documentUrl = await uploadFile(files.document, 'document', applicantId);
+
+if (!cniUrl) {
+  throw new Error('Erreur lors de l’upload de la CNI');
+}
 
       // Préparer les données pour la base de données
       const applicationData = {
@@ -555,13 +595,13 @@ const { data, error } = await supabase.storage
 
                     <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Expérience professionnelle *
+                        Expérience professionnelle 
                       </label>
                       <textarea
                         name="experience"
                         value={formData.experience}
                         onChange={handleInputChange}
-                        required
+                        
                         disabled={isLoading}
                         rows={4}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
@@ -571,13 +611,13 @@ const { data, error } = await supabase.storage
 
                     <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Motivation *
+                        Motivation 
                       </label>
                       <textarea
                         name="motivation"
                         value={formData.motivation}
                         onChange={handleInputChange}
-                        required
+                        
                         disabled={isLoading}
                         rows={4}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
@@ -634,7 +674,7 @@ const { data, error } = await supabase.storage
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Curriculum Vitae (CV) *
+                        Curriculum Vitae (CV) 
                       </label>
                       <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
                         isLoading ? 'border-gray-200 bg-gray-50' : 'border-gray-300 hover:border-[#1876bc]'
@@ -642,12 +682,12 @@ const { data, error } = await supabase.storage
                         <FileText className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                         <input
                           type="file"
-                          accept=".pdf,.doc,.docx"
+                          accept=".pdf,.doc,.docx,.pdf,.jpg,.jpeg,.png"
                           onChange={(e) => handleFileChange(e, 'cv')}
                           className="hidden"
                           id="cv-upload"
                           name='cv-upload'
-                          required
+                          
                           disabled={isLoading}
                         />
                         <label htmlFor="cv-upload" className={`cursor-pointer ${isLoading ? 'cursor-not-allowed' : ''}`}>
@@ -684,12 +724,12 @@ const { data, error } = await supabase.storage
                         <CreditCard className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                         <input
                           type="file"
-                          accept=".pdf,.jpg,.jpeg,.png"
+                          accept=".pdf,.doc,.docx,.pdf,.jpg,.jpeg,.png"
                           onChange={(e) => handleFileChange(e, 'document')}
                           className="hidden"
                           id="document-upload"
-                          name='document-upload'
-                          required
+                          name="document-upload"
+                
                           disabled={isLoading}
                         />
                         <label htmlFor="document-upload" className={`cursor-pointer ${isLoading ? 'cursor-not-allowed' : ''}`}>
