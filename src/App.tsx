@@ -16,6 +16,7 @@ import Partners from './pages/Partners';
 import Installers from './pages/Installers';
 import Contact from './pages/Contact';
 import Enmkit from './pages/Enmkit';
+import InstallationVideoCard from './pages/Guide_video';
 
 function App() {
   const { ready } = useTranslation();
@@ -42,6 +43,7 @@ function App() {
             <Route path="/partners" element={<Partners />} />
             <Route path="/installers" element={<Installers />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/installation-video" element={<InstallationVideoCard />} />
 
             
           </Routes>

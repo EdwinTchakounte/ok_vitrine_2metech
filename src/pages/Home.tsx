@@ -9,6 +9,7 @@ import { ArrowRight, Zap, Shield, Users, TrendingUp, Sparkles } from 'lucide-rea
 import Enmkit from './Enmkit';
 import Contact from './Contact';
 import Testimonials from '../components/Testimonials';
+import InstallationVideoCard from './Guide_video';
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
@@ -175,6 +176,7 @@ const Home: React.FC = () => {
       </section>
       
       <Enmkit />
+      <InstallationVideoCard />
       <Testimonials/>
       <AwardsGrid />
       <PartnersSection />
