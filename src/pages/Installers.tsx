@@ -1,27 +1,49 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  Building2, 
-  MapPin, 
-  Briefcase, 
-  Upload, 
-  FileText, 
+import {
+  User,
+  Mail,
+  Phone,
+  Building2,
+  MapPin,
+  Briefcase,
+  Upload,
+  FileText,
   CreditCard,
   Send,
-  CheckCircle,
+  CheckCircle2,
   Users,
   Award,
   Zap,
-  AlertCircle,
-  Loader
+  Loader2,
+  ArrowRight,
 } from 'lucide-react';
 import { InstallerApplication } from '../types';
 import { supabase } from '../supabaseClient';
+import PageHero from '../components/ui/PageHero';
+import { Section, SectionHeader } from '../components/ui/Section';
+import PageTransition from '../components/ui/PageTransition';
+import Toast, { ToastVariant } from '../components/ui/Toast';
+import { ButtonLink } from '../components/ui/Button';
+import { cn } from '../lib/cn';
+
+const ZONES = [
+  'Adamaoua',
+  'Centre',
+  'Est',
+  'Extrême-Nord',
+  'Littoral',
+  'Nord',
+  'Nord-Ouest',
+  'Ouest',
+  'Sud',
+  'Sud-Ouest',
+];
 
 const Installers: React.FC = () => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<InstallerApplication>({
     name: '',
     email: '',
@@ -32,279 +54,125 @@ const Installers: React.FC = () => {
     zone: '',
     experience: '',
     motivation: '',
-    id : Date.now(),
+    id: Date.now(),
   });
 
-  const [files, setFiles] = useState<{
-    cni?: File;
-    cv?: File;
-    document?: File;
-  }>({});
+  const [files, setFiles] = useState<{ cni?: File; cv?: File; document?: File }>({});
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState<{
+    open: boolean;
+    variant: ToastVariant;
+    title: string;
+    description?: string;
+  }>({ open: false, variant: 'success', title: '' });
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [uploadProgress, setUploadProgress] = useState<{
-    cni?: number;
-    cv?: number;
-    document?: number;
-  }>({});
+  const benefits = [
+    { key: 'network', icon: Users },
+    { key: 'training', icon: Award },
+    { key: 'support', icon: Zap },
+  ] as const;
 
-  // Fonction pour uploader un fichier vers Supabase Storage
-//   const uploadFile = async (file: File, fileType: 'cni' | 'cv' | 'document', applicantId: string): Promise<string | null> => {
-//     try {
-//       // Générer un nom unique pour le fichier
-//       const fileExtension = file.name.split('.').pop();
-//       const fileName = `${applicantId}_${fileType}_${Date.now()}.${fileExtension}`;
-//       const filePath = `installers/${fileName}`;
+  const showError = (msg: string) =>
+    setToast({ open: true, variant: 'error', title: msg });
 
-//       // Simuler le progress d'upload
-//       let progress = 0;
-//       const progressInterval = setInterval(() => {
-//         progress += 20;
-//         setUploadProgress(prev => ({
-//           ...prev,
-//           [fileType]: Math.min(progress, 90) // Garder à 90% jusqu'à la fin
-//         }));
-//       }, 200);
-
-//       // Upload vers Supabase Storage
-// const { data, error } = await supabase.storage
-//   .from('installer-documents')
-//   .upload(filePath, file, {
-//     cacheControl: '3600',
-//     upsert: false
-//   });
-
-//       // Obtenir l'URL publique du fichier
-//       const { data: { publicUrl } } = supabase.storage
-//         .from('installer-documents')
-//         .getPublicUrl(filePath);
-
-//       return publicUrl;
-
-//     } catch (error: any) {
-//       console.error(`Erreur lors de l'upload du ${fileType}:`, error);
-//       setUploadProgress(prev => ({
-//         ...prev,
-//         [fileType]: 0
-//       }));
-//       throw error;
-//     }
-//   };
-
-
-
-const uploadFile = async (
-  file: File | undefined,
-  fileType: 'cni' | 'cv' | 'document',
-  applicantId: string
-): Promise<string | null> => {
-
-  if (!file) return null; // 🔥 sécurité ABSOLUE
-
-  const fileExtension = file.name.split('.').pop();
-  const fileName = `${applicantId}_${fileType}_${Date.now()}.${fileExtension}`;
-  const filePath = `installers/${fileName}`;
-
-  const { error } = await supabase.storage
-    .from('installer-documents')
-    .upload(filePath, file, {
-      cacheControl: '3600',
-      upsert: false
-    });
-
-  if (error) throw error;
-
-  const { data } = supabase.storage
-    .from('installer-documents')
-    .getPublicUrl(filePath);
-
-  return data.publicUrl;
-};
-
-
-  // Fonction pour sauvegarder les données dans Supabase
-  const saveToDatabase = async (applicationData: any) => {
-    try {
-      applicationData.id= Date.now(); // Assurer un ID unique
-      // Sauvegarde dans Supabase
-      const { data, error } = await supabase
-        .from('enmkit_installateur')
-        .insert([applicationData])
-        .select()
-        .single();
-
-      if (error) {
-        throw new Error(`Erreur de sauvegarde: ${error.message}`);
-      }
-
-      return data;
-
-    } catch (error: any) {
-      console.error('Erreur lors de la sauvegarde:', error);
-      throw error;
-    }
+  const uploadFile = async (
+    file: File | undefined,
+    fileType: 'cni' | 'cv' | 'document',
+    applicantId: string,
+  ): Promise<string | null> => {
+    if (!file) return null;
+    const fileExtension = file.name.split('.').pop();
+    const fileName = `${applicantId}_${fileType}_${Date.now()}.${fileExtension}`;
+    const filePath = `installers/${fileName}`;
+    const { error } = await supabase.storage
+      .from('installer-documents')
+      .upload(filePath, file, { cacheControl: '3600', upsert: false });
+    if (error) throw error;
+    const { data } = supabase.storage.from('installer-documents').getPublicUrl(filePath);
+    return data.publicUrl;
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    // Réinitialiser l'erreur si l'utilisateur modifie le formulaire
-    if (error) setError(null);
+    setFormData((p) => ({ ...p, [name]: value } as InstallerApplication));
   };
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fileType: 'cni' | 'cv' | 'document') => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     // Vérifier la taille du fichier (max 5MB)
-  //     if (file.size > 5 * 1024 * 1024) {
-  //       setError(`Le fichier ${fileType.toUpperCase()} ne doit pas dépasser 5MB`);
-  //       return;
-  //     }
-
-  //     // Vérifier le type de fichier
-  //     const allowedTypes = fileType === 'cni' 
-  //       ? ['image/jpeg', 'image/png', 'application/pdf']
-  //       : ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-      
-  //     if (!allowedTypes.includes(file.type)) {
-  //       setError(`Type de fichier non supporté pour ${fileType.toUpperCase()}`);
-  //       return;
-  //     }
-
-  //     setFiles(prev => ({
-  //       ...prev,
-  //       [fileType]: file
-  //     }));
-      
-  //     // Réinitialiser l'erreur et le progress
-  //     if (error) setError(null);
-  //     setUploadProgress(prev => ({
-  //       ...prev,
-  //       [fileType]: 0
-  //     }));
-  //   }
-  // };
-
 
   const handleFileChange = (
-  e: React.ChangeEvent<HTMLInputElement>,
-  fileType: 'cni' | 'cv' | 'document'
-) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+    e: React.ChangeEvent<HTMLInputElement>,
+    fileType: 'cni' | 'cv' | 'document',
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      showError(t('installers.errors.fileSize'));
+      return;
+    }
+    const allowed = [
+      'application/pdf',
+      'image/jpeg',
+      'image/png',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ];
+    if (!allowed.includes(file.type)) {
+      showError(t('installers.errors.fileType'));
+      return;
+    }
+    setFiles((p) => ({ ...p, [fileType]: file }));
+  };
 
-  console.log('Upload:', file.name, file.type);
-
-  if (file.size > 5 * 1024 * 1024) {
-    setError('Le fichier ne doit pas dépasser 5MB');
-    return;
-  }
-
-  const allowedTypes = [
-    'application/pdf',
-    'image/jpeg',
-    'image/png',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-  ];
-
-  if (!allowedTypes.includes(file.type)) {
-    setError('Type de fichier non supporté');
-    return;
-  }
-
-  setFiles(prev => ({
-    ...prev,
-    [fileType]: file
-  }));
-
-  setError(null);
-};
-
-
-
-  const validateForm = (): boolean => {
-    if (!formData.name || !formData.email || !formData.phone || !formData.profession || !formData.zone ) {
-      setError('Veuillez remplir tous les champs obligatoires');
+  const validate = (): boolean => {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.profession ||
+      !formData.zone
+    ) {
+      showError(t('installers.errors.required'));
       return false;
     }
-
     if (formData.type === 'company' && !formData.company) {
-      setError('Le nom de l\'entreprise est obligatoire');
+      showError(t('installers.errors.company'));
       return false;
     }
-
-    if (!files.cni ) {
-      setError('Veuillez télécharger tous les documents requis');
+    if (!files.cni) {
+      showError(t('installers.errors.cni'));
       return false;
     }
-
-    // Validation email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setError('Adresse email invalide');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      showError(t('installers.errors.email'));
       return false;
     }
-
-    // Validation téléphone camerounais
-    const phoneRegex = /^(\+237|237)?[26][0-9]{8}$/;
-    if (!phoneRegex.test(formData.phone.replace(/\s/g, ''))) {
-      setError('Numéro de téléphone camerounais invalide');
+    if (!/^(\+237|237)?[26][0-9]{8}$/.test(formData.phone.replace(/\s/g, ''))) {
+      showError(t('installers.errors.phone'));
       return false;
     }
-
     return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+    if (!validate()) return;
 
-    setIsLoading(true);
-    setError(null);
-    setUploadProgress({});
-
+    setLoading(true);
     try {
-      // Générer un ID unique pour ce candidat
-      const applicantId = `installer_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const applicantId = `installer_${Date.now()}_${Math.random()
+        .toString(36)
+        .substr(2, 9)}`;
 
-      // Upload des fichiers en parallèle
-      // const [cniUrl, cvUrl, documentUrl] = await Promise.all([
-      //   uploadFile(files.cni!, 'cni', applicantId),
-      //   uploadFile(files.cv!, 'cv', applicantId),
-      //   uploadFile(files.document!, 'document', applicantId)
-      // ]);
+      const cniUrl = await uploadFile(files.cni, 'cni', applicantId);
+      const cvUrl = files.cv ? await uploadFile(files.cv, 'cv', applicantId) : null;
+      const documentUrl = files.document
+        ? await uploadFile(files.document, 'document', applicantId)
+        : null;
 
-      // if (!cniUrl || !cvUrl) {
-      //   throw new Error('Erreur lors du téléchargement des fichiers');
-      // }
+      if (!cniUrl) throw new Error(t('installers.errors.upload'));
 
-
-const cniUrl = await uploadFile(files.cni, 'cni', applicantId);
-
-const cvUrl = files.cv
-  ? await uploadFile(files.cv, 'cv', applicantId)
-  : null;
-
-const documentUrl = files.document
-  ? await uploadFile(files.document, 'document', applicantId)
-  : null;
-
-if (!cniUrl) {
-  throw new Error('Erreur lors de l’upload de la CNI');
-}
-
-
-      // Préparer les données pour la base de données
-      const applicationData = {
+      const application = {
         id: applicantId,
         name: formData.name,
         email: formData.email,
@@ -320,16 +188,17 @@ if (!cniUrl) {
         document_url: documentUrl || null,
         status: 'pending',
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
 
-      // Sauvegarder dans la base de données
-      await saveToDatabase(applicationData);
+      const { error } = await supabase
+        .from('enmkit_installateur')
+        .insert([application])
+        .select()
+        .single();
+      if (error) throw new Error(error.message);
 
-      console.log('Candidature sauvegardée avec succès:', applicationData);
-      setIsSubmitted(true);
-
-      // Réinitialiser le formulaire
+      setSubmitted(true);
       setFormData({
         name: '',
         email: '',
@@ -340,491 +209,456 @@ if (!cniUrl) {
         zone: '',
         experience: '',
         motivation: '',
+        id: Date.now(),
       });
       setFiles({});
-      setUploadProgress({});
-
-    } catch (error: any) {
-      console.error('Erreur lors de la soumission:', error);
-      setError(error.message || 'Une erreur est survenue lors de la soumission');
+    } catch (err: any) {
+      showError(err.message || t('installers.errors.generic'));
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const benefits = [
-    {
-      icon: Users,
-      title: 'Réseau National',
-      description: 'Rejoignez un réseau d\'installateurs certifiés à travers le Cameroun'
-    },
-    {
-      icon: Award,
-      title: 'Formation Certifiée',
-      description: 'Accédez à nos formations techniques et obtenez votre certification EnMKit'
-    },
-    {
-      icon: Zap,
-      title: 'Support Technique',
-      description: 'Bénéficiez d\'un support technique continu et d\'outils professionnels'
-    }
-  ];
-
-  const zones = [
-    'Adamaoua', 'Centre', 'Est', 'Extrême-Nord', 'Littoral',
-    'Nord', 'Nord-Ouest', 'Ouest', 'Sud', 'Sud-Ouest'
-  ];
-
-  if (isSubmitted) {
+  if (submitted) {
     return (
-      <div className="pt-16 lg:pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-white rounded-xl shadow-lg p-8 max-w-md mx-4 text-center"
-        >
-          <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Candidature Envoyée !
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Merci pour votre candidature. Notre équipe l'examinera et vous contactera sous 48h.
-          </p>
-          <button
-            onClick={() => setIsSubmitted(false)}
-            className="px-6 py-3 bg-gradient-to-r from-[#1876bc] to-[#84c450] text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
+      <PageTransition>
+        <Section className="bg-white min-h-[80svh] flex items-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-lg mx-auto rounded-4xl border border-ink-100 bg-white p-10 lg:p-12 text-center shadow-elevated"
           >
-            Nouvelle Candidature
-          </button>
-        </motion.div>
-      </div>
+            <div className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-brand text-white shadow-glow">
+              <CheckCircle2 className="h-10 w-10" />
+            </div>
+            <h2 className="mt-6 text-fluid-3xl font-bold text-ink-900">
+              {t('installers.successTitle')}
+            </h2>
+            <p className="mt-3 text-ink-600 leading-relaxed">{t('installers.successText')}</p>
+            <div className="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                type="button"
+                onClick={() => setSubmitted(false)}
+                className="btn-primary btn-md"
+              >
+                {t('installers.newApplication')}
+              </button>
+              <ButtonLink to="/" variant="outline" size="md">
+                {t('common.back')}
+              </ButtonLink>
+            </div>
+          </motion.div>
+        </Section>
+      </PageTransition>
     );
   }
 
   return (
-    <div className="pt-16 lg:pt-20">
-      {/* Hero Section */}
-      <section className="py-16 lg:py-24 bg-gradient-to-br from-[#1876bc] to-[#84c450]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center text-white"
-          >
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-              Devenez Installateur EnMKit
-            </h1>
-            <p className="text-xl lg:text-2xl max-w-3xl mx-auto">
-              Rejoignez notre réseau d'installateurs certifiés et participez à la révolution énergétique africaine
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <PageTransition>
+      <PageHero
+        eyebrow={t('installers.eyebrow')}
+        title={t('installers.title')}
+        subtitle={t('installers.subtitle')}
+      />
 
-      {/* Benefits Section */}
-      <section className="py-16 lg:py-24 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Pourquoi Devenir Installateur EnMKit ?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Des avantages exclusifs pour les professionnels qui nous rejoignent
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {benefits.map((benefit, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center group"
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#1876bc] to-[#84c450] rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <benefit.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {benefit.title}
-                </h3>
-                <p className="text-gray-600">
-                  {benefit.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Application Form */}
-      <section className="py-16 lg:py-24 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                Formulaire de Candidature
-              </h2>
-              <p className="text-xl text-gray-600">
-                Remplissez ce formulaire pour rejoindre notre réseau d'installateurs
+      {/* Benefits */}
+      <Section className="bg-white">
+        <SectionHeader
+          title={t('installers.benefitsTitle')}
+          subtitle={t('installers.benefitsSubtitle')}
+        />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+          {benefits.map((b, i) => (
+            <motion.div
+              key={b.key}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="rounded-3xl border border-ink-100 bg-white p-7 text-center hover-lift hover:border-brand-blue-200 hover:shadow-elevated transition-all"
+            >
+              <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-glow">
+                <b.icon className="h-6 w-6" />
+              </div>
+              <h3 className="mt-4 text-lg font-semibold text-ink-900">
+                {t(`installers.benefits.${b.key}.title`)}
+              </h3>
+              <p className="mt-2 text-sm text-ink-600 leading-relaxed">
+                {t(`installers.benefits.${b.key}.description`)}
               </p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-8 lg:p-12">
-              {/* Affichage des erreurs */}
-              {error && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center">
-                  <AlertCircle className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
-                  <span className="text-red-700 text-sm">{error}</span>
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-8">
-                {/* Personal Information */}
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                    <User className="w-6 h-6 mr-2 text-[#1876bc]" />
-                    Informations Personnelles
-                  </h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Nom complet *
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                        disabled={isLoading}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        placeholder="Votre nom complet"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email *
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          required
-                          disabled={isLoading}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                          placeholder="votre@email.com"
-                        />
-                        <Mail className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Téléphone *
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          required
-                          disabled={isLoading}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                          placeholder="+237 6XX XXX XXX"
-                        />
-                        <Phone className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Profession *
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name="profession"
-                          value={formData.profession}
-                          onChange={handleInputChange}
-                          required
-                          disabled={isLoading}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                          placeholder="Électricien, Technicien, etc."
-                        />
-                        <Briefcase className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Professional Information */}
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                    <Building2 className="w-6 h-6 mr-2 text-[#1876bc]" />
-                    Informations Professionnelles
-                  </h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Type de candidature *
-                      </label>
-                      <select
-                        name="type"
-                        value={formData.type}
-                        onChange={handleInputChange}
-                        disabled={isLoading}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                      >
-                        <option value="individual">Particulier</option>
-                        <option value="company">Entreprise</option>
-                      </select>
-                    </div>
-
-                    {formData.type === 'company' && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Nom de l'entreprise *
-                        </label>
-                        <input
-                          type="text"
-                          name="company"
-                          value={formData.company}
-                          onChange={handleInputChange}
-                          required={formData.type === 'company'}
-                          disabled={isLoading}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                          placeholder="Nom de votre entreprise"
-                        />
-                      </div>
-                    )}
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Zone géographique *
-                      </label>
-                      <div className="relative">
-                        <select
-                          name="zone"
-                          value={formData.zone}
-                          onChange={handleInputChange}
-                          required
-                          disabled={isLoading}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent appearance-none disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        >
-                          <option value="">Sélectionnez votre région</option>
-                          {zones.map(zone => (
-                            <option key={zone} value={zone}>{zone}</option>
-                          ))}
-                        </select>
-                        <MapPin className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-                      </div>
-                    </div>
-
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Expérience professionnelle 
-                      </label>
-                      <textarea
-                        name="experience"
-                        value={formData.experience}
-                        onChange={handleInputChange}
-                        
-                        disabled={isLoading}
-                        rows={4}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        placeholder="Décrivez votre expérience dans le domaine électrique/énergétique..."
-                      />
-                    </div>
-
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Motivation 
-                      </label>
-                      <textarea
-                        name="motivation"
-                        value={formData.motivation}
-                        onChange={handleInputChange}
-                        
-                        disabled={isLoading}
-                        rows={4}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1876bc] focus:border-transparent resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        placeholder="Pourquoi souhaitez-vous devenir installateur EnMKit ?"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* File Uploads */}
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                    <Upload className="w-6 h-6 mr-2 text-[#1876bc]" />
-                    Documents Requis
-                  </h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Carte Nationale d'Identité (CNI) *
-                      </label>
-                      <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                        isLoading ? 'border-gray-200 bg-gray-50' : 'border-gray-300 hover:border-[#1876bc]'
-                      }`}>
-                        <CreditCard className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                        <input
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png"
-                          onChange={(e) => handleFileChange(e, 'cni')}
-                          className="hidden"
-                          id="cni-upload"
-                          name='cni-upload'
-                          required
-                          disabled={isLoading}
-                        />
-                        <label htmlFor="cni-upload" className={`cursor-pointer ${isLoading ? 'cursor-not-allowed' : ''}`}>
-                          <span className="text-sm text-gray-600">
-                            {files.cni ? files.cni.name : 'Cliquez pour télécharger votre CNI'}
-                          </span>
-                        </label>
-                        {uploadProgress.cni !== undefined && uploadProgress.cni > 0 && (
-                          <div className="mt-2">
-                            <div className="bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-gradient-to-r from-[#1876bc] to-[#84c450] h-2 rounded-full transition-all duration-300"
-                                style={{ width: `${uploadProgress.cni}%` }}
-                              />
-                            </div>
-                            <span className="text-xs text-gray-500 mt-1 block">{uploadProgress.cni}%</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Curriculum Vitae (CV) 
-                      </label>
-                      <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                        isLoading ? 'border-gray-200 bg-gray-50' : 'border-gray-300 hover:border-[#1876bc]'
-                      }`}>
-                        <FileText className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                        <input
-                          type="file"
-                          accept=".pdf,.doc,.docx,.pdf,.jpg,.jpeg,.png"
-                          onChange={(e) => handleFileChange(e, 'cv')}
-                          className="hidden"
-                          id="cv-upload"
-                          name='cv-upload'
-                          
-                          disabled={isLoading}
-                        />
-                        <label htmlFor="cv-upload" className={`cursor-pointer ${isLoading ? 'cursor-not-allowed' : ''}`}>
-                          <span className="text-sm text-gray-600">
-                            {files.cv ? files.cv.name : 'Cliquez pour télécharger votre CV'}
-                          </span>
-                        </label>
-                        {uploadProgress.cv !== undefined && uploadProgress.cv > 0 && (
-                          <div className="mt-2">
-                            <div className="bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-gradient-to-r from-[#1876bc] to-[#84c450] h-2 rounded-full transition-all duration-300"
-                                style={{ width: `${uploadProgress.cv}%` }}
-                              />
-                            </div>
-                            <span className="text-xs text-gray-500 mt-1 block">{uploadProgress.cv}%</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-
-
-                <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Certicat (document optionnel mais requis au cas où vous etes une entreprise) 
-                      </label>
-                      <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                        isLoading ? 'border-gray-200 bg-gray-50' : 'border-gray-300 hover:border-[#1876bc]'
-                      }`}>
-                        <CreditCard className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                        <input
-                          type="file"
-                          accept=".pdf,.doc,.docx,.pdf,.jpg,.jpeg,.png"
-                          onChange={(e) => handleFileChange(e, 'document')}
-                          className="hidden"
-                          id="document-upload"
-                          name="document-upload"
-                
-                          disabled={isLoading}
-                        />
-                        <label htmlFor="document-upload" className={`cursor-pointer ${isLoading ? 'cursor-not-allowed' : ''}`}>
-                          <span className="text-sm text-gray-600">
-                            {files.document ? files.document.name : 'Cliquez pour télécharger votre document'}
-                          </span>
-                        </label>
-                        {uploadProgress.document !== undefined && uploadProgress.document > 0 && (
-                          <div className="mt-2">
-                            <div className="bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-gradient-to-r from-[#1876bc] to-[#84c450] h-2 rounded-full transition-all duration-300"
-                                style={{ width: `${uploadProgress.document}%` }}
-                              />
-                            </div>
-                            <span className="text-xs text-gray-500 mt-1 block">{uploadProgress.document}%</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-
-
-                {/* Submit Button */}
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#1876bc] to-[#84c450] text-white font-semibold rounded-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-none"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader className="w-5 h-5 mr-2 animate-spin" />
-                        Envoi en cours...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5 mr-2" />
-                        Soumettre ma Candidature
-                      </>
-                    )}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </motion.div>
+            </motion.div>
+          ))}
         </div>
-      </section>
-    </div>
+      </Section>
+
+      {/* Form */}
+      <Section className="bg-ink-50/40">
+        <div className="absolute inset-0 -z-10 bg-grid mask-fade-y opacity-60" aria-hidden="true" />
+
+        <SectionHeader
+          title={t('installers.formTitle')}
+          subtitle={t('installers.formSubtitle')}
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto"
+        >
+          <form
+            onSubmit={handleSubmit}
+            className="rounded-4xl border border-ink-100 bg-white p-7 lg:p-10 shadow-elevated space-y-10"
+          >
+            {/* Personal info */}
+            <div>
+              <h3 className="flex items-center gap-2 text-lg font-semibold text-ink-900 mb-5">
+                <User className="h-5 w-5 text-brand-blue-600" />
+                {t('installers.sections.personal')}
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-5">
+                <Field
+                  label={t('installers.fields.name')}
+                  required
+                  icon={<User className="h-4 w-4" />}
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder={t('installers.placeholders.name')}
+                  disabled={loading}
+                />
+                <Field
+                  label={t('installers.fields.email')}
+                  type="email"
+                  required
+                  icon={<Mail className="h-4 w-4" />}
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder={t('installers.placeholders.email')}
+                  disabled={loading}
+                />
+                <Field
+                  label={t('installers.fields.phone')}
+                  type="tel"
+                  required
+                  icon={<Phone className="h-4 w-4" />}
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder={t('installers.placeholders.phone')}
+                  disabled={loading}
+                />
+                <Field
+                  label={t('installers.fields.profession')}
+                  required
+                  icon={<Briefcase className="h-4 w-4" />}
+                  name="profession"
+                  value={formData.profession}
+                  onChange={handleInputChange}
+                  placeholder={t('installers.placeholders.profession')}
+                  disabled={loading}
+                />
+              </div>
+            </div>
+
+            {/* Professional info */}
+            <div>
+              <h3 className="flex items-center gap-2 text-lg font-semibold text-ink-900 mb-5">
+                <Building2 className="h-5 w-5 text-brand-blue-600" />
+                {t('installers.sections.professional')}
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-semibold text-ink-800 mb-2">
+                    {t('installers.fields.type')}
+                  </label>
+                  <select
+                    name="type"
+                    value={formData.type}
+                    onChange={handleInputChange}
+                    disabled={loading}
+                    className="input-base"
+                  >
+                    <option value="individual">{t('installers.fields.individual')}</option>
+                    <option value="company">{t('installers.fields.company')}</option>
+                  </select>
+                </div>
+
+                {formData.type === 'company' && (
+                  <Field
+                    label={t('installers.fields.companyName')}
+                    required
+                    icon={<Building2 className="h-4 w-4" />}
+                    name="company"
+                    value={formData.company || ''}
+                    onChange={handleInputChange}
+                    placeholder={t('installers.placeholders.company')}
+                    disabled={loading}
+                  />
+                )}
+
+                <div className={formData.type !== 'company' ? 'sm:col-span-1' : ''}>
+                  <label className="block text-sm font-semibold text-ink-800 mb-2">
+                    {t('installers.fields.zone')}{' '}
+                    <span className="text-brand-blue-600">*</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      name="zone"
+                      value={formData.zone}
+                      onChange={handleInputChange}
+                      required
+                      disabled={loading}
+                      className="input-base input-with-icon"
+                    >
+                      <option value="">{t('installers.zones.choose')}</option>
+                      {ZONES.map((z) => (
+                        <option key={z} value={z}>
+                          {z}
+                        </option>
+                      ))}
+                    </select>
+                    <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-400" />
+                  </div>
+                </div>
+
+                <TextArea
+                  label={t('installers.fields.experience')}
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleInputChange}
+                  placeholder={t('installers.placeholders.experience')}
+                  disabled={loading}
+                  className="sm:col-span-2"
+                />
+                <TextArea
+                  label={t('installers.fields.motivation')}
+                  name="motivation"
+                  value={formData.motivation}
+                  onChange={handleInputChange}
+                  placeholder={t('installers.placeholders.motivation')}
+                  disabled={loading}
+                  className="sm:col-span-2"
+                />
+              </div>
+            </div>
+
+            {/* Documents */}
+            <div>
+              <h3 className="flex items-center gap-2 text-lg font-semibold text-ink-900 mb-5">
+                <Upload className="h-5 w-5 text-brand-blue-600" />
+                {t('installers.sections.documents')}
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-5">
+                <FileDrop
+                  id="cni-upload"
+                  label={t('installers.fields.cni')}
+                  required
+                  icon={<CreditCard className="h-6 w-6" />}
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  file={files.cni}
+                  disabled={loading}
+                  onChange={(e) => handleFileChange(e, 'cni')}
+                />
+                <FileDrop
+                  id="cv-upload"
+                  label={t('installers.fields.cv')}
+                  icon={<FileText className="h-6 w-6" />}
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                  file={files.cv}
+                  disabled={loading}
+                  onChange={(e) => handleFileChange(e, 'cv')}
+                />
+                <FileDrop
+                  id="document-upload"
+                  label={t('installers.fields.document')}
+                  icon={<FileText className="h-6 w-6" />}
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                  file={files.document}
+                  disabled={loading}
+                  onChange={(e) => handleFileChange(e, 'document')}
+                  className="sm:col-span-2"
+                />
+              </div>
+            </div>
+
+            <div className="text-center">
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary btn-lg w-full sm:w-auto"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>{t('installers.submitting')}</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4" />
+                    <span>{t('installers.submit')}</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </motion.div>
+      </Section>
+
+      <Toast
+        open={toast.open}
+        variant={toast.variant}
+        title={toast.title}
+        description={toast.description}
+        onClose={() => setToast((s) => ({ ...s, open: false }))}
+      />
+    </PageTransition>
   );
 };
+
+interface FieldProps {
+  label: string;
+  required?: boolean;
+  icon?: React.ReactNode;
+  name: string;
+  type?: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  placeholder?: string;
+  disabled?: boolean;
+}
+const Field: React.FC<FieldProps> = ({
+  label,
+  required,
+  icon,
+  name,
+  type = 'text',
+  value,
+  onChange,
+  placeholder,
+  disabled,
+}) => (
+  <div>
+    <label htmlFor={name} className="block text-sm font-semibold text-ink-800 mb-2">
+      {label} {required && <span className="text-brand-blue-600">*</span>}
+    </label>
+    <div className="relative">
+      <input
+        id={name}
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        required={required}
+        disabled={disabled}
+        className={cn('input-base', icon && 'input-with-icon')}
+      />
+      {icon && (
+        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400">
+          {icon}
+        </span>
+      )}
+    </div>
+  </div>
+);
+
+interface TextAreaProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+}
+const TextArea: React.FC<TextAreaProps> = ({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  disabled,
+  className,
+}) => (
+  <div className={className}>
+    <label htmlFor={name} className="block text-sm font-semibold text-ink-800 mb-2">
+      {label}
+    </label>
+    <textarea
+      id={name}
+      name={name}
+      rows={4}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      disabled={disabled}
+      className="input-base resize-none"
+    />
+  </div>
+);
+
+interface FileDropProps {
+  id: string;
+  label: string;
+  required?: boolean;
+  icon: React.ReactNode;
+  accept: string;
+  file?: File;
+  disabled?: boolean;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  className?: string;
+}
+const FileDrop: React.FC<FileDropProps> = ({
+  id,
+  label,
+  required,
+  icon,
+  accept,
+  file,
+  disabled,
+  onChange,
+  className,
+}) => (
+  <div className={className}>
+    <label htmlFor={id} className="block text-sm font-semibold text-ink-800 mb-2">
+      {label} {required && <span className="text-brand-blue-600">*</span>}
+    </label>
+    <label
+      htmlFor={id}
+      className={cn(
+        'group relative flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed bg-white p-6 text-center transition-all duration-300 cursor-pointer',
+        disabled
+          ? 'border-ink-200 bg-ink-50 cursor-not-allowed'
+          : 'border-ink-200 hover:border-brand-blue-400 hover:bg-brand-blue-50/40',
+        file && 'border-brand-green-400 bg-brand-green-50/40',
+      )}
+    >
+      <div
+        className={cn(
+          'inline-flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-glow transition-transform group-hover:scale-105',
+          file ? 'bg-gradient-to-br from-brand-green-500 to-brand-green-700' : 'bg-gradient-brand',
+        )}
+      >
+        {file ? <CheckCircle2 className="h-6 w-6" /> : icon}
+      </div>
+      <p className="text-sm font-medium text-ink-800 truncate max-w-full">
+        {file ? file.name : 'PDF, JPG, PNG · 5MB'}
+      </p>
+      <input
+        id={id}
+        type="file"
+        accept={accept}
+        onChange={onChange}
+        disabled={disabled}
+        className="hidden"
+      />
+    </label>
+  </div>
+);
 
 export default Installers;

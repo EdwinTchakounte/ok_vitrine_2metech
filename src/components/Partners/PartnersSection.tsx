@@ -1,262 +1,151 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import {
-  ExternalLink,
-  Building2,
-  Zap,
-  GraduationCap,
-  Globe,
-  ChevronRight,
-  Users,
-  Award,
-  Target
-} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { ExternalLink, Users, Layers3, Compass, ArrowRight } from 'lucide-react';
+import { Section, SectionHeader } from '../ui/Section';
+import { ButtonLink } from '../ui/Button';
 
 interface Partner {
-  id: string;
-  name: string;
+  id: 'f2e' | 'leukele' | 'yali' | 'orange' | 'totalenergies';
   logo: string;
-  description: string;
-  category: string;
+  category: 'energy' | 'tech' | 'education' | 'corporate';
   website: string;
-  details?: string;
 }
 
+const PARTNERS: Partner[] = [
+  { id: 'f2e', logo: '/logos/f2e.png', category: 'energy', website: 'https://freeenergyengineering.com/' },
+  { id: 'leukele', logo: '/logos/leuke.png', category: 'tech', website: 'https://vc4a.com/ventures/leukele-africa/' },
+  { id: 'yali', logo: '/logos/yali.png', category: 'education', website: 'https://yalirlcsouthernafrica.org/' },
+  { id: 'orange', logo: '/logos/orange.png', category: 'corporate', website: 'https://www.orange.cm/' },
+  { id: 'totalenergies', logo: '/logos/total.png', category: 'energy', website: 'https://www.totalenergies.fr/' },
+];
+
 const PartnersSection: React.FC = () => {
-  const [selectedPartner, setSelectedPartner] = useState<string | null>(null);
+  const { t } = useTranslation();
 
-  const partners: Partner[] = [
-    {
-      id: 'f2e',
-      name: 'F2E (Free Energy Engineering)',
-      logo: 'logos/f2e.png',
-      description: "Partenaire technique spécialisé dans l'ingénierie énergétique durable.",
-      category: 'energy',
-      website: 'https://freeenergyengineering.com/',
-      details: "F2E apporte son expertise technique avancée en ingénierie énergétique pour développer des solutions durables et innovantes adaptées au contexte africain."
-    },
-    {
-      id: 'leukele',
-      name: 'Leukelé Africa',
-      logo: 'logos/leuke.png',
-      description: 'Partenaire stratégique pour le développement et la distribution en Afrique.',
-      category: 'tech',
-      website: 'https://vc4a.com/ventures/leukele-africa/fundraising/?lang=fr',
-      details: "Leukelé Africa facilite notre expansion continentale grâce à son réseau de distribution et sa connaissance approfondie des marchés africains."
-    },
-    {
-      id: 'yali',
-      name: 'YALI',
-      logo: 'logos/yali.png',
-      description: "Young African Leaders Initiative - Réseau de jeunes leaders africains.",
-      category: 'education',
-      website: 'https://yalirlcsouthernafrica.org/',
-      details: "YALI nous connecte avec la prochaine génération de leaders africains, favorisant l'innovation et le développement de solutions énergétiques durables."
-    },
-    {
-      id: 'orange',
-      name: 'Orange',
-      logo: 'logos/orange.png',
-      description: "Partenaire télécommunications et digital, soutien à l'entrepreneuriat.",
-      category: 'corporate',
-      website: 'https://www.orange.cm/',
-      details: "Orange nous accompagne dans la digitalisation de nos solutions et le développement de notre infrastructure technologique en Afrique."
-    },
-    {
-      id: 'totalenergies',
-      name: 'TotalEnergies',
-      logo: 'logos/total.png',
-      description: "Leader mondial de l'énergie, partenaire du programme Startupper.",
-      category: 'energy',
-      website: 'https://www.totalenergies.fr/',
-      details: "TotalEnergies nous soutient à travers son programme Startupper of the Year, apportant expertise et ressources pour notre croissance."
-    }
+  const stats = [
+    { icon: Users, key: 'active', value: `${PARTNERS.length}+` },
+    { icon: Layers3, key: 'sectors', value: '4' },
+    { icon: Compass, key: 'vision', value: '100%' },
   ];
 
-  const getCategoryIcon = (category: string) => {
-    const map: Record<string, React.ElementType> = {
-      energy: Zap,
-      tech: Building2,
-      education: GraduationCap,
-      corporate: Globe,
-    };
-    return map[category] || Building2;
-  };
-
-  const getCategoryColor = (category: string) => {
-    const map: Record<string, string> = {
-      energy: 'from-yellow-500 to-orange-500',
-      tech: 'from-blue-500 to-blue-600',
-      education: 'from-green-500 to-green-600',
-      corporate: 'from-purple-500 to-purple-600',
-    };
-    return map[category] || 'from-gray-500 to-gray-600';
-  };
-
-  const partnershipStats = [
-    {
-      icon: Users,
-      value: '5+',
-      label: 'Partenaires Actifs',
-      description: 'Collaborations stratégiques',
-      color: 'from-[#1876bc] to-blue-600'
-    },
-    {
-      icon: Award,
-      value: '4',
-      label: 'Secteurs Couverts',
-      description: 'Énergie, Tech, Éducation, Corporate',
-      color: 'from-[#84c450] to-green-600'
-    },
-    {
-      icon: Target,
-      value: '100%',
-      label: 'Vision Partagée',
-      description: 'Innovation pour l\'Afrique',
-      color: 'from-[#1876bc] to-[#84c450]'
-    }
-  ];
+  // Logos doubled for seamless marquee
+  const marqueeLogos = [...PARTNERS, ...PARTNERS];
 
   return (
-    <section className="py-12 lg:py-16 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Compact Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-8"
-        >
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
-            Nos Partenaires Stratégiques
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Des collaborations qui renforcent notre mission d'innovation énergétique
-          </p>
-        </motion.div>
+    <Section className="bg-ink-50/40">
+      <div className="absolute inset-0 -z-10 bg-grid mask-fade-y opacity-70" aria-hidden="true" />
 
-        {/* Compact Partners Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-          {partners.map((partner, index) => {
-            const Icon = getCategoryIcon(partner.category);
-            const colorClass = getCategoryColor(partner.category);
-            const isSelected = selectedPartner === partner.id;
+      <SectionHeader
+        eyebrow={t('partners.eyebrow')}
+        title={t('partners.title')}
+        subtitle={t('partners.subtitle')}
+      />
 
-            return (
-              <motion.div
-                key={partner.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer"
-                onClick={() => setSelectedPartner(isSelected ? null : partner.id)}
-              >
-                {/* Partner Header */}
-                <div className="relative h-24 bg-gray-50 flex items-center justify-center p-4">
-                  <img
-                    src={partner.logo}
-                    alt={partner.name}
-                    className="h-12 w-auto object-contain group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute top-2 right-2">
-                    <div className={`w-8 h-8 bg-gradient-to-br ${colorClass} rounded-lg flex items-center justify-center`}>
-                      <Icon className="w-4 h-4 text-white" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Partner Content */}
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900 truncate">
-                      {partner.name}
-                    </h3>
-                    <ChevronRight className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${isSelected ? 'rotate-90' : ''}`} />
-                  </div>
-                  
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                    {partner.description}
-                  </p>
-
-                  {/* Expandable Details */}
-                  <motion.div
-                    initial={false}
-                    animate={{ 
-                      height: isSelected ? 'auto' : 0,
-                      opacity: isSelected ? 1 : 0
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="pt-3 border-t border-gray-100">
-                      <p className="text-sm text-gray-700 mb-3 leading-relaxed">
-                        {partner.details}
-                      </p>
-                      <a
-                        href={partner.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-[#1876bc] hover:text-[#84c450] font-medium text-sm transition-colors"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Visiter le site
-                        <ExternalLink className="ml-1 w-3 h-3" />
-                      </a>
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-            );
-          })}
+      {/* Logos marquee */}
+      <div className="relative overflow-hidden mb-14 mask-fade-x">
+        <div className="flex w-max animate-marquee gap-12 lg:gap-16 py-4">
+          {marqueeLogos.map((p, i) => (
+            <div
+              key={`${p.id}-${i}`}
+              className="flex h-20 w-44 lg:w-52 shrink-0 items-center justify-center rounded-2xl border border-ink-100 bg-white px-6 transition-all duration-300 hover:shadow-elevated hover:border-brand-blue-200 group"
+            >
+              <img
+                src={p.logo}
+                alt={t(`partners.list.${p.id}.name`)}
+                className="max-h-12 max-w-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                loading="lazy"
+              />
+            </div>
+          ))}
         </div>
-
-        {/* Compact Stats Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {partnershipStats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-gray-50 rounded-xl p-4 text-center hover:shadow-md transition-all duration-300 group"
-              >
-                <div className={`w-10 h-10 bg-gradient-to-br ${stat.color} rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300`}>
-                  <stat.icon className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
-                <div className="text-sm font-semibold text-gray-900 mb-1">{stat.label}</div>
-                <div className="text-xs text-gray-600">{stat.description}</div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Compact Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="bg-gradient-to-r from-[#1876bc] to-[#84c450] rounded-xl p-6 text-center"
-        >
-          <h3 className="text-xl font-bold text-white mb-2">
-            Rejoignez Notre Écosystème
-          </h3>
-          <p className="text-white/90 mb-4 text-sm">
-            Ensemble, façonnons l'avenir énergétique de l'Afrique
-          </p>
-          <button className="bg-white text-[#1876bc] px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300 inline-flex items-center text-sm">
-            Devenir Partenaire
-            <ChevronRight className="w-4 h-4 ml-1" />
-          </button>
-        </motion.div>
       </div>
-    </section>
+
+      {/* Cards grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {PARTNERS.map((p, i) => (
+          <motion.a
+            key={p.id}
+            href={p.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5, delay: i * 0.06 }}
+            className="group relative overflow-hidden rounded-3xl border border-ink-100 bg-white p-6 transition-all duration-500 ease-elegant hover:-translate-y-1 hover:shadow-elevated hover:border-brand-blue-200"
+          >
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div className="flex h-14 w-28 items-center justify-start">
+                <img
+                  src={p.logo}
+                  alt={t(`partners.list.${p.id}.name`)}
+                  className="max-h-12 max-w-full object-contain"
+                  loading="lazy"
+                />
+              </div>
+              <span className="chip-green !py-1 !px-2.5 !text-[10px]">
+                {t(`partners.categories.${p.category}`)}
+              </span>
+            </div>
+            <h3 className="font-display text-lg font-semibold text-ink-900 mb-2">
+              {t(`partners.list.${p.id}.name`)}
+            </h3>
+            <p className="text-sm text-ink-600 leading-relaxed mb-4">
+              {t(`partners.list.${p.id}.description`)}
+            </p>
+            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue-700 group-hover:gap-2.5 transition-all">
+              {t('partners.visit')}
+              <ExternalLink className="h-3.5 w-3.5" />
+            </span>
+          </motion.a>
+        ))}
+      </div>
+
+      {/* Stats */}
+      <div className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {stats.map((s, i) => (
+          <motion.div
+            key={s.key}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.08 }}
+            className="rounded-3xl border border-ink-100 bg-white p-6 text-center hover-lift"
+          >
+            <div className="mx-auto mb-3 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-glow">
+              <s.icon className="h-5 w-5" />
+            </div>
+            <p className="text-3xl font-bold text-gradient-brand tabular-nums">{s.value}</p>
+            <p className="mt-1 text-sm font-semibold text-ink-800">
+              {t(`partners.stats.${s.key}`)}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mt-12 overflow-hidden rounded-3xl bg-gradient-brand p-8 lg:p-10 text-center text-white"
+      >
+        <h3 className="text-fluid-2xl lg:text-fluid-3xl font-bold">{t('partners.ctaTitle')}</h3>
+        <p className="mx-auto mt-2 max-w-xl text-white/85">{t('partners.ctaSubtitle')}</p>
+        <div className="mt-6">
+          <ButtonLink
+            to="/contact"
+            variant="white"
+            size="md"
+            iconRight={<ArrowRight className="h-4 w-4" />}
+          >
+            {t('partners.ctaButton')}
+          </ButtonLink>
+        </div>
+      </motion.div>
+    </Section>
   );
 };
 

@@ -1,39 +1,47 @@
-const InstallationVideoCard = () => {
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Info, PlayCircle } from 'lucide-react';
+import PageHero from '../components/ui/PageHero';
+import { Section } from '../components/ui/Section';
+import PageTransition from '../components/ui/PageTransition';
+
+const InstallationVideoCard: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
-    <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-6 space-y-4">
-      
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-semibold text-gray-800">
-          Vidéo d’installation du kit
-        </h2>
-        <p className="text-gray-500">
-          Guide visuel destiné à nos partenaires d’installation
-        </p>
-      </div>
+    <PageTransition>
+      <PageHero
+        eyebrow={t('nav.video')}
+        title={t('video.title')}
+        subtitle={t('video.subtitle')}
+      />
 
-      {/* Video */}
-      <div className="aspect-video rounded-xl overflow-hidden border">
-        <iframe
-          src="https://www.youtube.com/embed/SXeX896I3aw"
-          title="Vidéo d'installation du kit"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="w-full h-full"
-        ></iframe>
-      </div>
+      <Section className="bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="relative rounded-4xl border border-ink-100 bg-white shadow-elevated p-3 sm:p-4">
+            <div className="aspect-video rounded-3xl overflow-hidden bg-ink-950">
+              <iframe
+                src="https://www.youtube.com/embed/SXeX896I3aw"
+                title={t('video.title')}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="h-full w-full"
+              />
+            </div>
+          </div>
 
-      {/* Info */}
-      <div className="flex items-start gap-2 bg-blue-50 border border-blue-200 text-blue-700 text-sm p-3 rounded-lg">
-        <span>ℹ️</span>
-        <p>
-          Cette vidéo ne contient pas de son.  
-          Une description détaillée est affichée en bas de la vidéo pour expliquer chaque étape.
-        </p>
-      </div>
+          <div className="mt-6 flex items-start gap-3 rounded-2xl border border-brand-blue-200 bg-brand-blue-50/60 p-4">
+            <Info className="mt-0.5 h-5 w-5 shrink-0 text-brand-blue-700" />
+            <p className="text-sm text-brand-blue-900 leading-relaxed">{t('video.info')}</p>
+          </div>
 
-    </div>
+          <div className="mt-8 flex items-center justify-center gap-2 text-sm text-ink-500">
+            <PlayCircle className="h-4 w-4 text-brand-green-500" />
+            {t('common.poweredBy')}
+          </div>
+        </div>
+      </Section>
+    </PageTransition>
   );
 };
 
