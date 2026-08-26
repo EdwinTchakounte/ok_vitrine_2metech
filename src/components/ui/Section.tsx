@@ -19,9 +19,13 @@ export const Section: React.FC<SectionProps> = ({
   ...rest
 }) => {
   const padding =
-    size === 'sm' ? 'py-14 sm:py-16 lg:py-20' : size === 'lg' ? 'py-24 sm:py-28 lg:py-36' : 'section';
+    size === 'sm'
+      ? 'py-12 sm:py-14 lg:py-16'
+      : size === 'lg'
+        ? 'py-20 sm:py-24 lg:py-32'
+        : 'section';
   return (
-    <section id={id} className={cn('relative', padding, className)} {...rest}>
+    <section id={id} className={cn('relative isolate', padding, className)} {...rest}>
       <div className={cn('container mx-auto', containerClassName)}>{children}</div>
     </section>
   );
@@ -33,6 +37,8 @@ interface SectionHeaderProps {
   subtitle?: React.ReactNode;
   align?: 'left' | 'center';
   variant?: 'light' | 'dark';
+  /** Optional right-hand slot (a CTA, a control); desktop only alignment. */
+  aside?: React.ReactNode;
   className?: string;
 }
 
@@ -42,42 +48,53 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   subtitle,
   align = 'center',
   variant = 'light',
+  aside,
   className,
 }) => {
   const isDark = variant === 'dark';
+  const centered = align === 'center' && !aside;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        'mx-auto mb-10 sm:mb-12 lg:mb-16 max-w-3xl',
-        align === 'center' ? 'text-center' : 'text-left',
+        'mb-10 sm:mb-12 lg:mb-14',
+        centered ? 'mx-auto max-w-3xl text-center' : 'flex flex-col gap-6 md:flex-row md:items-end md:justify-between',
         className,
       )}
     >
-      {eyebrow && (
-        <span className={cn(isDark ? 'chip-dark' : 'chip', 'mb-4 sm:mb-5')}>{eyebrow}</span>
-      )}
-      <h2
-        className={cn(
-          'text-fluid-3xl sm:text-fluid-4xl font-bold leading-[1.08] mb-3 sm:mb-4 lg:mb-5',
-          isDark ? 'text-white' : 'text-ink-900',
+      <div className={cn(!centered && 'max-w-2xl')}>
+        {eyebrow && (
+          <span className={cn(isDark ? 'chip-dark' : 'chip', 'mb-4')}>{eyebrow}</span>
         )}
-      >
-        {title}
-      </h2>
-      {subtitle && (
-        <p
+        <h2
           className={cn(
-            'text-base sm:text-fluid-lg leading-relaxed',
-            isDark ? 'text-white/75' : 'text-ink-600',
+            'text-fluid-3xl font-bold leading-[1.1] tracking-tighter sm:text-fluid-4xl',
+            isDark ? 'text-white' : 'text-fg',
           )}
         >
-          {subtitle}
-        </p>
-      )}
+          {title}
+        </h2>
+        {/* Short brand rule instead of a full gradient wash */}
+        <div className={cn('rule-brand mt-5', centered && 'mx-auto')} aria-hidden="true" />
+        {subtitle && (
+          <p
+            className={cn(
+              'mt-5 text-fluid-base leading-relaxed',
+              isDark ? 'text-white/70' : 'text-fg-muted',
+              /* Justifying a centred block would fight the centring. */
+              !centered && 'text-just',
+            )}
+          >
+            {subtitle}
+          </p>
+        )}
+      </div>
+
+      {aside && <div className="shrink-0">{aside}</div>}
     </motion.div>
   );
 };

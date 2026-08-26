@@ -8,15 +8,15 @@ import { ButtonLink } from '../components/ui/Button';
 import AwardsGrid from '../components/Awards/AwardsGrid';
 import PageTransition from '../components/ui/PageTransition';
 
+const STATS = [
+  { value: '4', key: 'prizes', icon: Trophy },
+  { value: '2024', key: 'year', icon: Calendar },
+  { value: '3', key: 'countries', icon: AwardIcon },
+  { value: '100%', key: 'innovation', icon: Star },
+];
+
 const Awards: React.FC = () => {
   const { t } = useTranslation();
-
-  const stats = [
-    { value: '4', key: 'prizes', icon: Trophy },
-    { value: '2024', key: 'year', icon: Calendar },
-    { value: '3', key: 'countries', icon: AwardIcon },
-    { value: '100%', key: 'innovation', icon: Star },
-  ];
 
   return (
     <PageTransition>
@@ -29,41 +29,50 @@ const Awards: React.FC = () => {
       <AwardsGrid />
 
       {/* Stats */}
-      <Section size="sm" className="bg-white">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-          {stats.map((s, i) => (
+      <Section size="sm" className="bg-surface-sunken">
+        <dl className="mx-auto grid max-w-4xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line lg:grid-cols-4">
+          {STATS.map((s, i) => (
             <motion.div
               key={s.key}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="rounded-3xl border border-ink-100 bg-white p-5 text-center hover-lift transition-all hover:border-brand-blue-200"
+              transition={{ duration: 0.45, delay: i * 0.06 }}
+              className="bg-surface p-6 text-center"
             >
-              <div className="mx-auto mb-3 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-glow">
-                <s.icon className="h-5 w-5" />
-              </div>
-              <p className="text-2xl lg:text-3xl font-bold text-gradient-brand tabular-nums">
-                {s.value}
-              </p>
-              <p className="mt-1 text-xs sm:text-sm font-semibold text-ink-700">
-                {t(`awards.stats.${s.key}`)}
-              </p>
+              <span className="icon-tile mx-auto h-10 w-10">
+                <s.icon className="h-[18px] w-[18px]" strokeWidth={2} />
+              </span>
+              <dt className="sr-only">{t(`awards.stats.${s.key}`)}</dt>
+              <dd>
+                <span className="mt-4 block text-2xl font-bold leading-none tabular-nums tracking-tighter text-fg lg:text-3xl">
+                  {s.value}
+                </span>
+                <span className="mt-2 block text-[12.5px] font-semibold text-fg-muted">
+                  {t(`awards.stats.${s.key}`)}
+                </span>
+              </dd>
             </motion.div>
           ))}
-        </div>
+        </dl>
       </Section>
 
       {/* CTA */}
-      <Section className="bg-gradient-brand text-white">
-        <div className="text-center max-w-2xl mx-auto">
-          <h2 className="text-fluid-3xl font-bold">{t('awards.ctaTitle')}</h2>
-          <p className="mt-4 text-white/90">{t('awards.ctaSubtitle')}</p>
-          <div className="mt-7">
+      <Section className="bg-invert text-white">
+        <div className="absolute inset-0 -z-10 bg-wash-invert" aria-hidden="true" />
+        <div className="absolute inset-0 -z-10 bg-dots-dark opacity-40" aria-hidden="true" />
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-fluid-3xl font-bold tracking-tighter text-white">
+            {t('awards.ctaTitle')}
+          </h2>
+          <p className="mt-4 text-fluid-base leading-relaxed text-white/70">
+            {t('awards.ctaSubtitle')}
+          </p>
+          <div className="mt-8">
             <ButtonLink
               to="/enmkit"
-              variant="white"
-              size="md"
+              variant="primary"
+              size="lg"
               iconRight={<ArrowRight className="h-4 w-4" />}
             >
               {t('awards.ctaButton')}

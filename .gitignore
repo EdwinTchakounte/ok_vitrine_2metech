@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Captures brutes du telephone (22 Mo). Les 14 utilisees par le site sont
+# versionnees en WebP optimise dans public/app/.
+screenshots/
+
+# Planches de relecture generees localement
+apercu/

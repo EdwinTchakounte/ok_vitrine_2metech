@@ -16,36 +16,39 @@ import {
   Check,
   Sparkles,
   MessageCircle,
+  Download,
 } from 'lucide-react';
 import PageHero from '../components/ui/PageHero';
 import { Section, SectionHeader } from '../components/ui/Section';
 import { ButtonLink } from '../components/ui/Button';
 import PageTransition from '../components/ui/PageTransition';
+import ApkDownload from '../components/App/ApkDownload';
+import { WHATSAPP_URL, shotSrc } from '../lib/links';
+
+const FEATURES = [
+  { key: 'monitoring', icon: Eye },
+  { key: 'remote', icon: Sliders },
+  { key: 'analytics', icon: BarChart3 },
+  { key: 'security', icon: Shield },
+  { key: 'ai', icon: Bell },
+  { key: 'cloud', icon: Cloud },
+] as const;
+
+const INSTALL_STEPS = [
+  { key: 'diagnostic', icon: Activity },
+  { key: 'install', icon: Settings },
+  { key: 'config', icon: Wifi },
+  { key: 'training', icon: GraduationCap },
+] as const;
+
+const STATS = [
+  { value: '25%', key: 'fraud' },
+  { value: '95%', key: 'ai' },
+  { value: '40%', key: 'savings' },
+];
 
 const Enmkit: React.FC = () => {
   const { t } = useTranslation();
-
-  const features = [
-    { key: 'monitoring', icon: Eye },
-    { key: 'remote', icon: Sliders },
-    { key: 'analytics', icon: BarChart3 },
-    { key: 'security', icon: Shield },
-    { key: 'ai', icon: Bell },
-    { key: 'cloud', icon: Cloud },
-  ] as const;
-
-  const installSteps = [
-    { key: 'diagnostic', icon: Activity },
-    { key: 'install', icon: Settings },
-    { key: 'config', icon: Wifi },
-    { key: 'training', icon: GraduationCap },
-  ] as const;
-
-  const stats = [
-    { value: '25%', key: 'fraud' },
-    { value: '95%', key: 'ai' },
-    { value: '40%', key: 'savings' },
-  ];
 
   return (
     <PageTransition>
@@ -58,47 +61,66 @@ const Enmkit: React.FC = () => {
           </>
         }
         subtitle={t('enmkit.description')}
+        aside={
+          <div className="phone-frame mx-auto w-full max-w-[15rem]">
+            <img
+              src={shotSrc('lignes')}
+              alt={t('app.shots.lignes')}
+              width={540}
+              height={1200}
+              loading="eager"
+            />
+          </div>
+        }
       >
         <ButtonLink
           to="/contact"
           variant="primary"
           size="lg"
-          iconRight={<ArrowRight className="h-5 w-5" />}
+          iconRight={<ArrowRight className="h-4 w-4" />}
         >
           {t('common.contact')}
+        </ButtonLink>
+        <ButtonLink
+          to="/app"
+          variant="glass"
+          size="lg"
+          iconLeft={<Download className="h-4 w-4" />}
+        >
+          {t('nav.app')}
         </ButtonLink>
       </PageHero>
 
       {/* Stats strip */}
-      <Section size="sm" className="bg-white">
-        <div className="grid grid-cols-3 gap-4 max-w-3xl mx-auto">
-          {stats.map((s, i) => (
+      <Section size="sm" className="bg-canvas">
+        <div className="mx-auto grid max-w-3xl grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3">
+          {STATS.map((s, i) => (
             <motion.div
               key={s.key}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="rounded-3xl border border-ink-100 bg-white p-5 lg:p-6 text-center shadow-soft hover-lift"
+              transition={{ duration: 0.45, delay: i * 0.07 }}
+              className="bg-surface px-5 py-7 text-center"
             >
-              <p className="text-fluid-3xl font-bold text-gradient-brand tabular-nums leading-none">
+              <p className="text-fluid-3xl font-bold leading-none tabular-nums tracking-tighter text-brand-blue-600 dark:text-brand-blue-300">
                 {s.value}
               </p>
-              <p className="mt-2 text-xs sm:text-sm font-semibold text-ink-700">
+              <p className="mt-2.5 text-[13px] font-semibold text-fg-muted">
                 {t(`enmkit.stats.${s.key}`)}
               </p>
             </motion.div>
           ))}
         </div>
-        <div className="mt-6 text-center text-sm text-ink-500 inline-flex items-center justify-center gap-2 w-full">
-          <Sparkles className="h-4 w-4 text-brand-green-500" />
+        <p className="mt-6 flex items-center justify-center gap-2 text-[13px] text-fg-subtle">
+          <Sparkles className="h-3.5 w-3.5 text-brand-green-500" />
           {t('enmkit.poweredBy')}
-        </div>
+        </p>
       </Section>
 
-      {/* Features grid */}
-      <Section className="bg-ink-50/40">
-        <div className="absolute inset-0 -z-10 bg-grid mask-fade-y opacity-60" aria-hidden="true" />
+      {/* Features */}
+      <Section className="bg-surface-sunken">
+        <div className="absolute inset-0 -z-10 bg-grid mask-fade-y" aria-hidden="true" />
         <SectionHeader
           eyebrow={t('features.eyebrow')}
           title={
@@ -110,96 +132,108 @@ const Enmkit: React.FC = () => {
           subtitle={t('enmkit.featuresSubtitle')}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {features.map((f, i) => (
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((f, i) => (
             <motion.div
               key={f.key}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: i * 0.06 }}
-              className="group rounded-3xl border border-ink-100 bg-white p-7 hover-lift hover:border-brand-blue-200 hover:shadow-elevated transition-all duration-500"
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: i * 0.05 }}
+              className="group relative bg-surface p-6 transition-colors duration-300 hover:bg-surface-hover lg:p-7"
             >
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-glow mb-5">
-                <f.icon className="h-5 w-5" />
-              </div>
-              <h3 className="text-lg font-semibold text-ink-900 mb-2">
+              <span className="icon-tile h-11 w-11">
+                <f.icon className="h-5 w-5" strokeWidth={2} />
+              </span>
+              <h3 className="mt-4 text-base font-bold text-fg">
                 {t(`enmkit.features.${f.key}.title`)}
               </h3>
-              <p className="text-sm text-ink-600 leading-relaxed">
+              <p className="mt-2 text-[13.5px] leading-relaxed text-fg-muted">
                 {t(`enmkit.features.${f.key}.description`)}
               </p>
+              <span
+                className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-gradient-rule transition-transform duration-500 ease-elegant group-hover:scale-x-100"
+                aria-hidden="true"
+              />
             </motion.div>
           ))}
         </div>
       </Section>
 
-      {/* Install timeline */}
-      <Section className="bg-white">
+      {/* Install steps */}
+      <Section className="bg-canvas">
         <SectionHeader
           title={t('enmkit.installTitle')}
           subtitle={t('enmkit.installSubtitle')}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 relative">
-          {/* connecting line (desktop) */}
-          <div className="hidden lg:block absolute left-12 right-12 top-12 h-px bg-gradient-to-r from-brand-blue-200 via-brand-green-300 to-brand-blue-200" aria-hidden="true" />
-
-          {installSteps.map((s, i) => (
-            <motion.div
+        <ol className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+          {INSTALL_STEPS.map((s, i) => (
+            <motion.li
               key={s.key}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="relative rounded-3xl border border-ink-100 bg-white p-7 text-center hover-lift transition-all duration-500 hover:border-brand-blue-200 hover:shadow-elevated"
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: i * 0.07 }}
+              className="bg-surface p-6 lg:p-7"
             >
-              <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-glow relative z-10">
-                <s.icon className="h-6 w-6" />
+              <div className="flex items-center justify-between">
+                <span className="icon-tile h-11 w-11">
+                  <s.icon className="h-5 w-5" strokeWidth={2} />
+                </span>
+                <span className="font-mono text-[11px] font-medium tracking-[0.18em] text-fg-subtle">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
               </div>
-              <p className="mt-3 text-xs font-bold tracking-[0.2em] text-brand-blue-600">
-                {String(i + 1).padStart(2, '0')}
-              </p>
-              <h3 className="mt-2 text-lg font-semibold text-ink-900">
+              <h3 className="mt-4 text-base font-bold text-fg">
                 {t(`enmkit.install.${s.key}.title`)}
               </h3>
-              <p className="mt-2 text-sm text-ink-600 leading-relaxed">
+              <p className="mt-2 text-[13.5px] leading-relaxed text-fg-muted">
                 {t(`enmkit.install.${s.key}.description`)}
               </p>
-            </motion.div>
+            </motion.li>
           ))}
+        </ol>
+
+        <div className="mx-auto mt-10 max-w-4xl">
+          <ApkDownload />
         </div>
       </Section>
 
       {/* CTA */}
-      <Section className="bg-ink-950 text-white">
-        <div className="absolute inset-0 -z-10 bg-mesh-dark opacity-90" aria-hidden="true" />
-        <div className="absolute inset-0 -z-10 bg-grid-dark opacity-40" aria-hidden="true" />
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-fluid-4xl font-bold">{t('enmkit.ctaTitle')}</h2>
-          <p className="mt-4 text-fluid-lg text-white/75">{t('enmkit.ctaSubtitle')}</p>
+      <Section className="bg-invert text-white">
+        <div className="absolute inset-0 -z-10 bg-wash-invert" aria-hidden="true" />
+        <div className="absolute inset-0 -z-10 bg-dots-dark opacity-40" aria-hidden="true" />
+
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-fluid-3xl font-bold tracking-tighter text-white">
+            {t('enmkit.ctaTitle')}
+          </h2>
+          <p className="mt-4 text-fluid-base leading-relaxed text-white/70">
+            {t('enmkit.ctaSubtitle')}
+          </p>
 
           <div className="mt-8">
             <ButtonLink
-              to="https://wa.me/237696372245"
+              to={WHATSAPP_URL}
               external
               variant="primary"
               size="lg"
-              iconLeft={<MessageCircle className="h-5 w-5" />}
-              iconRight={<ArrowRight className="h-5 w-5" />}
+              iconLeft={<MessageCircle className="h-4 w-4" />}
+              iconRight={<ArrowRight className="h-4 w-4" />}
             >
               {t('enmkit.ctaButton')}
             </ButtonLink>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-white/70">
+          <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[13.5px] text-white/65">
             {(['savings', 'alerts', 'anomalies', 'support'] as const).map((b) => (
-              <span key={b} className="inline-flex items-center gap-2">
-                <Check className="h-4 w-4 text-brand-green-400" />
+              <li key={b} className="inline-flex items-center gap-2">
+                <Check className="h-3.5 w-3.5 text-brand-green-400" strokeWidth={2.5} />
                 {t(`enmkit.benefits.${b}`)}
-              </span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </Section>
     </PageTransition>

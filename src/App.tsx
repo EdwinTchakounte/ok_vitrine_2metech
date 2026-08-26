@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import './i18n';
 
+import { ThemeProvider } from './lib/theme';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
 import WhatsAppFloat from './components/Layout/WhatsAppFloat';
@@ -17,23 +18,21 @@ const Partners = lazy(() => import('./pages/Partners'));
 const Installers = lazy(() => import('./pages/Installers'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Enmkit = lazy(() => import('./pages/Enmkit'));
+const MobileApp = lazy(() => import('./pages/MobileApp'));
 const InstallationVideoCard = lazy(() => import('./pages/Guide_video'));
 
 const Loader: React.FC = () => (
   <div
     role="status"
     aria-live="polite"
-    className="min-h-[60vh] flex items-center justify-center"
+    className="flex min-h-[60vh] items-center justify-center"
   >
-    <div className="relative">
-      <div className="absolute inset-0 rounded-full bg-gradient-brand blur-2xl opacity-50 animate-pulse" />
-      <div className="relative h-12 w-12 rounded-full border-[3px] border-brand-blue-500 border-t-transparent animate-spin" />
-    </div>
+    <span className="h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-brand-blue-500" />
   </div>
 );
 
 const FullLoader: React.FC = () => (
-  <div className="min-h-screen flex items-center justify-center bg-white">
+  <div className="flex min-h-screen items-center justify-center bg-canvas">
     <Loader />
   </div>
 );
@@ -46,6 +45,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/enmkit" element={<Enmkit />} />
+        <Route path="/app" element={<MobileApp />} />
         <Route path="/awards" element={<Awards />} />
         <Route path="/gallery" element={<Home />} />
         <Route path="/partners" element={<Partners />} />
@@ -60,29 +60,34 @@ const AnimatedRoutes: React.FC = () => {
 
 const App: React.FC = () => {
   const { ready } = useTranslation();
-  if (!ready) return <FullLoader />;
 
   return (
-    <Router>
-      <ScrollToTop />
-      <ScrollProgress />
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-brand-blue-700 focus:shadow-floating"
-      >
-        Skip to content
-      </a>
-      <div className="min-h-screen bg-white text-ink-900">
-        <Header />
-        <main id="main">
-          <Suspense fallback={<Loader />}>
-            <AnimatedRoutes />
-          </Suspense>
-        </main>
-        <Footer />
-        <WhatsAppFloat />
-      </div>
-    </Router>
+    <ThemeProvider>
+      {!ready ? (
+        <FullLoader />
+      ) : (
+        <Router>
+          <ScrollToTop />
+          <ScrollProgress />
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-brand-blue-700 focus:shadow-floating"
+          >
+            Skip to content
+          </a>
+          <div className="min-h-screen bg-canvas text-fg">
+            <Header />
+            <main id="main">
+              <Suspense fallback={<Loader />}>
+                <AnimatedRoutes />
+              </Suspense>
+            </main>
+            <Footer />
+            <WhatsAppFloat />
+          </div>
+        </Router>
+      )}
+    </ThemeProvider>
   );
 };
 

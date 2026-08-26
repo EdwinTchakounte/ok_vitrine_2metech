@@ -37,6 +37,7 @@ const fr = {
       installers: 'Installateurs',
       partners: 'Partenaires',
       video: 'Guide vidéo',
+      app: 'Application mobile',
     },
     hero: {
       eyebrow: 'Smart Energy · Made in Africa',
@@ -110,7 +111,7 @@ const fr = {
           stat: '< 30s',
           title: 'Détection auto des anomalies.',
           text:
-            'Surcharge, fraude, panne — vous êtes alerté avant que ça coûte cher. Support 24/7.',
+            'Surcharge, fraude, panne : vous êtes alerté avant que ça coûte cher. Support 24/7.',
           b1: 'Alertes instantanées',
           b2: 'Détection de fraude',
           b3: 'Garantie 6 mois + support',
@@ -137,7 +138,7 @@ const fr = {
       title: 'Une plateforme complète,',
       titleAccent: 'pas un simple compteur.',
       subtitle:
-        'EnMKit combine matériel connecté, données en temps réel et application mobile — pour un contrôle total de votre énergie.',
+        'EnMKit combine matériel connecté, données en temps réel et application mobile, pour un contrôle total de votre énergie.',
       hero: {
         kicker: 'Solution intégrée',
         title: 'Capteur · Cloud · Mobile',
@@ -388,14 +389,14 @@ const fr = {
           'Lauréate du Prix Spécial Féminin Orange 2024, Dr Tjahe Agnès Virginie a été reconnue pour son leadership innovant avec EnMKit.',
       },
       yali: {
-        title: 'YALI Power Challenge — Pretoria',
+        title: 'YALI Power Challenge · Pretoria',
         category: 'Design',
         date: '2024',
         description:
           'EnMKit s’est distinguée au YALI Power Challenge de Pretoria où des jeunes leaders africains ont présenté des solutions énergétiques durables.',
       },
       totalenergies: {
-        title: 'Startupper of the Year — TotalEnergies',
+        title: 'Startupper of the Year · TotalEnergies',
         category: 'Startup',
         date: 'Octobre 2024',
         description:
@@ -434,7 +435,7 @@ const fr = {
       ctaButton: 'Devenir partenaire',
       list: {
         f2e: {
-          name: 'F2E — Free Energy Engineering',
+          name: 'F2E · Free Energy Engineering',
           description: "Partenaire technique en ingénierie énergétique durable.",
           details:
             "F2E apporte son expertise technique avancée pour développer des solutions adaptées au contexte africain.",
@@ -551,7 +552,7 @@ const fr = {
       mapTitle: 'Notre localisation',
       mapSubtitle:
         'Retrouvez-nous à Bafoussam, au cœur de l’innovation énergétique camerounaise.',
-      mapPlaceholder: 'Carte interactive — Mairie de Bafoussam, Cameroun',
+      mapPlaceholder: 'Carte interactive · Mairie de Bafoussam, Cameroun',
     },
     installers: {
       eyebrow: 'Réseau certifié',
@@ -660,6 +661,82 @@ const fr = {
       defaultMessage:
         'Bonjour, je suis intéressé(e) par EnMKit. Pouvez-vous me donner plus d’informations ?',
     },
+    theme: {
+      toggle: 'Changer de thème',
+      light: 'Passer en thème clair',
+      dark: 'Passer en thème sombre',
+    },
+    menu: {
+      solution: 'Solution',
+      company: 'Entreprise',
+      solutionTag: 'Produit',
+      companyTag: 'À propos de nous',
+      items: {
+        enmkit: 'Le kit IoT et sa plateforme',
+        app: 'Piloter vos kits depuis votre téléphone',
+        video: 'Installer un kit, étape par étape',
+        about: 'Notre mission et notre fondatrice',
+        awards: 'Quatre distinctions internationales',
+        partners: 'Celles et ceux qui nous accompagnent',
+      },
+      download: 'Télécharger l’app',
+    },
+    app: {
+      eyebrow: 'Application mobile',
+      title: 'Vos kits EnMKit,',
+      titleAccent: 'dans votre poche.',
+      subtitle:
+        'Pilotez vos lignes, suivez votre consommation et recevez vos alertes, par internet ou par SMS, même sans couverture data.',
+      teaserTitle: 'L’application mobile EnMKit',
+      teaserText:
+        'Commandez vos lignes, consultez votre consommation et gérez plusieurs logements depuis un seul écran.',
+      teaserCta: 'Découvrir l’application',
+      download: 'Télécharger l’APK',
+      downloadShort: 'Télécharger',
+      downloadHint: 'Android · fichier APK · installation manuelle',
+      openDrive: 'Ouvrir dans Google Drive',
+      directLink: 'Lien de téléchargement direct',
+      scanTitle: 'Scannez pour installer',
+      scanText:
+        'Pointez l’appareil photo de votre téléphone sur ce code : il ouvre directement la page de téléchargement.',
+      androidOnly: 'Android uniquement',
+      free: 'Gratuit',
+      offline: 'Fonctionne sans internet',
+      installTitle: 'Installer en trois étapes',
+      install: {
+        s1: { title: 'Téléchargez le fichier', text: 'Appuyez sur le bouton ou scannez le QR code pour récupérer l’APK.' },
+        s2: { title: 'Autorisez l’installation', text: 'Android demande d’autoriser les applications de cette source : acceptez.' },
+        s3: { title: 'Ouvrez et associez', text: 'Créez votre code, puis ajoutez votre kit manuellement ou par scan QR.' },
+      },
+      featuresTitle: 'Ce que vous pouvez faire',
+      featuresSubtitle: 'Toutes les fonctions du kit, accessibles en quelques gestes.',
+      features: {
+        control: { title: 'Contrôle des lignes', text: 'Allumez ou éteignez chaque ligne, ou tout le logement d’un seul geste.' },
+        consumption: { title: 'Consommation suivie', text: 'Courbe d’évolution, dernière mesure et historique complet par kit.' },
+        sms: { title: 'Pilotage par SMS', text: 'Chaque commande passe aussi par SMS : votre kit répond même sans data.' },
+        multisite: { title: 'Plusieurs logements', text: 'Gérez appartements et sites multiples depuis un parc unique.' },
+        security: { title: 'Accès protégé', text: 'Code PIN, empreinte digitale et liste de numéros autorisés.' },
+        qr: { title: 'Partage par QR', text: 'Exportez la configuration d’un kit et importez-la par simple scan.' },
+      },
+      galleryTitle: 'L’application en images',
+      gallerySubtitle: 'Captures réelles de l’application EnMKit.',
+      shots: {
+        onboarding: 'Prise en main guidée',
+        parc: 'Tout votre parc en un écran',
+        lignes: 'Contrôle des lignes',
+        commandes: 'Marche / arrêt instantané',
+        conso: 'Consommation en temps réel',
+        config: 'Configuration du kit',
+        'qr-export': 'Export du kit en QR code',
+        'qr-scan': 'Import par scan',
+        historique: 'Accusés de réception',
+        biometrie: 'Code PIN et empreinte',
+        reglages: 'Thème clair, sombre ou auto',
+        faq: 'Aide intégrée',
+        numeros: 'Numéros autorisés',
+        sms: 'Commandes par SMS',
+      },
+    },
   },
 };
 
@@ -698,6 +775,7 @@ const en: typeof fr = {
       installers: 'Installers',
       partners: 'Partners',
       video: 'Video Guide',
+      app: 'Mobile app',
     },
     hero: {
       eyebrow: 'Smart Energy · Made in Africa',
@@ -771,7 +849,7 @@ const en: typeof fr = {
           stat: '< 30s',
           title: 'Auto anomaly detection.',
           text:
-            'Overload, fraud, outage — you’re alerted before it costs. 24/7 support.',
+            'Overload, fraud, outage: you’re alerted before it costs. 24/7 support.',
           b1: 'Instant alerts',
           b2: 'Fraud detection',
           b3: '6-month warranty + support',
@@ -787,7 +865,7 @@ const en: typeof fr = {
       title: 'EnMKit in action.',
       titleAccent: 'In 2 minutes.',
       subtitle:
-        'See the full installation, first readings and the mobile app — in real conditions.',
+        'See the full installation, first readings and the mobile app, in real conditions.',
       duration: '2:14',
       badge: 'No sound · visual description',
       play: 'Play video',
@@ -818,7 +896,7 @@ const en: typeof fr = {
       },
       coverage: {
         title: 'Field presence',
-        text: 'Bafoussam, Yaoundé, Douala — and the sub-region soon.',
+        text: 'Bafoussam, Yaoundé, Douala, and the sub-region soon.',
       },
       number: {
         label: 'satisfaction rate',
@@ -1046,14 +1124,14 @@ const en: typeof fr = {
           'Winner of the Orange Women’s Special Prize 2024, Dr Tjahe Agnès Virginie was recognized for her innovative leadership with EnMKit.',
       },
       yali: {
-        title: 'YALI Power Challenge — Pretoria',
+        title: 'YALI Power Challenge · Pretoria',
         category: 'Design',
         date: '2024',
         description:
           'EnMKit stood out at the YALI Power Challenge in Pretoria where young African leaders presented sustainable energy solutions.',
       },
       totalenergies: {
-        title: 'Startupper of the Year — TotalEnergies',
+        title: 'Startupper of the Year · TotalEnergies',
         category: 'Startup',
         date: 'October 2024',
         description:
@@ -1091,7 +1169,7 @@ const en: typeof fr = {
       ctaButton: 'Become a partner',
       list: {
         f2e: {
-          name: 'F2E — Free Energy Engineering',
+          name: 'F2E · Free Energy Engineering',
           description: 'Technical partner specialized in sustainable energy engineering.',
           details:
             'F2E provides advanced technical expertise to develop solutions tailored to the African context.',
@@ -1104,7 +1182,7 @@ const en: typeof fr = {
         },
         yali: {
           name: 'YALI',
-          description: 'Young African Leaders Initiative — network of African leaders.',
+          description: 'Young African Leaders Initiative: a network of African leaders.',
           details:
             'YALI connects us with the next generation of African leaders, fostering innovation.',
         },
@@ -1207,7 +1285,7 @@ const en: typeof fr = {
       },
       mapTitle: 'Our location',
       mapSubtitle: 'Find us in Bafoussam, the heart of Cameroonian energy innovation.',
-      mapPlaceholder: 'Interactive map — Bafoussam City Hall, Cameroon',
+      mapPlaceholder: 'Interactive map · Bafoussam City Hall, Cameroon',
     },
     installers: {
       eyebrow: 'Certified network',
@@ -1313,6 +1391,82 @@ const en: typeof fr = {
       cta: 'Start the conversation',
       defaultMessage:
         'Hello, I am interested in EnMKit. Could you give me more information?',
+    },
+    theme: {
+      toggle: 'Switch theme',
+      light: 'Switch to light theme',
+      dark: 'Switch to dark theme',
+    },
+    menu: {
+      solution: 'Solution',
+      company: 'Company',
+      solutionTag: 'Product',
+      companyTag: 'About us',
+      items: {
+        enmkit: 'The IoT kit and its platform',
+        app: 'Control your kits from your phone',
+        video: 'Install a kit, step by step',
+        about: 'Our mission and our founder',
+        awards: 'Four international distinctions',
+        partners: 'The people backing us',
+      },
+      download: 'Get the app',
+    },
+    app: {
+      eyebrow: 'Mobile app',
+      title: 'Your EnMKit kits,',
+      titleAccent: 'in your pocket.',
+      subtitle:
+        'Switch your lines, track your consumption and get your alerts, over the internet or by SMS, even with no data coverage.',
+      teaserTitle: 'The EnMKit mobile app',
+      teaserText:
+        'Switch your lines, check your consumption and manage several homes from a single screen.',
+      teaserCta: 'Explore the app',
+      download: 'Download the APK',
+      downloadShort: 'Download',
+      downloadHint: 'Android · APK file · manual install',
+      openDrive: 'Open in Google Drive',
+      directLink: 'Direct download link',
+      scanTitle: 'Scan to install',
+      scanText:
+        'Point your phone camera at this code: it opens the download page directly.',
+      androidOnly: 'Android only',
+      free: 'Free',
+      offline: 'Works without internet',
+      installTitle: 'Install in three steps',
+      install: {
+        s1: { title: 'Download the file', text: 'Tap the button or scan the QR code to get the APK.' },
+        s2: { title: 'Allow the install', text: 'Android will ask you to allow apps from this source: accept.' },
+        s3: { title: 'Open and pair', text: 'Set your code, then add your kit manually or by scanning a QR code.' },
+      },
+      featuresTitle: 'What you can do',
+      featuresSubtitle: 'Every function of the kit, a few taps away.',
+      features: {
+        control: { title: 'Line control', text: 'Switch each line on or off, or the whole home in one tap.' },
+        consumption: { title: 'Tracked consumption', text: 'Trend curve, latest reading and full history for every kit.' },
+        sms: { title: 'SMS control', text: 'Every command also travels by SMS: your kit answers without data.' },
+        multisite: { title: 'Several homes', text: 'Manage flats and multiple sites from a single portfolio.' },
+        security: { title: 'Protected access', text: 'PIN code, fingerprint and a list of authorised numbers.' },
+        qr: { title: 'QR sharing', text: 'Export a kit configuration and import it with a simple scan.' },
+      },
+      galleryTitle: 'The app in pictures',
+      gallerySubtitle: 'Real screenshots from the EnMKit app.',
+      shots: {
+        onboarding: 'Guided onboarding',
+        parc: 'Your whole portfolio at a glance',
+        lignes: 'Line control',
+        commandes: 'Instant on / off',
+        conso: 'Live consumption',
+        config: 'Kit configuration',
+        'qr-export': 'Export a kit as a QR code',
+        'qr-scan': 'Import by scanning',
+        historique: 'Delivery receipts',
+        biometrie: 'PIN code and fingerprint',
+        reglages: 'Light, dark or auto theme',
+        faq: 'Built-in help',
+        numeros: 'Authorised numbers',
+        sms: 'SMS commands',
+      },
     },
   },
 };

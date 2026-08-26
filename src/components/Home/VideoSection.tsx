@@ -12,12 +12,9 @@ const VideoSection: React.FC = () => {
   const [playing, setPlaying] = useState(false);
 
   return (
-    <Section className="relative bg-ink-950 text-white overflow-hidden">
-      {/* Background layers */}
-      <div className="absolute inset-0 -z-10 bg-mesh-dark opacity-95" aria-hidden="true" />
-      <div className="absolute inset-0 -z-10 bg-grid-dark opacity-40 mask-fade-y" aria-hidden="true" />
-      <div className="pointer-events-none absolute -top-40 -right-40 h-[36rem] w-[36rem] rounded-full bg-brand-blue-500/25 blur-[140px] animate-blob" aria-hidden="true" />
-      <div className="pointer-events-none absolute -bottom-40 -left-40 h-[32rem] w-[32rem] rounded-full bg-brand-green-500/20 blur-[140px] animate-blob" aria-hidden="true" />
+    <Section className="bg-invert text-white">
+      <div className="absolute inset-0 -z-10 bg-wash-invert" aria-hidden="true" />
+      <div className="absolute inset-0 -z-10 bg-grid-dark opacity-50 mask-fade-y" aria-hidden="true" />
 
       <SectionHeader
         variant="dark"
@@ -25,46 +22,37 @@ const VideoSection: React.FC = () => {
         title={
           <>
             {t('videoDemo.title')}{' '}
-            <span className="bg-gradient-to-r from-brand-green-300 via-brand-green-400 to-brand-blue-300 bg-clip-text text-transparent">
-              {t('videoDemo.titleAccent')}
-            </span>
+            <span className="text-gradient-brand-soft">{t('videoDemo.titleAccent')}</span>
           </>
         }
         subtitle={t('videoDemo.subtitle')}
       />
 
-      {/* Video frame */}
       <motion.div
-        initial={{ opacity: 0, y: 32, scale: 0.96 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="relative max-w-5xl mx-auto"
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        className="mx-auto max-w-5xl"
       >
-        {/* Glow plate */}
-        <div
-          className="pointer-events-none absolute -inset-4 sm:-inset-6 rounded-[2rem] bg-gradient-brand opacity-25 blur-3xl"
-          aria-hidden="true"
-        />
-
-        {/* Outer frame */}
-        <div className="relative rounded-3xl border border-white/15 bg-ink-900/50 p-2 sm:p-3 backdrop-blur-md shadow-floating">
-          {/* Top window bar (mac-like, subtle) */}
-          <div className="hidden sm:flex items-center gap-1.5 px-3 pt-1 pb-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-            <span className="ml-3 text-[10px] font-mono uppercase tracking-widest text-white/40">
-              EnMKit · demo.mp4
+        <div className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-sm">
+          {/* Window chrome */}
+          <div className="hidden items-center gap-3 border-b border-white/10 px-4 py-2.5 sm:flex">
+            <span className="flex gap-1.5" aria-hidden="true">
+              <span className="h-2 w-2 rounded-full bg-white/20" />
+              <span className="h-2 w-2 rounded-full bg-white/20" />
+              <span className="h-2 w-2 rounded-full bg-white/20" />
             </span>
-            <span className="ml-auto inline-flex items-center gap-1.5 text-[10px] font-semibold text-white/60">
+            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/40">
+              EnMKit · demo
+            </span>
+            <span className="ml-auto inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/55">
               <Clock className="h-3 w-3" />
               {t('videoDemo.duration')}
             </span>
           </div>
 
-          {/* Player */}
-          <div className="relative aspect-video overflow-hidden rounded-2xl bg-black">
+          <div className="relative aspect-video bg-black">
             {playing ? (
               <iframe
                 src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`}
@@ -78,45 +66,30 @@ const VideoSection: React.FC = () => {
                 type="button"
                 onClick={() => setPlaying(true)}
                 aria-label={t('videoDemo.play')}
-                className="group relative h-full w-full overflow-hidden no-tap"
+                className="group no-tap relative h-full w-full overflow-hidden"
               >
-                {/* Poster image */}
                 <img
                   src="/images/installation.jpg"
                   alt=""
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                   loading="lazy"
                   decoding="async"
                 />
-                {/* Vignette */}
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/30 to-ink-950/40" />
+                <span className="absolute inset-0 bg-gradient-to-t from-invert/90 via-invert/25 to-invert/40" />
 
-                {/* Play button */}
                 <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="relative">
-                    {/* glow */}
-                    <span className="absolute inset-0 rounded-full bg-gradient-brand blur-2xl opacity-40 group-hover:opacity-80 transition-opacity duration-500" />
-                    {/* outer pulsing ring */}
-                    <span className="absolute -inset-3 rounded-full border border-white/20 group-hover:border-white/40 transition-colors duration-500 animate-pulse-soft" />
-                    {/* button */}
-                    <span className="relative inline-flex h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 items-center justify-center rounded-full bg-white shadow-floating transition-transform duration-500 group-hover:scale-110">
-                      <Play className="h-7 w-7 sm:h-9 sm:w-9 lg:h-10 lg:w-10 fill-brand-blue-600 text-brand-blue-600 translate-x-0.5" />
-                    </span>
+                  <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-floating transition-transform duration-300 group-hover:scale-105 sm:h-20 sm:w-20">
+                    <Play className="h-6 w-6 translate-x-0.5 fill-brand-blue-600 text-brand-blue-600 sm:h-8 sm:w-8" />
                   </span>
                 </span>
 
-                {/* Bottom overlay */}
-                <span className="absolute bottom-3 sm:bottom-4 left-3 sm:left-5 right-3 sm:right-5 flex items-center justify-between text-white">
-                  <span className="inline-flex items-center gap-2 rounded-full bg-black/40 px-3 py-1.5 text-xs font-semibold backdrop-blur-md">
+                <span className="absolute inset-x-3 bottom-3 flex items-center justify-between sm:inset-x-5 sm:bottom-4">
+                  <span className="inline-flex items-center gap-2 rounded-sm bg-black/50 px-2.5 py-1.5 text-[11px] font-semibold text-white backdrop-blur-md">
                     <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inset-0 rounded-full bg-brand-green-400 animate-ping opacity-75" />
-                      <span className="relative rounded-full bg-brand-green-400 h-1.5 w-1.5" />
+                      <span className="absolute inset-0 animate-ping rounded-full bg-brand-green-400 opacity-75" />
+                      <span className="relative h-1.5 w-1.5 rounded-full bg-brand-green-400" />
                     </span>
                     EnMKit · {t('videoDemo.eyebrow')}
-                  </span>
-                  <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-black/40 px-3 py-1.5 text-xs font-semibold backdrop-blur-md">
-                    <Clock className="h-3 w-3" />
-                    {t('videoDemo.duration')}
                   </span>
                 </span>
               </button>
@@ -124,30 +97,22 @@ const VideoSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Info badge */}
-        <div className="mt-5 flex items-center justify-center gap-2 text-xs text-white/55">
+        <p className="mt-5 flex items-center justify-center gap-2 text-xs text-white/50">
           <Info className="h-3.5 w-3.5 text-brand-blue-300" />
           {t('videoDemo.badge')}
-        </div>
+        </p>
       </motion.div>
 
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="mt-10 flex justify-center"
-      >
+      <div className="mt-10 flex justify-center">
         <ButtonLink
           to="/contact"
           variant="primary"
           size="lg"
-          iconRight={<ArrowRight className="h-5 w-5" />}
+          iconRight={<ArrowRight className="h-4 w-4" />}
         >
           {t('videoDemo.cta')}
         </ButtonLink>
-      </motion.div>
+      </div>
     </Section>
   );
 };

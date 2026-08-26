@@ -1,38 +1,32 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import {
-  Eye,
-  TrendingDown,
-  ShieldCheck,
-  Check,
-  ArrowRight,
-  AlertTriangle,
-} from 'lucide-react';
+import { Eye, TrendingDown, ShieldCheck, Check, ArrowRight, AlertTriangle } from 'lucide-react';
 import { Section, SectionHeader } from '../ui/Section';
 import { ButtonLink } from '../ui/Button';
+import { cn } from '../../lib/cn';
 
 type CardKey = 'visibility' | 'savings' | 'security';
 
 interface CardConfig {
   key: CardKey;
   icon: React.ElementType;
-  accent: 'blue' | 'green' | 'mix';
+  accent: 'blue' | 'green';
   visual: 'chart' | 'compare' | 'alert';
 }
 
 const CARDS: CardConfig[] = [
   { key: 'visibility', icon: Eye, accent: 'blue', visual: 'chart' },
   { key: 'savings', icon: TrendingDown, accent: 'green', visual: 'compare' },
-  { key: 'security', icon: ShieldCheck, accent: 'mix', visual: 'alert' },
+  { key: 'security', icon: ShieldCheck, accent: 'blue', visual: 'alert' },
 ];
 
 const ValueProposition: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <Section className="bg-gradient-to-b from-white via-brand-blue-50/20 to-white">
-      <div className="absolute inset-0 -z-10 bg-grid mask-fade-y opacity-40" aria-hidden="true" />
+    <Section className="bg-canvas">
+      <div className="absolute inset-0 -z-10 bg-grid mask-fade-y" aria-hidden="true" />
 
       <SectionHeader
         eyebrow={t('value.eyebrow')}
@@ -45,35 +39,34 @@ const ValueProposition: React.FC = () => {
         subtitle={t('value.subtitle')}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {CARDS.map((card, i) => (
           <ValueCard key={card.key} config={card} index={i} t={t} />
         ))}
       </div>
 
-      {/* CTA */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="mt-12 lg:mt-14 flex flex-col items-center gap-3"
+        transition={{ duration: 0.5 }}
+        className="mt-12 flex flex-col items-center gap-3"
       >
         <ButtonLink
           to="/contact"
           variant="primary"
           size="lg"
-          iconRight={<ArrowRight className="h-5 w-5" />}
+          iconRight={<ArrowRight className="h-4 w-4" />}
         >
           {t('value.cta')}
         </ButtonLink>
-        <p className="text-xs text-ink-500">{t('value.ctaHint')}</p>
+        <p className="text-xs text-fg-subtle">{t('value.ctaHint')}</p>
       </motion.div>
     </Section>
   );
 };
 
-/* ─────────── Card component ─────────── */
+/* ─────────── Card ─────────── */
 
 interface ValueCardProps {
   config: CardConfig;
@@ -81,87 +74,70 @@ interface ValueCardProps {
   t: (k: string) => string;
 }
 
-const accentMap = {
-  blue: {
-    chip: 'bg-brand-blue-50 text-brand-blue-700 ring-brand-blue-100',
-    icon: 'bg-brand-blue-50 text-brand-blue-600 ring-brand-blue-100',
-    stat: 'text-brand-blue-600',
-    bullet: 'text-brand-blue-600',
-  },
-  green: {
-    chip: 'bg-brand-green-50 text-brand-green-700 ring-brand-green-100',
-    icon: 'bg-brand-green-50 text-brand-green-700 ring-brand-green-100',
-    stat: 'text-brand-green-700',
-    bullet: 'text-brand-green-600',
-  },
-  mix: {
-    chip: 'bg-gradient-brand-soft text-ink-800 ring-ink-200',
-    icon: 'bg-gradient-brand-soft text-brand-blue-700 ring-ink-200',
-    stat: 'text-gradient-brand',
-    bullet: 'text-brand-blue-600',
-  },
-};
-
 const ValueCard: React.FC<ValueCardProps> = ({ config, index, t }) => {
-  const styles = accentMap[config.accent];
   const Icon = config.icon;
   const k = `value.cards.${config.key}`;
+  const green = config.accent === 'green';
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative flex flex-col rounded-3xl border border-ink-100 bg-white p-6 sm:p-7 lg:p-8 shadow-soft transition-all duration-500 ease-elegant hover:-translate-y-1 hover:shadow-elevated hover:border-brand-blue-200 overflow-hidden"
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      className="card card-hover group flex flex-col p-6 lg:p-7"
     >
-      {/* Top row: tag + stat */}
-      <div className="flex items-start justify-between gap-3">
-        <span
-          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] ring-1 ${styles.chip}`}
-        >
-          {t(`${k}.tag`)}
+      {/* Accent hairline along the top edge */}
+      <span
+        className={cn(
+          'absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 transition-transform duration-500 ease-elegant group-hover:scale-x-100',
+          green ? 'bg-brand-green-500' : 'bg-brand-blue-500',
+        )}
+        aria-hidden="true"
+      />
+
+      <div className="flex items-start justify-between gap-4">
+        <span className={green ? 'icon-tile-green h-11 w-11' : 'icon-tile h-11 w-11'}>
+          <Icon className="h-5 w-5" strokeWidth={2} />
         </span>
         <span
-          className={`text-2xl sm:text-3xl font-bold tabular-nums leading-none ${
-            config.accent === 'mix' ? 'text-gradient-brand' : styles.stat
-          }`}
+          className={cn(
+            'text-3xl font-bold leading-none tabular-nums tracking-tighter',
+            green
+              ? 'text-brand-green-600 dark:text-brand-green-400'
+              : 'text-brand-blue-600 dark:text-brand-blue-300',
+          )}
         >
           {t(`${k}.stat`)}
         </span>
       </div>
 
-      {/* Icon */}
-      <div
-        className={`mt-5 sm:mt-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl ring-1 ${styles.icon}`}
-      >
-        <Icon className="h-5 w-5" />
-      </div>
+      <span className="chip-neutral mt-5 self-start">{t(`${k}.tag`)}</span>
 
-      {/* Title + text */}
-      <h3 className="mt-5 text-xl sm:text-2xl font-bold text-ink-900 leading-[1.2] tracking-tight">
+      <h3 className="mt-3 text-fluid-xl font-bold leading-tight text-fg">
         {t(`${k}.title`)}
       </h3>
-      <p className="mt-3 text-sm sm:text-base text-ink-600 leading-relaxed">
+      <p className="mt-2.5 text-sm leading-relaxed text-fg-muted">
         {t(`${k}.text`)}
       </p>
 
-      {/* Bullets */}
       <ul className="mt-5 space-y-2.5">
         {(['b1', 'b2', 'b3'] as const).map((b) => (
-          <li key={b} className="flex items-start gap-2.5 text-sm text-ink-700">
-            <span
-              className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white ring-1 ring-current/15 ${styles.bullet}`}
-            >
-              <Check className="h-3 w-3" strokeWidth={3} />
-            </span>
+          <li key={b} className="flex items-start gap-2.5 text-[13.5px] text-fg-muted">
+            <Check
+              className={cn(
+                'mt-0.5 h-3.5 w-3.5 shrink-0',
+                green ? 'text-brand-green-500' : 'text-brand-blue-500',
+              )}
+              strokeWidth={3}
+            />
             <span className="leading-snug">{t(`${k}.${b}`)}</span>
           </li>
         ))}
       </ul>
 
-      {/* Visual */}
-      <div className="mt-6 sm:mt-7 pt-5 border-t border-ink-100">
+      <div className="mt-auto pt-6">
+        <div className="hairline mb-5" aria-hidden="true" />
         {config.visual === 'chart' && <MiniChart />}
         {config.visual === 'compare' && <MiniCompare t={t} />}
         {config.visual === 'alert' && <MiniAlert t={t} />}
@@ -176,27 +152,21 @@ const MiniChart: React.FC = () => {
   const bars = [42, 58, 36, 71, 48, 63, 78, 52, 66, 80, 58, 70, 64, 82];
   return (
     <div>
-      <div className="flex items-end gap-1 h-12 sm:h-14">
+      <div className="flex h-12 items-end gap-1">
         {bars.map((h, i) => (
           <motion.div
             key={i}
             initial={{ height: 0 }}
             whileInView={{ height: `${h}%` }}
             viewport={{ once: true }}
-            transition={{
-              duration: 0.7,
-              delay: 0.04 * i,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="flex-1 rounded-t-sm bg-gradient-to-t from-brand-blue-200 to-brand-blue-500"
+            transition={{ duration: 0.6, delay: 0.03 * i, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 rounded-px bg-brand-blue-500/70 dark:bg-brand-blue-400/60"
           />
         ))}
       </div>
-      <div className="mt-2 flex items-center justify-between text-[10px] uppercase tracking-widest text-ink-400">
+      <div className="mt-2 flex items-center justify-between text-[10px] uppercase tracking-[0.12em] text-fg-subtle">
         <span>00h</span>
-        <span>06h</span>
         <span>12h</span>
-        <span>18h</span>
         <span>24h</span>
       </div>
     </div>
@@ -204,27 +174,27 @@ const MiniChart: React.FC = () => {
 };
 
 const MiniCompare: React.FC<{ t: (k: string) => string }> = ({ t }) => (
-  <div className="grid grid-cols-2 gap-3">
-    <div className="rounded-2xl border border-ink-200 bg-ink-50/60 px-3 py-3">
-      <p className="text-[10px] font-bold uppercase tracking-widest text-ink-500">
+  <div className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line">
+    <div className="bg-surface-sunken px-3 py-3">
+      <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-fg-subtle">
         {t('value.cards.savings.before')}
       </p>
-      <p className="mt-1 text-base sm:text-lg font-bold text-ink-700 tabular-nums leading-tight">
+      <p className="mt-1 text-base font-bold leading-tight tabular-nums text-fg-muted">
         {t('value.cards.savings.beforeValue')}
       </p>
-      <p className="text-[10px] text-ink-500">{t('value.cards.savings.currency')}</p>
+      <p className="text-[10px] text-fg-subtle">{t('value.cards.savings.currency')}</p>
     </div>
-    <div className="relative rounded-2xl border border-brand-green-200 bg-brand-green-50/60 px-3 py-3">
-      <p className="text-[10px] font-bold uppercase tracking-widest text-brand-green-700">
+    <div className="relative bg-brand-green-50 px-3 py-3 dark:bg-brand-green-500/10">
+      <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-brand-green-700 dark:text-brand-green-300">
         {t('value.cards.savings.after')}
       </p>
-      <p className="mt-1 text-base sm:text-lg font-bold text-brand-green-700 tabular-nums leading-tight">
+      <p className="mt-1 text-base font-bold leading-tight tabular-nums text-brand-green-700 dark:text-brand-green-300">
         {t('value.cards.savings.afterValue')}
       </p>
-      <p className="text-[10px] text-brand-green-700/70">
+      <p className="text-[10px] text-brand-green-700/70 dark:text-brand-green-300/70">
         {t('value.cards.savings.currency')}
       </p>
-      <span className="absolute -top-2 right-2 inline-flex items-center gap-0.5 rounded-full bg-brand-green-600 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-soft">
+      <span className="absolute right-2 top-2 inline-flex items-center gap-0.5 rounded-sm bg-brand-green-600 px-1.5 py-0.5 text-[9px] font-bold text-white">
         <TrendingDown className="h-2.5 w-2.5" />
         14%
       </span>
@@ -233,22 +203,20 @@ const MiniCompare: React.FC<{ t: (k: string) => string }> = ({ t }) => (
 );
 
 const MiniAlert: React.FC<{ t: (k: string) => string }> = ({ t }) => (
-  <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-3">
+  <div className="rounded-md border border-amber-300/60 bg-amber-50 p-3 dark:border-amber-500/25 dark:bg-amber-500/10">
     <div className="flex items-start gap-2.5">
-      <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
-        <AlertTriangle className="h-3.5 w-3.5" />
-      </span>
+      <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-bold text-amber-900 leading-tight">
+        <p className="text-xs font-bold leading-tight text-amber-900 dark:text-amber-200">
           {t('value.cards.security.alertTitle')}
         </p>
-        <p className="mt-0.5 text-[10px] text-amber-800/80">
+        <p className="mt-0.5 text-[10px] text-amber-800/80 dark:text-amber-200/60">
           {t('value.cards.security.alertTime')}
         </p>
       </div>
-      <span className="relative flex h-1.5 w-1.5 mt-2 shrink-0">
-        <span className="absolute inset-0 rounded-full bg-amber-500 animate-ping opacity-75" />
-        <span className="relative rounded-full bg-amber-500 h-1.5 w-1.5" />
+      <span className="relative mt-1.5 flex h-1.5 w-1.5 shrink-0">
+        <span className="absolute inset-0 animate-ping rounded-full bg-amber-500 opacity-75" />
+        <span className="relative h-1.5 w-1.5 rounded-full bg-amber-500" />
       </span>
     </div>
   </div>

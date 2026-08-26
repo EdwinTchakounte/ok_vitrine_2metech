@@ -2,7 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '../../lib/cn';
 
-type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'glass' | 'white';
+type Variant =
+  | 'primary'
+  | 'accent'
+  | 'secondary'
+  | 'outline'
+  | 'ghost'
+  | 'glass'
+  | 'white';
 type Size = 'sm' | 'md' | 'lg';
 
 interface BaseProps {
@@ -17,11 +24,12 @@ interface BaseProps {
 
 const variantClasses: Record<Variant, string> = {
   primary: 'btn-primary',
+  accent: 'btn-accent',
   secondary: 'btn-secondary',
   outline: 'btn-outline',
   ghost: 'btn-ghost',
   glass: 'btn-glass',
-  white: 'btn bg-white text-brand-blue-700 shadow-soft hover:shadow-elevated hover:bg-white',
+  white: 'btn-white',
 };
 
 const sizeClasses: Record<Size, string> = {
@@ -74,6 +82,8 @@ interface ButtonLinkProps extends BaseProps {
   target?: string;
   rel?: string;
   ariaLabel?: string;
+  download?: boolean | string;
+  onClick?: React.MouseEventHandler;
 }
 
 export const ButtonLink: React.FC<ButtonLinkProps> = ({
@@ -82,6 +92,8 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
   target,
   rel,
   ariaLabel,
+  download,
+  onClick,
   variant,
   size,
   className,
@@ -107,6 +119,8 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
         rel={rel ?? 'noopener noreferrer'}
         className={cls}
         aria-label={ariaLabel}
+        download={download}
+        onClick={onClick}
       >
         {content}
       </a>
@@ -114,7 +128,7 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({
   }
 
   return (
-    <Link to={to} className={cls} aria-label={ariaLabel}>
+    <Link to={to} className={cls} aria-label={ariaLabel} onClick={onClick}>
       {content}
     </Link>
   );

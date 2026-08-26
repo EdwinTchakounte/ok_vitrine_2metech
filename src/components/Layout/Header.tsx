@@ -1,29 +1,75 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, ChevronDown, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../lib/cn';
+import { APK_VIEW_URL } from '../../lib/links';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
+import ThemeToggle from '../ui/ThemeToggle';
 import { ButtonLink } from '../ui/Button';
 
-const NAV_ITEMS = [
-  { key: 'home', path: '/' },
-  { key: 'about', path: '/about' },
-  { key: 'enmkit', path: '/enmkit' },
-  { key: 'awards', path: '/awards' },
-  { key: 'partners', path: '/partners' },
-  { key: 'installers', path: '/installers' },
-] as const;
+/* ------------------------------------------------------------------
+   Navigation: four top-level entries. `Solution` and `Entreprise`
+   group the six pages the old bar listed side by side.
+   ------------------------------------------------------------------ */
+
+interface Leaf {
+  key: string;
+  path: string;
+  /** i18n key under `menu.items` for the one-line description. */
+  desc?: string;
+}
+interface Group {
+  key: string;
+  tag: string;
+  children: Leaf[];
+}
+type NavEntry = ({ kind: 'link' } & Leaf) | ({ kind: 'group' } & Group);
+
+const NAV: NavEntry[] = [
+  { kind: 'link', key: 'home', path: '/' },
+  {
+    kind: 'group',
+    key: 'solution',
+    tag: 'menu.solutionTag',
+    children: [
+      { key: 'enmkit', path: '/enmkit', desc: 'enmkit' },
+      { key: 'app', path: '/app', desc: 'app' },
+      { key: 'video', path: '/installation-video', desc: 'video' },
+    ],
+  },
+  {
+    kind: 'group',
+    key: 'company',
+    tag: 'menu.companyTag',
+    children: [
+      { key: 'about', path: '/about', desc: 'about' },
+      { key: 'awards', path: '/awards', desc: 'awards' },
+      { key: 'partners', path: '/partners', desc: 'partners' },
+    ],
+  },
+  { kind: 'link', key: 'installers', path: '/installers' },
+];
+
+/** Label lookup: grouped entries live under `menu.*`, pages under `nav.*`. */
+const labelKey = (entry: NavEntry) =>
+  entry.kind === 'group' ? `menu.${entry.key}` : `nav.${entry.key}`;
+
+const isPathActive = (pathname: string, path: string) =>
+  path === '/' ? pathname === '/' : pathname.startsWith(path);
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [mobileGroup, setMobileGroup] = useState<string | null>('solution');
+  const closeTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -31,52 +77,68 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     setOpen(false);
+    setOpenGroup(null);
   }, [location.pathname]);
 
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = open ? 'hidden' : '';
     return () => {
       document.body.style.overflow = '';
     };
   }, [open]);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setOpenGroup(null);
+      setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  const hoverOpen = useCallback((key: string) => {
+    window.clearTimeout(closeTimer.current);
+    setOpenGroup(key);
+  }, []);
+
+  const hoverClose = useCallback(() => {
+    window.clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(() => setOpenGroup(null), 120);
+  }, []);
+
   const isHome = location.pathname === '/';
-  const transparent = !scrolled && isHome && !open;
+  /* Only the home hero sits under a transparent header. */
+  const transparent = !scrolled && isHome && !open && !openGroup;
+
+  const groupActive = (g: Group) =>
+    g.children.some((c) => isPathActive(location.pathname, c.path));
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
+          'fixed inset-x-0 top-0 z-header transition-colors duration-300',
           transparent
             ? 'bg-transparent'
-            : 'bg-white/85 backdrop-blur-xl border-b border-ink-100/60 shadow-soft',
+            : 'border-b border-line bg-canvas/85 backdrop-blur-xl supports-[backdrop-filter]:bg-canvas/70',
         )}
       >
         <div className="container mx-auto">
-          <div className="flex items-center justify-between h-[var(--header-h)]">
+          <div className="flex h-[var(--header-h)] items-center justify-between gap-4">
             {/* Logo */}
-            <Link
-              to="/"
-              className="flex items-center gap-2.5 no-tap"
-              aria-label="2metech home"
-            >
+            <Link to="/" className="flex items-center gap-2.5 no-tap" aria-label="2metech">
               <img
                 src="/logos/logo_couleur.png"
-                alt="2metech"
-                className="h-9 w-auto sm:h-10 transition-transform duration-300 hover:scale-105"
+                alt=""
+                className="h-8 w-auto sm:h-9"
+                width={36}
+                height={36}
               />
               <span
                 className={cn(
-                  'hidden sm:inline-block font-display text-base font-semibold tracking-tight',
-                  transparent ? 'text-white' : 'text-ink-900',
+                  'font-display text-[15px] font-bold tracking-tight',
+                  transparent ? 'text-white' : 'text-fg',
                 )}
               >
                 2metech
@@ -84,46 +146,157 @@ const Header: React.FC = () => {
             </Link>
 
             {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-8" aria-label="Primary">
-              {NAV_ITEMS.map((item) => {
+            <nav className="hidden lg:flex items-center gap-1" aria-label="Principale">
+              {NAV.map((entry) => {
                 const active =
-                  item.path === '/'
-                    ? location.pathname === '/'
-                    : location.pathname.startsWith(item.path);
+                  entry.kind === 'group'
+                    ? groupActive(entry)
+                    : isPathActive(location.pathname, entry.path);
+
+                if (entry.kind === 'link') {
+                  return (
+                    <Link
+                      key={entry.key}
+                      to={entry.path}
+                      className={cn(
+                        'nav-link mx-3 py-2 text-[14px] font-medium transition-colors',
+                        active && 'is-active',
+                        transparent
+                          ? active
+                            ? 'text-white'
+                            : 'text-white/80 hover:text-white'
+                          : active
+                            ? 'text-brand-blue-700 dark:text-brand-blue-300'
+                            : 'text-fg-muted hover:text-fg',
+                      )}
+                    >
+                      {t(labelKey(entry))}
+                    </Link>
+                  );
+                }
+
+                const isOpen = openGroup === entry.key;
                 return (
-                  <Link
-                    key={item.key}
-                    to={item.path}
-                    className={cn(
-                      'nav-link text-sm font-medium transition-colors duration-300',
-                      active
-                        ? transparent
-                          ? 'text-white is-active'
-                          : 'text-brand-blue-700 is-active'
-                        : transparent
-                          ? 'text-white/85 hover:text-white'
-                          : 'text-ink-700 hover:text-brand-blue-700',
-                    )}
+                  <div
+                    key={entry.key}
+                    className="relative"
+                    onMouseEnter={() => hoverOpen(entry.key)}
+                    onMouseLeave={hoverClose}
                   >
-                    {t(`nav.${item.key}`)}
-                  </Link>
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-haspopup="true"
+                      onClick={() => setOpenGroup(isOpen ? null : entry.key)}
+                      className={cn(
+                        'nav-link mx-3 inline-flex items-center gap-1 py-2 text-[14px] font-medium transition-colors',
+                        (active || isOpen) && 'is-active',
+                        transparent
+                          ? active || isOpen
+                            ? 'text-white'
+                            : 'text-white/80 hover:text-white'
+                          : active || isOpen
+                            ? 'text-brand-blue-700 dark:text-brand-blue-300'
+                            : 'text-fg-muted hover:text-fg',
+                      )}
+                    >
+                      {t(labelKey(entry))}
+                      <ChevronDown
+                        className={cn(
+                          'h-3.5 w-3.5 transition-transform duration-200',
+                          isOpen && 'rotate-180',
+                        )}
+                      />
+                    </button>
+
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 4 }}
+                          transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                          className="absolute left-0 top-full w-[21rem] pt-3"
+                        >
+                          <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-floating">
+                            <p className="border-b border-line px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-fg-subtle">
+                              {t(entry.tag)}
+                            </p>
+                            <ul className="p-1.5">
+                              {entry.children.map((c) => {
+                                const childActive = isPathActive(
+                                  location.pathname,
+                                  c.path,
+                                );
+                                return (
+                                  <li key={c.key}>
+                                    <Link
+                                      to={c.path}
+                                      className={cn(
+                                        'group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors',
+                                        childActive
+                                          ? 'bg-brand-blue-50 dark:bg-brand-blue-500/10'
+                                          : 'hover:bg-surface-hover',
+                                      )}
+                                    >
+                                      <span className="min-w-0 flex-1">
+                                        <span
+                                          className={cn(
+                                            'block text-sm font-semibold',
+                                            childActive
+                                              ? 'text-brand-blue-700 dark:text-brand-blue-300'
+                                              : 'text-fg',
+                                          )}
+                                        >
+                                          {t(`nav.${c.key}`)}
+                                        </span>
+                                        {c.desc && (
+                                          <span className="mt-0.5 block text-[12.5px] leading-snug text-fg-muted">
+                                            {t(`menu.items.${c.desc}`)}
+                                          </span>
+                                        )}
+                                      </span>
+                                      <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-fg-subtle opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100" />
+                                    </Link>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+
+                            {entry.key === 'solution' && (
+                              <a
+                                href={APK_VIEW_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 border-t border-line bg-surface-sunken px-4 py-3 text-[13px] font-semibold text-brand-blue-700 transition-colors hover:bg-surface-hover dark:text-brand-blue-300"
+                              >
+                                <Download className="h-3.5 w-3.5" />
+                                {t('menu.download')}
+                              </a>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 );
               })}
             </nav>
 
             {/* Right cluster */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <LanguageSwitcher
                 variant={transparent ? 'dark' : 'light'}
                 className="hidden md:inline-flex"
               />
+              <ThemeToggle variant={transparent ? 'invert' : 'default'} />
 
               <ButtonLink
                 to="/contact"
                 variant={transparent ? 'glass' : 'primary'}
                 size="sm"
                 className="hidden md:inline-flex"
-                iconRight={<ArrowRight className="h-4 w-4" />}
+                iconRight={<ArrowRight className="h-3.5 w-3.5" />}
               >
                 {t('nav.contact')}
               </ButtonLink>
@@ -134,40 +307,18 @@ const Header: React.FC = () => {
                 aria-expanded={open}
                 aria-label={open ? t('common.close') : t('common.menu')}
                 className={cn(
-                  'lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full no-tap transition-colors',
+                  'no-tap inline-flex h-9 w-9 items-center justify-center rounded-md border transition-colors lg:hidden',
                   transparent
-                    ? 'bg-white/10 border border-white/20 text-white backdrop-blur-md hover:bg-white/20'
-                    : 'bg-ink-100 text-ink-900 hover:bg-ink-200',
+                    ? 'border-white/20 bg-white/10 text-white backdrop-blur-md hover:bg-white/[0.18]'
+                    : 'border-line bg-surface text-fg hover:bg-surface-hover',
                 )}
               >
-                <AnimatePresence mode="wait" initial={false}>
-                  {open ? (
-                    <motion.span
-                      key="x"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.18 }}
-                    >
-                      <X className="h-5 w-5" />
-                    </motion.span>
-                  ) : (
-                    <motion.span
-                      key="m"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.18 }}
-                    >
-                      <Menu className="h-5 w-5" />
-                    </motion.span>
-                  )}
-                </AnimatePresence>
+                {open ? <X className="h-[18px] w-[18px]" /> : <Menu className="h-[18px] w-[18px]" />}
               </button>
             </div>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile drawer */}
       <AnimatePresence>
@@ -178,8 +329,8 @@ const Header: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-40 bg-ink-950/60 backdrop-blur-sm lg:hidden"
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-drawer bg-ink-950/60 backdrop-blur-sm lg:hidden"
               onClick={() => setOpen(false)}
             />
             <motion.aside
@@ -187,65 +338,119 @@ const Header: React.FC = () => {
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-sm bg-white shadow-floating lg:hidden flex flex-col"
+              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed inset-y-0 right-0 z-drawer flex w-[89%] max-w-sm flex-col border-l border-line bg-canvas lg:hidden"
               role="dialog"
               aria-modal="true"
             >
-              <div className="flex items-center justify-between border-b border-ink-100 px-6 h-[var(--header-h)]">
-                <img src="/logos/logo_couleur.png" alt="2metech" className="h-9" />
+              <div className="flex h-[var(--header-h)] shrink-0 items-center justify-between border-b border-line px-5">
+                <div className="flex items-center gap-2.5">
+                  <img src="/logos/logo_couleur.png" alt="" className="h-8 w-auto" />
+                  <span className="font-display text-[15px] font-bold text-fg">2metech</span>
+                </div>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label={t('common.close')}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-ink-100 text-ink-900 hover:bg-ink-200 transition-colors no-tap"
+                  className="no-tap inline-flex h-9 w-9 items-center justify-center rounded-md border border-line bg-surface text-fg hover:bg-surface-hover"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-[18px] w-[18px]" />
                 </button>
               </div>
 
-              <nav className="flex-1 overflow-y-auto px-4 py-6" aria-label="Mobile">
-                <ul className="flex flex-col gap-1">
-                  {NAV_ITEMS.concat({ key: 'contact', path: '/contact' } as any).map(
-                    (item, i) => {
-                      const active =
-                        item.path === '/'
-                          ? location.pathname === '/'
-                          : location.pathname.startsWith(item.path);
+              <nav className="flex-1 overflow-y-auto px-4 py-5" aria-label="Mobile">
+                <ul className="space-y-1">
+                  {NAV.map((entry) => {
+                    if (entry.kind === 'link') {
+                      const active = isPathActive(location.pathname, entry.path);
                       return (
-                        <motion.li
-                          key={item.key}
-                          initial={{ opacity: 0, x: 24 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.06 + i * 0.04, duration: 0.4 }}
-                        >
+                        <li key={entry.key}>
                           <Link
-                            to={item.path}
+                            to={entry.path}
                             className={cn(
-                              'flex items-center justify-between rounded-2xl px-5 py-4 text-base font-semibold transition-all',
+                              'flex items-center justify-between rounded-lg px-4 py-3 text-[15px] font-semibold transition-colors',
                               active
-                                ? 'bg-gradient-brand-soft text-brand-blue-700'
-                                : 'text-ink-800 hover:bg-ink-50',
+                                ? 'bg-brand-blue-50 text-brand-blue-700 dark:bg-brand-blue-500/10 dark:text-brand-blue-300'
+                                : 'text-fg hover:bg-surface-hover',
                             )}
                           >
-                            <span>{t(`nav.${item.key}`)}</span>
-                            <ArrowRight
-                              className={cn(
-                                'h-4 w-4 transition-transform duration-300',
-                                active ? 'translate-x-1' : 'opacity-40',
-                              )}
-                            />
+                            {t(labelKey(entry))}
+                            <ArrowRight className="h-4 w-4 opacity-40" />
                           </Link>
-                        </motion.li>
+                        </li>
                       );
-                    },
-                  )}
+                    }
+
+                    const expanded = mobileGroup === entry.key;
+                    return (
+                      <li key={entry.key}>
+                        <button
+                          type="button"
+                          onClick={() => setMobileGroup(expanded ? null : entry.key)}
+                          aria-expanded={expanded}
+                          className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-[15px] font-semibold text-fg transition-colors hover:bg-surface-hover"
+                        >
+                          {t(labelKey(entry))}
+                          <ChevronDown
+                            className={cn(
+                              'h-4 w-4 text-fg-subtle transition-transform duration-200',
+                              expanded && 'rotate-180',
+                            )}
+                          />
+                        </button>
+                        <AnimatePresence initial={false}>
+                          {expanded && (
+                            <motion.ul
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                              className="overflow-hidden"
+                            >
+                              <li className="ml-4 space-y-0.5 border-l border-line pl-3 pt-1">
+                                {entry.children.map((c) => {
+                                  const childActive = isPathActive(
+                                    location.pathname,
+                                    c.path,
+                                  );
+                                  return (
+                                    <Link
+                                      key={c.key}
+                                      to={c.path}
+                                      className={cn(
+                                        'block rounded-md px-3 py-2.5 text-sm transition-colors',
+                                        childActive
+                                          ? 'bg-brand-blue-50 font-semibold text-brand-blue-700 dark:bg-brand-blue-500/10 dark:text-brand-blue-300'
+                                          : 'text-fg-muted hover:bg-surface-hover hover:text-fg',
+                                      )}
+                                    >
+                                      {t(`nav.${c.key}`)}
+                                    </Link>
+                                  );
+                                })}
+                              </li>
+                            </motion.ul>
+                          )}
+                        </AnimatePresence>
+                      </li>
+                    );
+                  })}
                 </ul>
+
+                <a
+                  href={APK_VIEW_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 flex items-center gap-2.5 rounded-lg border border-line bg-surface-sunken px-4 py-3 text-sm font-semibold text-fg transition-colors hover:bg-surface-hover"
+                >
+                  <Download className="h-4 w-4 text-brand-green-500" />
+                  {t('menu.download')}
+                </a>
               </nav>
 
-              <div className="border-t border-ink-100 px-6 py-5 space-y-4">
+              <div className="shrink-0 space-y-4 border-t border-line px-5 py-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-ink-500">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fg-subtle">
                     {t('common.language')}
                   </span>
                   <LanguageSwitcher />

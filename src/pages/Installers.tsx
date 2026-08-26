@@ -222,21 +222,23 @@ const Installers: React.FC = () => {
   if (submitted) {
     return (
       <PageTransition>
-        <Section className="bg-white min-h-[80svh] flex items-center">
+        <Section className="flex min-h-[80svh] items-center bg-canvas">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-lg mx-auto rounded-4xl border border-ink-100 bg-white p-10 lg:p-12 text-center shadow-elevated"
+            className="mx-auto max-w-lg rounded-xl border border-line bg-surface p-10 text-center shadow-soft lg:p-12"
           >
-            <div className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-brand text-white shadow-glow">
-              <CheckCircle2 className="h-10 w-10" />
+            <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-lg border border-brand-green-200 bg-brand-green-50 text-brand-green-600 dark:border-brand-green-500/25 dark:bg-brand-green-500/10 dark:text-brand-green-300">
+              <CheckCircle2 className="h-8 w-8" />
             </div>
-            <h2 className="mt-6 text-fluid-3xl font-bold text-ink-900">
+            <h2 className="mt-6 text-fluid-2xl font-bold tracking-tighter text-fg">
               {t('installers.successTitle')}
             </h2>
-            <p className="mt-3 text-ink-600 leading-relaxed">{t('installers.successText')}</p>
-            <div className="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
+            <p className="mt-3 text-[14.5px] leading-relaxed text-fg-muted">
+              {t('installers.successText')}
+            </p>
+            <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
               <button
                 type="button"
                 onClick={() => setSubmitted(false)}
@@ -263,12 +265,12 @@ const Installers: React.FC = () => {
       />
 
       {/* Benefits */}
-      <Section className="bg-white">
+      <Section className="bg-canvas">
         <SectionHeader
           title={t('installers.benefitsTitle')}
           subtitle={t('installers.benefitsSubtitle')}
         />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-3">
           {benefits.map((b, i) => (
             <motion.div
               key={b.key}
@@ -276,15 +278,15 @@ const Installers: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="rounded-3xl border border-ink-100 bg-white p-7 text-center hover-lift hover:border-brand-blue-200 hover:shadow-elevated transition-all"
+              className="bg-surface p-6 text-center transition-colors duration-300 hover:bg-surface-hover lg:p-7"
             >
-              <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-glow">
-                <b.icon className="h-6 w-6" />
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-ink-900">
+              <span className="icon-tile mx-auto h-11 w-11">
+                <b.icon className="h-5 w-5" strokeWidth={2} />
+              </span>
+              <h3 className="mt-4 text-base font-bold text-fg">
                 {t(`installers.benefits.${b.key}.title`)}
               </h3>
-              <p className="mt-2 text-sm text-ink-600 leading-relaxed">
+              <p className="mt-2 text-[13.5px] leading-relaxed text-fg-muted">
                 {t(`installers.benefits.${b.key}.description`)}
               </p>
             </motion.div>
@@ -293,8 +295,8 @@ const Installers: React.FC = () => {
       </Section>
 
       {/* Form */}
-      <Section className="bg-ink-50/40">
-        <div className="absolute inset-0 -z-10 bg-grid mask-fade-y opacity-60" aria-hidden="true" />
+      <Section className="bg-surface-sunken">
+        <div className="absolute inset-0 -z-10 bg-grid mask-fade-y" aria-hidden="true" />
 
         <SectionHeader
           title={t('installers.formTitle')}
@@ -310,12 +312,12 @@ const Installers: React.FC = () => {
         >
           <form
             onSubmit={handleSubmit}
-            className="rounded-4xl border border-ink-100 bg-white p-7 lg:p-10 shadow-elevated space-y-10"
+            className="space-y-10 rounded-xl border border-line bg-surface p-6 shadow-soft lg:p-9"
           >
             {/* Personal info */}
             <div>
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-ink-900 mb-5">
-                <User className="h-5 w-5 text-brand-blue-600" />
+              <h3 className="mb-5 flex items-center gap-2.5 text-[15px] font-bold text-fg">
+                <User className="h-4 w-4 text-brand-blue-600 dark:text-brand-blue-300" />
                 {t('installers.sections.personal')}
               </h3>
               <div className="grid sm:grid-cols-2 gap-5">
@@ -366,16 +368,17 @@ const Installers: React.FC = () => {
 
             {/* Professional info */}
             <div>
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-ink-900 mb-5">
-                <Building2 className="h-5 w-5 text-brand-blue-600" />
+              <h3 className="mb-5 flex items-center gap-2.5 text-[15px] font-bold text-fg">
+                <Building2 className="h-4 w-4 text-brand-blue-600 dark:text-brand-blue-300" />
                 {t('installers.sections.professional')}
               </h3>
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-semibold text-ink-800 mb-2">
+                  <label htmlFor="type" className="field-label">
                     {t('installers.fields.type')}
                   </label>
                   <select
+                    id="type"
                     name="type"
                     value={formData.type}
                     onChange={handleInputChange}
@@ -401,12 +404,13 @@ const Installers: React.FC = () => {
                 )}
 
                 <div className={formData.type !== 'company' ? 'sm:col-span-1' : ''}>
-                  <label className="block text-sm font-semibold text-ink-800 mb-2">
+                  <label htmlFor="zone" className="field-label">
                     {t('installers.fields.zone')}{' '}
-                    <span className="text-brand-blue-600">*</span>
+                    <span className="text-brand-blue-600 dark:text-brand-blue-300">*</span>
                   </label>
                   <div className="relative">
                     <select
+                      id="zone"
                       name="zone"
                       value={formData.zone}
                       onChange={handleInputChange}
@@ -421,7 +425,7 @@ const Installers: React.FC = () => {
                         </option>
                       ))}
                     </select>
-                    <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-400" />
+                    <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-fg-subtle" />
                   </div>
                 </div>
 
@@ -448,8 +452,8 @@ const Installers: React.FC = () => {
 
             {/* Documents */}
             <div>
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-ink-900 mb-5">
-                <Upload className="h-5 w-5 text-brand-blue-600" />
+              <h3 className="mb-5 flex items-center gap-2.5 text-[15px] font-bold text-fg">
+                <Upload className="h-4 w-4 text-brand-blue-600 dark:text-brand-blue-300" />
                 {t('installers.sections.documents')}
               </h3>
               <div className="grid sm:grid-cols-2 gap-5">
@@ -485,7 +489,7 @@ const Installers: React.FC = () => {
               </div>
             </div>
 
-            <div className="text-center">
+            <div className="border-t border-line pt-8 text-center">
               <button
                 type="submit"
                 disabled={loading}
@@ -543,8 +547,9 @@ const Field: React.FC<FieldProps> = ({
   disabled,
 }) => (
   <div>
-    <label htmlFor={name} className="block text-sm font-semibold text-ink-800 mb-2">
-      {label} {required && <span className="text-brand-blue-600">*</span>}
+    <label htmlFor={name} className="field-label">
+      {label}{' '}
+      {required && <span className="text-brand-blue-600 dark:text-brand-blue-300">*</span>}
     </label>
     <div className="relative">
       <input
@@ -556,10 +561,10 @@ const Field: React.FC<FieldProps> = ({
         placeholder={placeholder}
         required={required}
         disabled={disabled}
-        className={cn('input-base', icon && 'input-with-icon')}
+        className={cn('input-base', icon ? 'input-with-icon' : null)}
       />
       {icon && (
-        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400">
+        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-subtle">
           {icon}
         </span>
       )}
@@ -586,7 +591,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   className,
 }) => (
   <div className={className}>
-    <label htmlFor={name} className="block text-sm font-semibold text-ink-800 mb-2">
+    <label htmlFor={name} className="field-label">
       {label}
     </label>
     <textarea
@@ -625,28 +630,31 @@ const FileDrop: React.FC<FileDropProps> = ({
   className,
 }) => (
   <div className={className}>
-    <label htmlFor={id} className="block text-sm font-semibold text-ink-800 mb-2">
-      {label} {required && <span className="text-brand-blue-600">*</span>}
+    <label htmlFor={id} className="field-label">
+      {label}{' '}
+      {required && <span className="text-brand-blue-600 dark:text-brand-blue-300">*</span>}
     </label>
     <label
       htmlFor={id}
       className={cn(
-        'group relative flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed bg-white p-6 text-center transition-all duration-300 cursor-pointer',
+        'group relative flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-md border border-dashed bg-surface p-6 text-center transition-colors duration-200',
         disabled
-          ? 'border-ink-200 bg-ink-50 cursor-not-allowed'
-          : 'border-ink-200 hover:border-brand-blue-400 hover:bg-brand-blue-50/40',
-        file && 'border-brand-green-400 bg-brand-green-50/40',
+          ? 'cursor-not-allowed border-line bg-surface-sunken'
+          : 'border-line-strong hover:border-brand-blue-400 hover:bg-surface-hover',
+        file && 'border-brand-green-400 bg-brand-green-50 dark:bg-brand-green-500/10',
       )}
     >
-      <div
+      <span
         className={cn(
-          'inline-flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-glow transition-transform group-hover:scale-105',
-          file ? 'bg-gradient-to-br from-brand-green-500 to-brand-green-700' : 'bg-gradient-brand',
+          'inline-flex h-11 w-11 items-center justify-center rounded-md border',
+          file
+            ? 'border-brand-green-300 bg-brand-green-100 text-brand-green-700 dark:border-brand-green-500/30 dark:bg-brand-green-500/15 dark:text-brand-green-300'
+            : 'border-line bg-surface-sunken text-fg-subtle group-hover:text-brand-blue-600',
         )}
       >
-        {file ? <CheckCircle2 className="h-6 w-6" /> : icon}
-      </div>
-      <p className="text-sm font-medium text-ink-800 truncate max-w-full">
+        {file ? <CheckCircle2 className="h-5 w-5" /> : icon}
+      </span>
+      <p className="max-w-full truncate text-[13px] font-medium text-fg">
         {file ? file.name : 'PDF, JPG, PNG · 5MB'}
       </p>
       <input

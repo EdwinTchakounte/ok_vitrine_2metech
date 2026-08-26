@@ -16,6 +16,7 @@ import PageHero from '../components/ui/PageHero';
 import { Section } from '../components/ui/Section';
 import PageTransition from '../components/ui/PageTransition';
 import Toast, { ToastVariant } from '../components/ui/Toast';
+import { WHATSAPP_URL } from '../lib/links';
 
 const Contact: React.FC = () => {
   const { t } = useTranslation();
@@ -81,53 +82,58 @@ const Contact: React.FC = () => {
         subtitle={t('contact.subtitle')}
       />
 
-      <Section className="bg-white">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12">
-          {/* Info column */}
+      <Section className="bg-canvas">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          {/* Info */}
           <motion.div
-            initial={{ opacity: 0, x: -32 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5"
           >
-            <h2 className="text-fluid-3xl font-bold text-ink-900 mb-6">
+            <h2 className="text-fluid-2xl font-bold tracking-tighter text-fg">
               {t('contact.eyebrow')}
             </h2>
+            <div className="rule-brand mt-4" aria-hidden="true" />
 
-            <ul className="space-y-4">
+            <ul className="mt-7 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line">
               {contactInfo.map((info) => (
                 <li
                   key={info.label}
-                  className="flex items-start gap-4 rounded-2xl border border-ink-100 bg-white p-4 transition-all hover:border-brand-blue-200 hover:shadow-soft"
+                  className="flex items-start gap-3.5 bg-surface p-4 transition-colors hover:bg-surface-hover"
                 >
-                  <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-glow">
-                    <info.icon className="h-5 w-5" />
-                  </div>
+                  <span className="icon-tile h-10 w-10 shrink-0">
+                    <info.icon className="h-[18px] w-[18px]" strokeWidth={2} />
+                  </span>
                   <div className="min-w-0">
-                    <p className="text-xs uppercase tracking-widest text-ink-500 font-semibold">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-fg-subtle">
                       {info.label}
                     </p>
-                    <p className="mt-1 text-ink-900 font-medium break-words">{info.value}</p>
+                    <p className="mt-1 break-words text-[14px] font-medium text-fg">
+                      {info.value}
+                    </p>
                   </div>
                 </li>
               ))}
             </ul>
 
-            {/* WhatsApp CTA */}
-            <div className="mt-8 rounded-3xl border border-brand-green-200 bg-brand-green-50/60 p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 text-white shadow-glow-green">
-                  <MessageCircle className="h-5 w-5" />
-                </div>
-                <h3 className="font-semibold text-ink-900">{t('contact.directWa')}</h3>
+            {/* WhatsApp */}
+            <div className="mt-6 rounded-xl border border-brand-green-200 bg-brand-green-50 p-5 dark:border-brand-green-500/25 dark:bg-brand-green-500/10">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-emerald-500 text-white">
+                  <MessageCircle className="h-[18px] w-[18px]" />
+                </span>
+                <h3 className="text-[15px] font-bold text-fg">{t('contact.directWa')}</h3>
               </div>
-              <p className="text-sm text-ink-700 mb-4">{t('contact.directWaText')}</p>
+              <p className="mt-3 text-[13.5px] leading-relaxed text-fg-muted text-just">
+                {t('contact.directWaText')}
+              </p>
               <a
-                href="https://wa.me/237696372245?text=Bonjour"
+                href={`${WHATSAPP_URL}?text=Bonjour`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-glow-green transition-all hover:shadow-floating"
+                className="btn-accent btn-md mt-4"
               >
                 <MessageCircle className="h-4 w-4" />
                 {t('contact.openWa')}
@@ -135,22 +141,23 @@ const Contact: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Form column */}
+          {/* Form */}
           <motion.div
-            initial={{ opacity: 0, x: 32 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7"
           >
-            <div className="relative rounded-4xl border border-ink-100 bg-white p-7 lg:p-10 shadow-elevated">
-              <h3 className="text-fluid-2xl font-bold text-ink-900 mb-6">
+            <div className="rounded-xl border border-line bg-surface p-6 shadow-soft lg:p-8">
+              <h3 className="text-fluid-xl font-bold tracking-tighter text-fg">
                 {t('contact.formTitle')}
               </h3>
+              <div className="hairline my-6" aria-hidden="true" />
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-ink-800 mb-2">
+                  <label htmlFor="name" className="field-label">
                     {t('contact.form.name')}
                   </label>
                   <div className="relative">
@@ -164,13 +171,13 @@ const Contact: React.FC = () => {
                       placeholder={t('contact.form.namePlaceholder')}
                       className="input-base input-with-icon"
                     />
-                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-400" />
+                    <User className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-fg-subtle" />
                   </div>
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-5">
+                <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-semibold text-ink-800 mb-2">
+                    <label htmlFor="phone" className="field-label">
                       {t('contact.form.phone')}
                     </label>
                     <div className="relative">
@@ -184,14 +191,11 @@ const Contact: React.FC = () => {
                         placeholder={t('contact.form.phonePlaceholder')}
                         className="input-base input-with-icon"
                       />
-                      <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-400" />
+                      <Phone className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-fg-subtle" />
                     </div>
                   </div>
                   <div>
-                    <label
-                      htmlFor="subject"
-                      className="block text-sm font-semibold text-ink-800 mb-2"
-                    >
+                    <label htmlFor="subject" className="field-label">
                       {t('contact.form.subject')}
                     </label>
                     <input
@@ -208,10 +212,7 @@ const Contact: React.FC = () => {
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-semibold text-ink-800 mb-2"
-                  >
+                  <label htmlFor="message" className="field-label">
                     {t('contact.form.message')}
                   </label>
                   <div className="relative">
@@ -225,15 +226,11 @@ const Contact: React.FC = () => {
                       placeholder={t('contact.form.messagePlaceholder')}
                       className="input-base input-with-icon resize-none"
                     />
-                    <MessageSquare className="absolute left-3.5 top-3.5 h-4 w-4 text-ink-400" />
+                    <MessageSquare className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-fg-subtle" />
                   </div>
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="btn-primary btn-lg w-full"
-                >
+                <button type="submit" disabled={loading} className="btn-primary btn-lg w-full">
                   {loading ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -253,13 +250,17 @@ const Contact: React.FC = () => {
       </Section>
 
       {/* Map */}
-      <Section className="bg-ink-50/40">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-fluid-3xl font-bold text-ink-900">{t('contact.mapTitle')}</h2>
-          <p className="mt-3 text-ink-600">{t('contact.mapSubtitle')}</p>
+      <Section className="bg-surface-sunken">
+        <div className="mx-auto mb-10 max-w-2xl text-center">
+          <h2 className="text-fluid-2xl font-bold tracking-tighter text-fg">
+            {t('contact.mapTitle')}
+          </h2>
+          <p className="mt-3 text-[14.5px] leading-relaxed text-fg-muted">
+            {t('contact.mapSubtitle')}
+          </p>
         </div>
 
-        <div className="relative aspect-[16/8] sm:aspect-[16/7] rounded-4xl overflow-hidden border border-ink-100 shadow-elevated bg-ink-100">
+        <div className="aspect-[16/9] overflow-hidden rounded-xl border border-line bg-surface shadow-soft sm:aspect-[16/7]">
           <iframe
             title="Bafoussam map"
             src="https://www.google.com/maps?q=Mairie+de+Bafoussam,+Cameroun&output=embed"

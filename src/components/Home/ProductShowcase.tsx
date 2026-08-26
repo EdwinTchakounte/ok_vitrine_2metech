@@ -5,20 +5,18 @@ import { ClipboardCheck, Wrench, Gauge, TrendingDown, ArrowRight } from 'lucide-
 import { Section, SectionHeader } from '../ui/Section';
 import { ButtonLink } from '../ui/Button';
 
+const STEPS = [
+  { key: 'step1', icon: ClipboardCheck },
+  { key: 'step2', icon: Wrench },
+  { key: 'step3', icon: Gauge },
+  { key: 'step4', icon: TrendingDown },
+] as const;
+
 const ProductShowcase: React.FC = () => {
   const { t } = useTranslation();
 
-  const steps = [
-    { key: 'step1', icon: ClipboardCheck },
-    { key: 'step2', icon: Wrench },
-    { key: 'step3', icon: Gauge },
-    { key: 'step4', icon: TrendingDown },
-  ] as const;
-
   return (
-    <Section className="bg-ink-50/40">
-      <div className="absolute inset-0 -z-10 bg-grid mask-fade-y opacity-60" aria-hidden="true" />
-
+    <Section className="bg-canvas">
       <SectionHeader
         eyebrow={t('showcase.eyebrow')}
         title={
@@ -30,69 +28,45 @@ const ProductShowcase: React.FC = () => {
         subtitle={t('showcase.subtitle')}
       />
 
-      {/* Timeline */}
-      <div className="relative">
-        {/* connecting line desktop */}
-        <div
-          className="hidden lg:block absolute left-0 right-0 top-[3.5rem] h-px"
-          style={{
-            background:
-              'linear-gradient(90deg, transparent, rgba(24,118,188,0.5), rgba(132,196,80,0.5), transparent)',
-          }}
-          aria-hidden="true"
-        />
+      <ol className="relative grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        {STEPS.map((s, i) => (
+          <motion.li
+            key={s.key}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="group relative bg-surface p-6 transition-colors duration-300 hover:bg-surface-hover lg:p-7"
+          >
+            {/* Step index as a quiet monospace marker */}
+            <span className="font-mono text-[11px] font-medium tracking-[0.18em] text-fg-subtle">
+              {String(i + 1).padStart(2, '0')}
+            </span>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5">
-          {steps.map((s, i) => (
-            <motion.article
-              key={s.key}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative group"
-            >
-              {/* numbered halo */}
-              <div className="relative mx-auto h-24 w-24 sm:h-28 sm:w-28">
-                {/* soft halo always visible, intensifies on hover */}
-                <div
-                  className="absolute inset-0 rounded-full opacity-30 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background:
-                      'conic-gradient(from 0deg, #1876bc, #84c450, #1876bc)',
-                    filter: 'blur(14px)',
-                  }}
-                />
-                {/* outer circle */}
-                <div className="relative h-full w-full rounded-full border border-ink-200 bg-white shadow-soft flex items-center justify-center">
-                  <div className="absolute inset-2 rounded-full border border-dashed border-ink-200" />
-                  <div className="inline-flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-glow">
-                    <s.icon className="h-5 w-5 sm:h-6 sm:w-6" />
-                  </div>
-                </div>
-                {/* number badge */}
-                <span className="absolute -top-1 -right-1 inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-ink-950 text-white text-[10px] sm:text-xs font-bold shadow-elevated">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-              </div>
+            <span className="icon-tile mt-4 h-11 w-11">
+              <s.icon className="h-5 w-5" strokeWidth={2} />
+            </span>
 
-              <div className="mt-5 text-center">
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-blue-600">
-                  {t(`showcase.${s.key}.kicker`)}
-                </p>
-                <h3 className="mt-2 text-lg lg:text-xl font-semibold text-ink-900">
-                  {t(`showcase.${s.key}.title`)}
-                </h3>
-                <p className="mt-2 text-sm text-ink-600 leading-relaxed max-w-xs mx-auto">
-                  {t(`showcase.${s.key}.text`)}
-                </p>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </div>
+            <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-brand-blue-600 dark:text-brand-blue-300">
+              {t(`showcase.${s.key}.kicker`)}
+            </p>
+            <h3 className="mt-2 text-[17px] font-bold leading-tight text-fg">
+              {t(`showcase.${s.key}.title`)}
+            </h3>
+            <p className="mt-2 text-[13.5px] leading-relaxed text-fg-muted">
+              {t(`showcase.${s.key}.text`)}
+            </p>
 
-      <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3">
+            {/* Bottom accent that fills on hover */}
+            <span
+              className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-gradient-rule transition-transform duration-500 ease-elegant group-hover:scale-x-100"
+              aria-hidden="true"
+            />
+          </motion.li>
+        ))}
+      </ol>
+
+      <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <ButtonLink
           to="/installers"
           variant="primary"

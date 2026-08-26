@@ -19,13 +19,6 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 }) => {
   const { i18n } = useTranslation();
   const current = i18n.language?.startsWith('en') ? 'en' : 'fr';
-
-  const handleChange = (code: string) => {
-    if (code !== current) {
-      i18n.changeLanguage(code);
-    }
-  };
-
   const isDark = variant === 'dark';
 
   return (
@@ -33,10 +26,10 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       role="tablist"
       aria-label="Language"
       className={cn(
-        'relative inline-flex items-center rounded-full p-1 text-xs font-semibold',
+        'relative inline-flex items-center rounded-md border p-0.5 text-[11px] font-bold tracking-wide',
         isDark
-          ? 'bg-white/10 border border-white/15 backdrop-blur-md'
-          : 'bg-ink-100/70 border border-ink-200/80 backdrop-blur-sm',
+          ? 'border-white/20 bg-white/10 backdrop-blur-md'
+          : 'border-line bg-surface-sunken',
         className,
       )}
     >
@@ -47,32 +40,25 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
             key={lang.code}
             role="tab"
             aria-selected={active}
-            onClick={() => handleChange(lang.code)}
+            onClick={() => current !== lang.code && i18n.changeLanguage(lang.code)}
             title={lang.name}
             className={cn(
-              'relative z-10 rounded-full px-3 py-1.5 transition-colors duration-300 no-tap',
+              'no-tap relative z-10 rounded px-2 py-1 transition-colors duration-200',
               active
-                ? isDark
-                  ? 'text-brand-blue-700'
-                  : 'text-white'
+                ? 'text-white'
                 : isDark
-                  ? 'text-white/70 hover:text-white'
-                  : 'text-ink-600 hover:text-ink-900',
+                  ? 'text-white/65 hover:text-white'
+                  : 'text-fg-subtle hover:text-fg',
             )}
           >
             {active && (
               <motion.span
                 layoutId="lang-pill"
-                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                className={cn(
-                  'absolute inset-0 -z-10 rounded-full',
-                  isDark
-                    ? 'bg-white shadow-soft'
-                    : 'bg-gradient-brand shadow-glow',
-                )}
+                transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                className="absolute inset-0 -z-10 rounded bg-brand-blue-600 dark:bg-brand-blue-500"
               />
             )}
-            <span className="tracking-wide">{lang.label}</span>
+            {lang.label}
           </button>
         );
       })}
