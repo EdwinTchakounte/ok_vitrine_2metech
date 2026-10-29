@@ -17,7 +17,11 @@ import {
   Sparkles,
   MessageCircle,
   Download,
+  BrainCircuit,
+  FlaskConical,
+  BookOpen,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import PageHero from '../components/ui/PageHero';
 import { Section, SectionHeader } from '../components/ui/Section';
 import { ButtonLink } from '../components/ui/Button';
@@ -39,6 +43,12 @@ const INSTALL_STEPS = [
   { key: 'install', icon: Settings },
   { key: 'config', icon: Wifi },
   { key: 'training', icon: GraduationCap },
+] as const;
+
+const DATA_CARDS = [
+  { key: 'ai', icon: BrainCircuit, to: '/plateforme', tile: 'icon-tile' },
+  { key: 'lab', icon: FlaskConical, to: '/learning-lab', tile: 'icon-tile-green' },
+  { key: 'learn', icon: BookOpen, to: '/app', tile: 'icon-tile' },
 ] as const;
 
 const STATS = [
@@ -160,8 +170,50 @@ const Enmkit: React.FC = () => {
         </div>
       </Section>
 
-      {/* Install steps */}
+      {/* Data, AI & education — links to /plateforme, /learning-lab, /app */}
       <Section className="bg-canvas">
+        <SectionHeader
+          eyebrow={t('enmkit.data.eyebrow')}
+          title={
+            <>
+              {t('enmkit.data.title')}{' '}
+              <span className="text-gradient-brand">{t('enmkit.data.titleAccent')}</span>
+            </>
+          }
+          subtitle={t('enmkit.data.subtitle')}
+        />
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {DATA_CARDS.map((c, i) => (
+            <motion.div
+              key={c.key}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: i * 0.07 }}
+            >
+              <Link to={c.to} className="card card-hover group flex h-full flex-col p-6 lg:p-7">
+                <span className={`${c.tile} h-11 w-11`}>
+                  <c.icon className="h-5 w-5" strokeWidth={2} />
+                </span>
+                <h3 className="mt-4 text-base font-bold text-fg">
+                  {t(`enmkit.data.cards.${c.key}.title`)}
+                </h3>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-fg-muted">
+                  {t(`enmkit.data.cards.${c.key}.text`)}
+                </p>
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[13px] font-semibold text-brand-blue-700 dark:text-brand-blue-300">
+                  {t(`enmkit.data.cards.${c.key}.cta`)}
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Install steps */}
+      <Section className="bg-surface-sunken">
         <SectionHeader
           title={t('enmkit.installTitle')}
           subtitle={t('enmkit.installSubtitle')}

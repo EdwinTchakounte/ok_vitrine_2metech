@@ -212,8 +212,8 @@ const Installers: React.FC = () => {
         id: Date.now(),
       });
       setFiles({});
-    } catch (err: any) {
-      showError(err.message || t('installers.errors.generic'));
+    } catch (err: unknown) {
+      showError((err instanceof Error && err.message) || t('installers.errors.generic'));
     } finally {
       setLoading(false);
     }

@@ -12,8 +12,9 @@ import {
   Send,
   Download,
   ArrowUpRight,
+  LogIn,
 } from 'lucide-react';
-import { APK_VIEW_URL } from '../../lib/links';
+import { APK_VIEW_URL, HAS_PLATFORM_ACCESS, PLATFORM_LINKS } from '../../lib/links';
 
 const SOCIALS = [
   { icon: Facebook, href: '#', label: 'Facebook' },
@@ -28,6 +29,8 @@ const Footer: React.FC = () => {
 
   const productLinks = [
     { label: t('nav.enmkit'), path: '/enmkit' },
+    { label: t('nav.learningLab'), path: '/learning-lab' },
+    { label: t('nav.platform'), path: '/plateforme' },
     { label: t('nav.app'), path: '/app' },
     { label: t('nav.video'), path: '/installation-video' },
     { label: t('nav.installers'), path: '/installers' },
@@ -205,6 +208,18 @@ const Footer: React.FC = () => {
             © {new Date().getFullYear()} 2metech. {t('footer.rights')}.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {/* Discreet platform sign-in; hidden until VITE_DASHBOARD_URL is set. */}
+            {HAS_PLATFORM_ACCESS && (
+              <a
+                href={PLATFORM_LINKS.dashboard}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 transition-colors hover:text-white"
+              >
+                <LogIn className="h-3 w-3" />
+                {t('footer.platform')}
+              </a>
+            )}
             <a href="#" className="transition-colors hover:text-white">
               {t('footer.legal')}
             </a>

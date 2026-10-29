@@ -13,7 +13,12 @@ import {
   ChevronLeft,
   ChevronRight,
   MessageCircle,
+  BrainCircuit,
+  BookOpen,
+  Bot,
+  Check,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import PageHero from '../components/ui/PageHero';
 import { Section, SectionHeader } from '../components/ui/Section';
 import { ButtonLink } from '../components/ui/Button';
@@ -33,6 +38,13 @@ const FEATURES = [
 ] as const;
 
 const STEPS = ['s1', 's2', 's3'] as const;
+
+/** New app spaces (no screenshots yet: icon-led cards instead). */
+const NEWS = [
+  { key: 'analysis', icon: BrainCircuit, tile: 'icon-tile' },
+  { key: 'learn', icon: BookOpen, tile: 'icon-tile-green' },
+  { key: 'assistant', icon: Bot, tile: 'icon-tile' },
+] as const;
 
 const MobileApp: React.FC = () => {
   const { t } = useTranslation();
@@ -118,8 +130,67 @@ const MobileApp: React.FC = () => {
         </div>
       </Section>
 
-      {/* ---------- Gallery ---------- */}
+      {/* ---------- New: AI analysis, Learn, assistant ---------- */}
       <Section className="bg-surface-sunken">
+        <SectionHeader
+          eyebrow={t('app.news.eyebrow')}
+          title={
+            <>
+              {t('app.news.title')}{' '}
+              <span className="text-gradient-brand">{t('app.news.titleAccent')}</span>
+            </>
+          }
+          subtitle={t('app.news.subtitle')}
+        />
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {NEWS.map((n, i) => (
+            <motion.article
+              key={n.key}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: i * 0.07 }}
+              className="card flex flex-col overflow-hidden"
+            >
+              <div className="relative flex items-center gap-3 border-b border-line bg-surface-sunken px-6 py-5">
+                <div className="absolute inset-0 bg-grid-fine opacity-60" aria-hidden="true" />
+                <span className={cn(n.tile, 'relative h-11 w-11')}>
+                  <n.icon className="h-5 w-5" strokeWidth={2} />
+                </span>
+                <span className="chip-neutral relative">{t(`app.news.items.${n.key}.tag`)}</span>
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <h3 className="text-lg font-bold text-fg">{t(`app.news.items.${n.key}.title`)}</h3>
+                <p className="mt-1.5 text-[13.5px] leading-relaxed text-fg-muted">
+                  {t(`app.news.items.${n.key}.text`)}
+                </p>
+                <ul className="mt-5 space-y-2.5 border-t border-line pt-5">
+                  {(['p1', 'p2', 'p3', 'p4'] as const).map((p) => (
+                    <li key={p} className="flex items-start gap-2.5 text-[13.5px] text-fg">
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand-green-500" strokeWidth={2.5} />
+                      {t(`app.news.items.${n.key}.${p}`)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+
+        <div className="mt-8 text-center">
+          <Link
+            to="/plateforme"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-blue-700 hover:underline dark:text-brand-blue-300"
+          >
+            {t('app.news.platformLink')}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </Section>
+
+      {/* ---------- Gallery ---------- */}
+      <Section className="bg-canvas">
         <SectionHeader
           title={t('app.galleryTitle')}
           subtitle={t('app.gallerySubtitle')}
@@ -208,7 +279,7 @@ const MobileApp: React.FC = () => {
       </Section>
 
       {/* ---------- Install steps + download ---------- */}
-      <Section className="bg-canvas">
+      <Section className="bg-surface-sunken">
         <SectionHeader title={t('app.installTitle')} />
 
         <div className="mx-auto max-w-4xl">

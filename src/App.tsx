@@ -19,6 +19,8 @@ const Installers = lazy(() => import('./pages/Installers'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Enmkit = lazy(() => import('./pages/Enmkit'));
 const MobileApp = lazy(() => import('./pages/MobileApp'));
+const LearningLab = lazy(() => import('./pages/LearningLab'));
+const Platform = lazy(() => import('./pages/Platform'));
 const InstallationVideoCard = lazy(() => import('./pages/Guide_video'));
 
 const Loader: React.FC = () => (
@@ -46,6 +48,9 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/about" element={<About />} />
         <Route path="/enmkit" element={<Enmkit />} />
         <Route path="/app" element={<MobileApp />} />
+        <Route path="/learning-lab" element={<LearningLab />} />
+        <Route path="/plateforme" element={<Platform />} />
+        <Route path="/platform" element={<Platform />} />
         <Route path="/awards" element={<Awards />} />
         <Route path="/gallery" element={<Home />} />
         <Route path="/partners" element={<Partners />} />

@@ -2,6 +2,7 @@ import React from 'react';
 import HeroSection from '../components/Home/HeroSection';
 import ValueProposition from '../components/Home/ValueProposition';
 import AppTeaser from '../components/Home/AppTeaser';
+import LabTeaser from '../components/Home/LabTeaser';
 import VideoSection from '../components/Home/VideoSection';
 import ProductShowcase from '../components/Home/ProductShowcase';
 import MegaCTA from '../components/Home/MegaCTA';
@@ -15,6 +16,7 @@ const Home: React.FC = () => (
     <HeroSection />
     <ValueProposition />
     <AppTeaser />
+    <LabTeaser />
     <VideoSection />
     <ProductShowcase />
     <Testimonials />

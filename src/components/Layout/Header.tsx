@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, ArrowRight, ChevronDown, Download } from 'lucide-react';
+import { Menu, X, ArrowRight, ChevronDown, Download, LogIn } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../lib/cn';
-import { APK_VIEW_URL } from '../../lib/links';
+import { APK_VIEW_URL, HAS_PLATFORM_ACCESS, PLATFORM_LINKS } from '../../lib/links';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import ThemeToggle from '../ui/ThemeToggle';
 import { ButtonLink } from '../ui/Button';
@@ -35,6 +35,8 @@ const NAV: NavEntry[] = [
     tag: 'menu.solutionTag',
     children: [
       { key: 'enmkit', path: '/enmkit', desc: 'enmkit' },
+      { key: 'learningLab', path: '/learning-lab', desc: 'learningLab' },
+      { key: 'platform', path: '/plateforme', desc: 'platform' },
       { key: 'app', path: '/app', desc: 'app' },
       { key: 'video', path: '/installation-video', desc: 'video' },
     ],
@@ -264,15 +266,29 @@ const Header: React.FC = () => {
                             </ul>
 
                             {entry.key === 'solution' && (
-                              <a
-                                href={APK_VIEW_URL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 border-t border-line bg-surface-sunken px-4 py-3 text-[13px] font-semibold text-brand-blue-700 transition-colors hover:bg-surface-hover dark:text-brand-blue-300"
-                              >
-                                <Download className="h-3.5 w-3.5" />
-                                {t('menu.download')}
-                              </a>
+                              <div className="flex items-stretch border-t border-line bg-surface-sunken">
+                                <a
+                                  href={APK_VIEW_URL}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex flex-1 items-center gap-2 whitespace-nowrap px-4 py-3 text-[13px] font-semibold text-brand-blue-700 transition-colors hover:bg-surface-hover dark:text-brand-blue-300"
+                                >
+                                  <Download className="h-3.5 w-3.5" />
+                                  {t('menu.download')}
+                                </a>
+                                {/* Hidden until VITE_DASHBOARD_URL is set. */}
+                                {HAS_PLATFORM_ACCESS && (
+                                  <a
+                                    href={PLATFORM_LINKS.dashboard}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 whitespace-nowrap border-l border-line px-4 py-3 text-[13px] font-semibold text-fg-muted transition-colors hover:bg-surface-hover hover:text-fg"
+                                  >
+                                    <LogIn className="h-3.5 w-3.5" />
+                                    {t('menu.platformAccess')}
+                                  </a>
+                                )}
+                              </div>
                             )}
                           </div>
                         </motion.div>
@@ -446,6 +462,17 @@ const Header: React.FC = () => {
                   <Download className="h-4 w-4 text-brand-green-500" />
                   {t('menu.download')}
                 </a>
+                {HAS_PLATFORM_ACCESS && (
+                  <a
+                    href={PLATFORM_LINKS.dashboard}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 flex items-center gap-2.5 rounded-lg border border-line px-4 py-3 text-sm font-semibold text-fg-muted transition-colors hover:bg-surface-hover hover:text-fg"
+                  >
+                    <LogIn className="h-4 w-4 text-brand-blue-500" />
+                    {t('menu.platformAccess')}
+                  </a>
+                )}
               </nav>
 
               <div className="shrink-0 space-y-4 border-t border-line px-5 py-4">

@@ -36,3 +36,27 @@ export const APP_SHOTS = [
 export type AppShot = (typeof APP_SHOTS)[number];
 
 export const shotSrc = (name: AppShot | string) => `/app/${name}.webp`;
+
+/* ------------------------------------------------------------------
+   EnMKit platform (API + web dashboard), self-hosted by 2ME-TECH under
+   sub-domains that are not fixed yet. Every platform URL used by the
+   site is read here, from build-time env vars (see `.env.example`).
+   An empty / missing value means "not public yet": the matching entry
+   (header, footer, platform page) is simply not rendered.
+   ------------------------------------------------------------------ */
+
+const envUrl = (value: string | undefined) => (value ?? '').trim().replace(/\/+$/, '');
+
+export const PLATFORM_LINKS = {
+  /** Web dashboard sign-in (owners, trainers, 2ME-TECH staff). */
+  dashboard: envUrl(import.meta.env.VITE_DASHBOARD_URL),
+  /** Public API base URL (used by the mobile app; shown for integrators). */
+  api: envUrl(import.meta.env.VITE_API_URL),
+} as const;
+
+/** True once the dashboard URL is configured: gates every "Espace plateforme" entry. */
+export const HAS_PLATFORM_ACCESS = PLATFORM_LINKS.dashboard !== '';
+
+/** Contact page link with a pre-filled subject (`/contact?subject=…`). */
+export const contactWithSubject = (subject: string) =>
+  `/contact?subject=${encodeURIComponent(subject)}`;

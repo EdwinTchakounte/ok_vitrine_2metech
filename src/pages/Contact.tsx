@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   MapPin,
@@ -20,10 +21,12 @@ import { WHATSAPP_URL } from '../lib/links';
 
 const Contact: React.FC = () => {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  /* `?subject=` pre-fills the subject (e.g. links from the Learning Lab page). */
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    subject: '',
+    subject: (searchParams.get('subject') ?? '').slice(0, 120),
     message: '',
   });
   const [loading, setLoading] = useState(false);
