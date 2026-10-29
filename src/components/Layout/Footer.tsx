@@ -14,7 +14,7 @@ import {
   ArrowUpRight,
   LogIn,
 } from 'lucide-react';
-import { APK_VIEW_URL, HAS_PLATFORM_ACCESS, PLATFORM_LINKS } from '../../lib/links';
+import { APK_VIEW_URL, BANC_APK_URL, HAS_PLATFORM_ACCESS, PLATFORM_LINKS } from '../../lib/links';
 
 const SOCIALS = [
   { icon: Facebook, href: '#', label: 'Facebook' },
@@ -86,6 +86,14 @@ const Footer: React.FC = () => {
             >
               <Download className="h-4 w-4 text-brand-green-400" />
               {t('app.download')}
+            </a>
+            <a
+              href={BANC_APK_URL}
+              download="enmkit-banc.apk"
+              className="mt-2 flex w-fit items-center gap-2 rounded-md border border-white/15 bg-white/[0.06] px-4 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-white/[0.12]"
+            >
+              <Download className="h-4 w-4 text-brand-green-400" />
+              {t('app.banc.footer')}
             </a>
 
             <div className="mt-6 flex items-center gap-2">

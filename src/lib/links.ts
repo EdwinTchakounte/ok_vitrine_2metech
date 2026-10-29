@@ -12,6 +12,13 @@ export const APK_VIEW_URL = `https://drive.google.com/file/d/${APK_FILE_ID}/view
 /** Bypasses the viewer page. Works, but Drive may still interpose a scan warning. */
 export const APK_DIRECT_URL = `https://drive.usercontent.google.com/download?id=${APK_FILE_ID}&export=download`;
 
+/**
+ * App EnMKit Banc (Smart Home Learning Lab) : APK distinct de l'app client (identifiant com.enmkit.banc, les deux
+ * s'installent côte à côte), hébergé sur le serveur EnMKit avec son empreinte SHA-256.
+ */
+export const BANC_APK_URL = 'https://dashboard.enmkit.horus-lab.com/telechargements/enmkit-banc.apk';
+export const BANC_APK_SHA256_URL = `${BANC_APK_URL}.sha256`;
+
 export const WHATSAPP_NUMBER = '237696372245';
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 

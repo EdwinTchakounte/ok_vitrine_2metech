@@ -306,8 +306,9 @@ const MobileApp: React.FC = () => {
             ))}
           </ol>
 
-          <div className="mt-8">
+          <div className="mt-8 grid gap-4">
             <ApkDownload />
+            <ApkDownload app="banc" />
           </div>
         </div>
       </Section>

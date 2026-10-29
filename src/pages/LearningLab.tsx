@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import PageHero from '../components/ui/PageHero';
 import { Section, SectionHeader } from '../components/ui/Section';
+import ApkDownload from '../components/App/ApkDownload';
 import { ButtonLink } from '../components/ui/Button';
 import PageTransition from '../components/ui/PageTransition';
 import BenchDiagram from '../components/LearningLab/BenchDiagram';
@@ -309,6 +310,11 @@ const LearningLab: React.FC = () => {
         <p className="mx-auto mt-6 max-w-2xl text-center text-[13px] text-fg-subtle">
           {t('lab.tp.outcomesNote')}
         </p>
+
+        {/* App du banc : analyse IA, assistant tuteur des TP, quiz */}
+        <div id="app-banc" className="mx-auto mt-12 max-w-4xl scroll-mt-28">
+          <ApkDownload app="banc" />
+        </div>
       </Section>
 
       {/* ---------- Audiences ---------- */}

@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Download, Smartphone, ExternalLink, ShieldCheck, WifiOff } from 'lucide-react';
 import { cn } from '../../lib/cn';
-import { APK_DIRECT_URL, APK_VIEW_URL } from '../../lib/links';
+import { APK_DIRECT_URL, APK_VIEW_URL, BANC_APK_SHA256_URL, BANC_APK_URL } from '../../lib/links';
 import QRCode from '../ui/QRCode';
 
 interface ApkDownloadProps {
@@ -11,6 +11,8 @@ interface ApkDownloadProps {
   className?: string;
   /** Hide the QR on very tight layouts. */
   showQr?: boolean;
+  /** `client` : app EnMKit des propriétaires (Google Drive) ; `banc` : app du Learning Lab (serveur EnMKit). */
+  app?: 'client' | 'banc';
 }
 
 /**
@@ -21,9 +23,13 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
   variant = 'panel',
   className,
   showQr = true,
+  app = 'client',
 }) => {
   const { t } = useTranslation();
   const invert = variant === 'invert';
+  const banc = app === 'banc';
+  const mainUrl = banc ? BANC_APK_URL : APK_VIEW_URL;
+  const secondaryUrl = banc ? BANC_APK_SHA256_URL : APK_DIRECT_URL;
 
   /* The QR keeps a light quiet zone in both themes, because inverted codes are
      unreliable on a fair number of phone cameras. */
@@ -49,7 +55,7 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
       <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-7">
         {/* Copy + actions */}
         <div className="min-w-0 flex-1">
-          <span className={invert ? 'chip-dark' : 'chip'}>{t('app.eyebrow')}</span>
+          <span className={invert ? 'chip-dark' : 'chip'}>{t(banc ? 'app.banc.eyebrow' : 'app.eyebrow')}</span>
 
           <h3
             className={cn(
@@ -57,7 +63,7 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
               invert ? 'text-white' : 'text-fg',
             )}
           >
-            {t('app.download')}
+            {t(banc ? 'app.banc.title' : 'app.download')}
           </h3>
           <p
             className={cn(
@@ -65,21 +71,22 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
               invert ? 'text-white/70' : 'text-fg-muted',
             )}
           >
-            {t('app.downloadHint')}
+            {banc ? t('app.banc.hint') : t('app.downloadHint')}
           </p>
 
           <div className="mt-5 flex flex-wrap items-center gap-2.5">
             <a
-              href={APK_VIEW_URL}
-              target="_blank"
+              href={mainUrl}
+              target={banc ? undefined : '_blank'}
               rel="noopener noreferrer"
+              download={banc ? 'enmkit-banc.apk' : undefined}
               className="btn-primary btn-md"
             >
               <Download className="h-4 w-4" />
-              <span>{t('app.download')}</span>
+              <span>{t(banc ? 'app.banc.download' : 'app.download')}</span>
             </a>
             <a
-              href={APK_DIRECT_URL}
+              href={secondaryUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
@@ -89,7 +96,7 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
                   : 'text-fg-muted hover:text-brand-blue-700 hover:bg-surface-hover',
               )}
             >
-              {t('app.directLink')}
+              {t(banc ? 'app.banc.checksum' : 'app.directLink')}
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
           </div>
@@ -125,7 +132,7 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
               )}
             >
               <QRCode
-                value={APK_VIEW_URL}
+                value={mainUrl}
                 size={130}
                 ecc="Q"
                 dark={qrDark}
