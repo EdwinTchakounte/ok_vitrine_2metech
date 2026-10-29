@@ -38,20 +38,23 @@ export type AppShot = (typeof APP_SHOTS)[number];
 export const shotSrc = (name: AppShot | string) => `/app/${name}.webp`;
 
 /* ------------------------------------------------------------------
-   EnMKit platform (API + web dashboard), self-hosted by 2ME-TECH under
-   sub-domains that are not fixed yet. Every platform URL used by the
-   site is read here, from build-time env vars (see `.env.example`).
-   An empty / missing value means "not public yet": the matching entry
-   (header, footer, platform page) is simply not rendered.
+   EnMKit platform (API + web dashboard), self-hosted by 2ME-TECH on the
+   horus-lab.com sub-domains. Build-time env vars (see `.env.example`)
+   override the defaults; setting one to an empty string hides the
+   matching entry (header, footer, platform page).
    ------------------------------------------------------------------ */
 
-const envUrl = (value: string | undefined) => (value ?? '').trim().replace(/\/+$/, '');
+const DEFAULT_DASHBOARD_URL = 'https://dashboard.enmkit.horus-lab.com';
+const DEFAULT_API_URL = 'https://api.enmkit.horus-lab.com';
+
+const envUrl = (value: string | undefined, fallback: string) =>
+  (value ?? fallback).trim().replace(/\/+$/, '');
 
 export const PLATFORM_LINKS = {
   /** Web dashboard sign-in (owners, trainers, 2ME-TECH staff). */
-  dashboard: envUrl(import.meta.env.VITE_DASHBOARD_URL),
+  dashboard: envUrl(import.meta.env.VITE_DASHBOARD_URL, DEFAULT_DASHBOARD_URL),
   /** Public API base URL (used by the mobile app; shown for integrators). */
-  api: envUrl(import.meta.env.VITE_API_URL),
+  api: envUrl(import.meta.env.VITE_API_URL, DEFAULT_API_URL),
 } as const;
 
 /** True once the dashboard URL is configured: gates every "Espace plateforme" entry. */

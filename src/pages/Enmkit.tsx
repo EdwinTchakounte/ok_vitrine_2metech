@@ -170,7 +170,7 @@ const Enmkit: React.FC = () => {
         </div>
       </Section>
 
-      {/* Data, AI & education — links to /plateforme, /learning-lab, /app */}
+      {/* Data, AI & education: links to /plateforme, /learning-lab, /app */}
       <Section className="bg-canvas">
         <SectionHeader
           eyebrow={t('enmkit.data.eyebrow')}

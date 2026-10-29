@@ -187,7 +187,7 @@ const DataFlowDiagram: React.FC = () => {
       <div
         className="hidden lg:grid lg:grid-cols-[minmax(0,1fr)_3.25rem_minmax(0,1fr)_3.25rem_minmax(0,1fr)_3.25rem_minmax(0,1fr)_3.25rem_minmax(0,1fr)] lg:grid-rows-[auto_4rem_auto]"
       >
-        {/* Row 1 — online chain */}
+        {/* Row 1: online chain */}
         <div className="col-start-1 row-start-1 self-center">
           <Node k="kit" />
         </div>
@@ -217,7 +217,7 @@ const DataFlowDiagram: React.FC = () => {
           <Node k="assistant" compact />
         </div>
 
-        {/* Row 2 — vertical links */}
+        {/* Row 2: vertical links */}
         <VLink
           kind="sms"
           label={t('platform.flow.links.local')}
@@ -232,7 +232,7 @@ const DataFlowDiagram: React.FC = () => {
           delay={1}
         />
 
-        {/* Row 3 — offline branch */}
+        {/* Row 3: offline branch */}
         <div className="col-start-3 row-start-3">
           <Node k="app" badge={offlineChip} />
         </div>

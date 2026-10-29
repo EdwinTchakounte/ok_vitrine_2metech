@@ -26,7 +26,7 @@ export default {
     },
 
     /* ----------------------------------------------------------------
-       RADIUS — deliberately tight. The whole scale is overridden (not
+       RADIUS: deliberately tight. The whole scale is overridden (not
        extended) so every existing `rounded-*` in the codebase collapses
        to a sharp, architectural value. `full` is kept for the few things
        that must be circles (avatars, status dots, ping indicators).
@@ -74,7 +74,7 @@ export default {
       },
 
       colors: {
-        /* Semantic surface / text / border tokens — resolved from CSS
+        /* Semantic surface / text / border tokens, resolved from CSS
            variables so light and dark themes share one class vocabulary. */
         canvas: token('canvas'),
         surface: {
@@ -92,7 +92,7 @@ export default {
           muted: token('fg-muted'),
           subtle: token('fg-subtle'),
         },
-        /* Inverted band — stays dark in both themes but keeps enough
+        /* Inverted band: stays dark in both themes but keeps enough
            separation from the page background in dark mode. */
         invert: {
           DEFAULT: token('invert'),

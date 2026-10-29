@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Award, Download } from 'lucide-react';
+import { ArrowRight, Award, Download, GraduationCap, Pause, Play } from 'lucide-react';
 import { ButtonLink } from '../ui/Button';
 import { APK_VIEW_URL, shotSrc } from '../../lib/links';
 
@@ -11,6 +12,67 @@ const AWARD_LABELS = [
   'YALI Power Challenge',
   'Startupper TotalEnergies',
 ];
+
+/**
+ * Vidéo d'installation du kit : muette, en boucle, lue sur mobile comme sur ordinateur (playsInline).
+ * Si l'utilisateur a demandé moins d'animations, elle reste sur l'image d'aperçu jusqu'à un clic.
+ */
+const InstallVideo: React.FC = () => {
+  const { t } = useTranslation();
+  const ref = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    v.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  }, []);
+
+  const toggle = () => {
+    const v = ref.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    } else {
+      v.pause();
+      setPlaying(false);
+    }
+  };
+
+  return (
+    <figure className="relative">
+      <div className="relative overflow-hidden rounded-xl border border-white/15 bg-black shadow-floating">
+        <video
+          ref={ref}
+          className="block aspect-video w-full object-cover"
+          poster="/videos/enmkit-installation-poster.jpg"
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={t('hero.videoTitle')}
+        >
+          <source src="/videos/enmkit-installation.webm" type="video/webm" />
+          <source src="/videos/enmkit-installation.mp4" type="video/mp4" />
+        </video>
+        <button
+          type="button"
+          onClick={toggle}
+          className="absolute bottom-3 left-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-sm transition hover:bg-black/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-green-400"
+          aria-label={playing ? t('hero.videoPause') : t('hero.videoPlay')}
+        >
+          {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 translate-x-px" />}
+        </button>
+      </div>
+      <figcaption className="mt-3 text-sm leading-snug text-white/60 xl:pr-28">
+        <span className="font-semibold text-white/85">{t('hero.videoTitle')}</span>
+        <span className="hidden sm:inline"> · </span>
+        <span className="block sm:inline">{t('hero.videoCaption')}</span>
+      </figcaption>
+    </figure>
+  );
+};
 
 const HeroSection: React.FC = () => {
   const { t } = useTranslation();
@@ -41,7 +103,7 @@ const HeroSection: React.FC = () => {
       <div className="container mx-auto pb-14 pt-[calc(var(--header-h)+3rem)] lg:pb-20 lg:pt-[calc(var(--header-h)+5rem)]">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
           {/* ---------- Copy ---------- */}
-          <div className="lg:col-span-7">
+          <div className="min-w-0 lg:col-span-7">
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -54,6 +116,25 @@ const HeroSection: React.FC = () => {
               </span>
               {t('hero.eyebrow')}
             </motion.span>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.03 }}
+              className="mt-3"
+            >
+              <Link
+                to="/learning-lab"
+                className="group inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] py-1 pl-1 pr-3 text-sm text-white/80 transition hover:border-white/30 hover:text-white"
+              >
+                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-brand-green-500 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white">
+                  <GraduationCap className="h-3 w-3" />
+                  {t('hero.labBadge')}
+                </span>
+                <span className="min-w-0 truncate">{t('hero.labLink')}</span>
+                <ArrowRight className="h-3.5 w-3.5 shrink-0 transition group-hover:translate-x-0.5" />
+              </Link>
+            </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 18 }}
@@ -124,16 +205,17 @@ const HeroSection: React.FC = () => {
             </motion.dl>
           </div>
 
-          {/* ---------- Product shot ---------- */}
-          <div className="relative hidden lg:col-span-5 lg:block">
+          {/* ---------- Vidéo d'installation + écran de l'app ---------- */}
+          <div className="relative min-w-0 lg:col-span-5">
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative mx-auto w-full max-w-[19rem]"
+              className="relative mx-auto w-full max-w-xl lg:max-w-none"
             >
-              {/* Phone */}
-              <div className="relative rounded-[14px] border border-white/15 bg-white/[0.06] p-2 shadow-floating backdrop-blur-sm">
+              <InstallVideo />
+              {/* Écran de l'app, en incrustation sur grand écran */}
+              <div className="absolute -bottom-16 -right-6 hidden w-28 rounded-[12px] border border-white/15 bg-invert/80 p-1.5 shadow-floating backdrop-blur-sm xl:block">
                 <img
                   src={shotSrc('conso')}
                   alt={t('app.shots.conso')}
@@ -143,7 +225,6 @@ const HeroSection: React.FC = () => {
                   loading="eager"
                 />
               </div>
-
             </motion.div>
           </div>
         </div>
