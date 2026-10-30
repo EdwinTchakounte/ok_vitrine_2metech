@@ -18,6 +18,9 @@ export const APK_DIRECT_URL = `https://drive.usercontent.google.com/download?id=
  */
 export const BANC_APK_URL = 'https://dashboard.enmkit.horus-lab.com/telechargements/enmkit-banc.apk';
 export const BANC_APK_SHA256_URL = `${BANC_APK_URL}.sha256`;
+/** Guide d'utilisation de l'app EnMKit Banc (PDF servi par la vitrine). */
+export const BANC_GUIDE_URL = '/docs/guide-enmkit-banc.pdf';
+export const BANC_VERSION = '1.1.0';
 
 export const WHATSAPP_NUMBER = '237696372245';
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;

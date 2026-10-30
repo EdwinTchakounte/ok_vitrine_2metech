@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Download, Smartphone, ExternalLink, ShieldCheck, WifiOff } from 'lucide-react';
+import { Download, Smartphone, ExternalLink, ShieldCheck, WifiOff, FileText } from 'lucide-react';
 import { cn } from '../../lib/cn';
-import { APK_DIRECT_URL, APK_VIEW_URL, BANC_APK_SHA256_URL, BANC_APK_URL } from '../../lib/links';
+import { APK_DIRECT_URL, APK_VIEW_URL, BANC_APK_SHA256_URL, BANC_APK_URL, BANC_GUIDE_URL, BANC_VERSION } from '../../lib/links';
 import QRCode from '../ui/QRCode';
 
 interface ApkDownloadProps {
@@ -73,6 +73,11 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
           >
             {banc ? t('app.banc.hint') : t('app.downloadHint')}
           </p>
+          {banc && (
+            <p className={cn('mt-1 text-xs font-medium', invert ? 'text-white/55' : 'text-fg-subtle')}>
+              {t('app.banc.version', { version: BANC_VERSION })}
+            </p>
+          )}
 
           <div className="mt-5 flex flex-wrap items-center gap-2.5">
             <a
@@ -99,6 +104,22 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
               {t(banc ? 'app.banc.checksum' : 'app.directLink')}
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
+            {banc && (
+              <a
+                href={BANC_GUIDE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  'inline-flex items-center gap-1.5 rounded-md px-2.5 py-2 text-[13px] font-medium transition-colors',
+                  invert
+                    ? 'text-white/70 hover:text-white hover:bg-white/10'
+                    : 'text-fg-muted hover:text-brand-blue-700 hover:bg-surface-hover',
+                )}
+              >
+                <FileText className="h-3.5 w-3.5" />
+                {t('app.banc.guide')}
+              </a>
+            )}
           </div>
 
           <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
