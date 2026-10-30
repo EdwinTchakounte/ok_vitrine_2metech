@@ -96,7 +96,7 @@ const BenchDiagram: React.FC = () => {
             </div>
           </Block>
 
-          {/* Loads: lines 1–4 */}
+          {/* Loads: lines 1-4 */}
           <Block n={5} label={c('loads')} className="col-span-6">
             <ul className="mt-3 grid grid-cols-4 gap-2">
               {[1, 2, 3, 4].map((l) => {
