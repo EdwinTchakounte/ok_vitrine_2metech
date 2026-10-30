@@ -328,7 +328,7 @@ const fr = {
         subtitle:
           'EnMKit va au-delà du pilotage : relevés horaires par SMS, analyse par IA et formation pratique sur un banc réel.',
         cards: {
-          ai: { title: 'Analyse IA', text: 'Qualité des données, profil type, anomalies, prévisions en FCFA et score d’efficacité A–E.', cta: 'La plateforme' },
+          ai: { title: 'Analyse IA', text: 'Qualité des données, profil type, anomalies, prévisions en FCFA et score d’efficacité A-E.', cta: 'La plateforme' },
           lab: { title: 'Smart Home Learning Lab', text: 'Le banc EnMKit en valise pour former à l’énergie et à l’IoT, avec 7 travaux pratiques.', cta: 'Le Learning Lab' },
           learn: { title: 'Module « Apprendre »', text: 'Fiches TP, quiz, éco-gestes et glossaire, directement dans l’application.', cta: 'L’application' },
         },
@@ -791,7 +791,7 @@ const fr = {
           },
           loads: {
             name: '2 ampoules et 2 prises',
-            spec: 'Lignes 1–2 ampoules · lignes 3–4 prises',
+            spec: 'Lignes 1-2 ampoules · lignes 3-4 prises',
             role: 'Charges pédagogiques pour créer des scénarios et comparer.',
           },
           cable: {
@@ -1078,7 +1078,7 @@ const fr = {
           profile: { title: 'Profil type', text: 'Une journée type heure par heure (jours ouvrés et week-end), avec la veille de nuit et l’heure de pointe.' },
           anomalies: { title: 'Détection d’anomalies', text: 'Pics isolés et dérives nocturnes persistantes signalés automatiquement.' },
           forecast: { title: 'Prévisions', text: 'Consommation attendue du jour et du mois, avec son coût estimé en FCFA.' },
-          score: { title: 'Score d’efficacité A–E', text: 'Une note lisible, avec le détail des points perdus.' },
+          score: { title: 'Score d’efficacité A-E', text: 'Une note lisible, avec le détail des points perdus.' },
           recos: { title: 'Recommandations', text: 'Des actions concrètes, chiffrées en kWh et en FCFA.' },
         },
         tariffNote: 'Le coût est estimé à partir d’un barème tarifaire paramétrable.',
@@ -1172,7 +1172,7 @@ const fr = {
         footer: 'App EnMKit Banc',
       },
       downloadHint: 'Android · fichier APK · installation manuelle',
-      openDrive: 'Ouvrir dans Google Drive',
+      clientVersion: 'Version {{version}} · lignes, consommation, connexion du kit',
       directLink: 'Lien de téléchargement direct',
       scanTitle: 'Scannez pour installer',
       scanText:
@@ -1579,7 +1579,7 @@ const en: typeof fr = {
         subtitle:
           'EnMKit goes beyond control: hourly readings over SMS, AI analysis and hands-on training on a real bench.',
         cards: {
-          ai: { title: 'AI analysis', text: 'Data quality, typical profile, anomalies, forecasts in FCFA and an A–E efficiency score.', cta: 'The platform' },
+          ai: { title: 'AI analysis', text: 'Data quality, typical profile, anomalies, forecasts in FCFA and an A-E efficiency score.', cta: 'The platform' },
           lab: { title: 'Smart Home Learning Lab', text: 'The EnMKit bench in a suitcase to teach energy and IoT, with 7 hands-on labs.', cta: 'The Learning Lab' },
           learn: { title: '“Learn” module', text: 'Lab sheets, quizzes, eco-tips and a glossary, right inside the app.', cta: 'The app' },
         },
@@ -1966,7 +1966,7 @@ const en: typeof fr = {
       ai: {
         tag: 'Platform & AI',
         title: 'Your data, explained by AI',
-        text: 'Hourly readings over SMS, anomaly detection, forecasts in FCFA and an A–E efficiency score, online and offline.',
+        text: 'Hourly readings over SMS, anomaly detection, forecasts in FCFA and an A-E efficiency score, online and offline.',
         cta: 'See the platform',
       },
     },
@@ -2037,7 +2037,7 @@ const en: typeof fr = {
           },
           loads: {
             name: '2 bulbs and 2 sockets',
-            spec: 'Lines 1–2 bulbs · lines 3–4 sockets',
+            spec: 'Lines 1-2 bulbs · lines 3-4 sockets',
             role: 'Teaching loads to build usage scenarios and compare.',
           },
           cable: {
@@ -2324,7 +2324,7 @@ const en: typeof fr = {
           profile: { title: 'Typical profile', text: 'A typical day hour by hour (weekdays and weekends), with night-time base load and peak hour.' },
           anomalies: { title: 'Anomaly detection', text: 'Isolated spikes and persistent night-time drifts flagged automatically.' },
           forecast: { title: 'Forecasts', text: 'Expected consumption for the day and the month, with its estimated cost in FCFA.' },
-          score: { title: 'A–E efficiency score', text: 'A readable grade, with the detail of points lost.' },
+          score: { title: 'A-E efficiency score', text: 'A readable grade, with the detail of points lost.' },
           recos: { title: 'Recommendations', text: 'Concrete actions, quantified in kWh and FCFA.' },
         },
         tariffNote: 'Cost is estimated from a configurable tariff schedule.',
@@ -2418,7 +2418,7 @@ const en: typeof fr = {
       },
       downloadShort: 'Download',
       downloadHint: 'Android · APK file · manual install',
-      openDrive: 'Open in Google Drive',
+      clientVersion: 'Version {{version}} · lines, consumption, kit connection',
       directLink: 'Direct download link',
       scanTitle: 'Scan to install',
       scanText:

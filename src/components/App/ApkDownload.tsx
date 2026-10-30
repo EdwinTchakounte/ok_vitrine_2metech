@@ -2,7 +2,16 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Download, Smartphone, ExternalLink, ShieldCheck, WifiOff, FileText } from 'lucide-react';
 import { cn } from '../../lib/cn';
-import { APK_DIRECT_URL, APK_VIEW_URL, BANC_APK_SHA256_URL, BANC_APK_URL, BANC_GUIDE_URL, BANC_VERSION } from '../../lib/links';
+import {
+  APK_SHA256_URL,
+  APK_VIEW_URL,
+  BANC_APK_SHA256_URL,
+  BANC_APK_URL,
+  BANC_GUIDE_URL,
+  BANC_VERSION,
+  CLIENT_GUIDE_URL,
+  CLIENT_VERSION,
+} from '../../lib/links';
 import QRCode from '../ui/QRCode';
 
 interface ApkDownloadProps {
@@ -11,7 +20,7 @@ interface ApkDownloadProps {
   className?: string;
   /** Hide the QR on very tight layouts. */
   showQr?: boolean;
-  /** `client` : app EnMKit des propriétaires (Google Drive) ; `banc` : app du Learning Lab (serveur EnMKit). */
+  /** `client` : app EnMKit des propriétaires ; `banc` : app du Learning Lab (toutes deux sur le serveur EnMKit). */
   app?: 'client' | 'banc';
 }
 
@@ -29,7 +38,8 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
   const invert = variant === 'invert';
   const banc = app === 'banc';
   const mainUrl = banc ? BANC_APK_URL : APK_VIEW_URL;
-  const secondaryUrl = banc ? BANC_APK_SHA256_URL : APK_DIRECT_URL;
+  const secondaryUrl = banc ? BANC_APK_SHA256_URL : APK_SHA256_URL;
+  const guideUrl = banc ? BANC_GUIDE_URL : CLIENT_GUIDE_URL;
 
   /* The QR keeps a light quiet zone in both themes, because inverted codes are
      unreliable on a fair number of phone cameras. */
@@ -73,18 +83,17 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
           >
             {banc ? t('app.banc.hint') : t('app.downloadHint')}
           </p>
-          {banc && (
-            <p className={cn('mt-1 text-xs font-medium', invert ? 'text-white/55' : 'text-fg-subtle')}>
-              {t('app.banc.version', { version: BANC_VERSION })}
-            </p>
-          )}
+          <p className={cn('mt-1 text-xs font-medium', invert ? 'text-white/55' : 'text-fg-subtle')}>
+            {banc
+              ? t('app.banc.version', { version: BANC_VERSION })
+              : t('app.clientVersion', { version: CLIENT_VERSION })}
+          </p>
 
           <div className="mt-5 flex flex-wrap items-center gap-2.5">
             <a
               href={mainUrl}
-              target={banc ? undefined : '_blank'}
               rel="noopener noreferrer"
-              download={banc ? 'enmkit-banc.apk' : undefined}
+              download={banc ? 'enmkit-banc.apk' : 'enmkit.apk'}
               className="btn-primary btn-md"
             >
               <Download className="h-4 w-4" />
@@ -101,25 +110,23 @@ export const ApkDownload: React.FC<ApkDownloadProps> = ({
                   : 'text-fg-muted hover:text-brand-blue-700 hover:bg-surface-hover',
               )}
             >
-              {t(banc ? 'app.banc.checksum' : 'app.directLink')}
+              {t('app.banc.checksum')}
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
-            {banc && (
-              <a
-                href={BANC_GUIDE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  'inline-flex items-center gap-1.5 rounded-md px-2.5 py-2 text-[13px] font-medium transition-colors',
-                  invert
-                    ? 'text-white/70 hover:text-white hover:bg-white/10'
-                    : 'text-fg-muted hover:text-brand-blue-700 hover:bg-surface-hover',
-                )}
-              >
-                <FileText className="h-3.5 w-3.5" />
-                {t('app.banc.guide')}
-              </a>
-            )}
+            <a
+              href={guideUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'inline-flex items-center gap-1.5 rounded-md px-2.5 py-2 text-[13px] font-medium transition-colors',
+                invert
+                  ? 'text-white/70 hover:text-white hover:bg-white/10'
+                  : 'text-fg-muted hover:text-brand-blue-700 hover:bg-surface-hover',
+              )}
+            >
+              <FileText className="h-3.5 w-3.5" />
+              {t('app.banc.guide')}
+            </a>
           </div>
 
           <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
