@@ -977,9 +977,9 @@ const fr = {
         title: 'Un prix unitaire clair,',
         titleAccent: 'un devis sur mesure.',
         unitLabel: 'Coût unitaire',
-        price: '300 000 FCFA',
+        price: '350 000 FCFA',
         perBench: 'par banc d’essai EnMKit',
-        euro: '≈ 457 € au taux fixe de 655,957 FCFA pour 1 €',
+        euro: '≈ 534 € au taux fixe de 655,957 FCFA pour 1 €',
         points: {
           p1: 'Les prestations associées sont facturées selon le nombre de bancs commandés.',
           p2: 'Aucun montant global n’est avancé sans base de coût propre à chaque projet.',
@@ -988,7 +988,7 @@ const fr = {
         itemLabel: 'Poste',
         basisLabel: 'Base de facturation',
         lines: {
-          benches: { name: 'Bancs d’essai EnMKit', basis: 'Nombre de bancs × 300 000 FCFA' },
+          benches: { name: 'Bancs d’essai EnMKit', basis: 'Nombre de bancs × 350 000 FCFA' },
           commissioning: { name: 'Mise en service', basis: 'Au devis' },
           training: { name: 'Formation des formateurs, fiches de TP', basis: 'Au devis' },
           logistics: { name: 'Transport et logistique', basis: 'Au devis, selon les sites' },
@@ -2223,9 +2223,9 @@ const en: typeof fr = {
         title: 'A clear unit price,',
         titleAccent: 'a tailored quote.',
         unitLabel: 'Unit cost',
-        price: '300,000 FCFA',
+        price: '350,000 FCFA',
         perBench: 'per EnMKit test bench',
-        euro: '≈ €457 at the fixed rate of 655.957 FCFA to €1',
+        euro: '≈ €534 at the fixed rate of 655.957 FCFA to €1',
         points: {
           p1: 'Related services are invoiced according to the number of benches ordered.',
           p2: 'No overall amount is quoted without a cost basis specific to each project.',
@@ -2234,7 +2234,7 @@ const en: typeof fr = {
         itemLabel: 'Item',
         basisLabel: 'Billing basis',
         lines: {
-          benches: { name: 'EnMKit test benches', basis: 'Number of benches × 300,000 FCFA' },
+          benches: { name: 'EnMKit test benches', basis: 'Number of benches × 350,000 FCFA' },
           commissioning: { name: 'Commissioning', basis: 'On quote' },
           training: { name: 'Trainer training, lab sheets', basis: 'On quote' },
           logistics: { name: 'Transport and logistics', basis: 'On quote, depending on sites' },
