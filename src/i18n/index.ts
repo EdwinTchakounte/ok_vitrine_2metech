@@ -763,7 +763,13 @@ const fr = {
         titleAccent: 'pilotée à distance.',
         subtitle:
           'Tout tient dans une valise d’environ 60 × 50 × 15 cm, alimentée par une prise secteur 220 V grâce à un câble de 2 m rangé à l’intérieur.',
-        diagramCaption: 'Schéma de principe du banc. Photographies à venir.',
+        diagramCaption: 'Schéma de principe du banc.',
+        sheet: {
+          title: 'Le banc en images',
+          caption: 'Fiche du banc d’essai EnMKit : valise ouverte et fermée, éléments numérotés, rangement du câble et schéma des connexions.',
+          alt: 'Banc d’essai EnMKit dans sa valise ouverte : bloc émetteur, compteur d’énergie, bloc récepteur, coffret électrique, 2 ampoules, 2 prises et câble d’alimentation de 2 m, avec la vue fermée (60 × 50 × 15 cm) et le schéma des connexions.',
+          open: 'Voir en grand',
+        },
         lineLabel: 'Ligne',
         bulb: 'Ampoule',
         socket: 'Prise',
@@ -2009,7 +2015,13 @@ const en: typeof fr = {
         titleAccent: 'controlled remotely.',
         subtitle:
           'Everything fits in a suitcase of about 60 × 50 × 15 cm, powered from a 220 V wall socket through a 2 m cable stored inside.',
-        diagramCaption: 'Schematic view of the bench. Photographs coming soon.',
+        diagramCaption: 'Schematic view of the bench.',
+        sheet: {
+          title: 'The bench at a glance',
+          caption: 'EnMKit test bench sheet: open and closed suitcase, numbered parts, cable storage and wiring diagram.',
+          alt: 'EnMKit test bench in its open suitcase: transmitter unit, energy meter, receiver unit, electrical panel, 2 bulbs, 2 sockets and 2 m power cable, with the closed view (60 × 50 × 15 cm) and the wiring diagram.',
+          open: 'View full size',
+        },
         lineLabel: 'Line',
         bulb: 'Bulb',
         socket: 'Socket',

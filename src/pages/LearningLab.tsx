@@ -26,6 +26,7 @@ import {
   CircleDashed,
   Building2,
   Microscope,
+  Maximize2,
 } from 'lucide-react';
 import PageHero from '../components/ui/PageHero';
 import { Section, SectionHeader } from '../components/ui/Section';
@@ -38,6 +39,10 @@ import { cn } from '../lib/cn';
 
 /** Contact address given in the Learning Lab partnership proposal. */
 const LAB_EMAIL = 'contact@2metechsarl.org';
+
+/** Fiche illustrée du banc (WebP pleine résolution et version allégée pour l'affichage). */
+const BENCH_SHEET = '/images/banc/banc-essai-enmkit.webp';
+const BENCH_SHEET_SMALL = '/images/banc/banc-essai-enmkit-960.webp';
 
 const FACTS = ['size', 'lines', 'sms', 'tp'] as const;
 
@@ -227,6 +232,37 @@ const LearningLab: React.FC = () => {
             </p>
           </div>
         </div>
+
+        {/* Fiche illustrée du banc : version légère affichée, pleine résolution au clic. */}
+        <motion.figure {...fadeUp()} className="mt-12 lg:mt-16">
+          <a
+            href={BENCH_SHEET}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative block overflow-hidden rounded-xl border border-line bg-white shadow-soft"
+          >
+            <img
+              src={BENCH_SHEET_SMALL}
+              srcSet={`${BENCH_SHEET_SMALL} 960w, ${BENCH_SHEET} 1536w`}
+              sizes="(min-width: 1280px) 1200px, 100vw"
+              width={1536}
+              height={1024}
+              loading="lazy"
+              decoding="async"
+              alt={t('lab.bench.sheet.alt')}
+              className="block h-auto w-full"
+            />
+            <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-md bg-invert/85 p-2 text-[12.5px] font-semibold text-white opacity-90 sm:px-3 sm:py-1.5 backdrop-blur-sm transition-opacity group-hover:opacity-100">
+              <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
+              <span className="sr-only sm:not-sr-only">{t('lab.bench.sheet.open')}</span>
+            </span>
+          </a>
+          <figcaption className="mt-3 text-center text-[13px] text-fg-subtle">
+            <span className="font-semibold text-fg-muted">{t('lab.bench.sheet.title')}</span>
+            {' · '}
+            {t('lab.bench.sheet.caption')}
+          </figcaption>
+        </motion.figure>
       </Section>
 
       {/* ---------- Hands-on labs ---------- */}
